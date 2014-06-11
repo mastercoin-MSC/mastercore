@@ -233,8 +233,8 @@ public:
 
     printf("%s();my_accepts.size= %lu, line %d, file: %s\n", __FUNCTION__, my_accepts.size(), __LINE__, __FILE__);
 
-    // did the buyer pay enough or more than the seller wanted?
-    if (BTC_paid >= BTC_desired)
+    // did the buyer pay enough or more than the seller wanted? did we check to see if they paid more than the actual amount available * BTC_desired ? (for cases where the buyer overpays the seller's available amount)
+    if (BTC_paid >= BTC_desired || BTC_paid >= ((double)offer_amount/(double)COIN * (double)BTC_desired) )
     {
       purchased = offer_amount; // this is how much the seller has offered
     }
