@@ -654,6 +654,14 @@ private:
               ++InvalidCount_per_spec;
               break;
             }
+          } else {
+            // Offer does not exist
+            if ((NEW != subaction))
+            {
+              printf("%s() INVALID SELL OFFER -- UPDATE OR CANCEL ACTION WHEN NONE IS POSSIBLE, line %d, file: %s\n", __FUNCTION__, __LINE__, __FILE__);
+              ++InvalidCount_per_spec;
+              break;
+            }
           }
  
           switch (subaction)
