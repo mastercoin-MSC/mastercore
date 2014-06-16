@@ -9,9 +9,6 @@
 #include "netbase.h"
 #include "protocol.h"
 
-// what should've been in the Exodus address for this block if none were spent
-#define DEV_MSC_BLOCK_290629 (1743358325718)
-
 // the min amount to send to marker, reference, data outputs, used in send_MP() & related functions
 #define MP_DUST_LIMIT 5678
 
@@ -36,13 +33,19 @@
 #define MSC_TYPE_CREATE_PROPERTY_VARIABLE 51
 #define MSC_TYPE_PROMOTE_PROPERTY         52
 
-#define FILETYPE_BALANCES 0
-#define FILETYPE_OFFERS   1
-#define FILETYPE_ACCEPTS  2
-const char mastercore_filenames[][128]={
+enum FILETYPE_BALANCES {
+  FILETYPE_BALANCES = 0,
+  FILETYPE_OFFERS,
+  FILETYPE_ACCEPTS,
+  FILETYPE_DEVMSC,
+  NUM_FILETYPES
+};
+
+const char *mastercore_filenames[NUM_FILETYPES]={
 "mastercoin_balances.txt",
 "mastercoin_offers.txt",
-"mastercoin_accepts.txt"
+"mastercoin_accepts.txt",
+"mastercoin_devmsc.txt"
 };
 
 #define MASTERCOIN_CURRENCY_MSC   1
@@ -220,6 +223,7 @@ bool IsMyAddress(const std::string &address);
 string getLabel(const string &address);
 
 int mastercore_handler_tx(const CTransaction &tx, int nBlock, unsigned int idx);
+int mastercore_save_state( CBlockIndex const *pBlockIndex );
 
 #endif
 

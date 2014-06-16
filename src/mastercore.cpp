@@ -29,10 +29,14 @@
 #include <boost/assign/list_of.hpp>
 #include <boost/algorithm/string.hpp>
 #include <boost/lexical_cast.hpp>
+#include <boost/format.hpp>
+#include <boost/filesystem.hpp>
 #include "json/json_spirit_utils.h"
 #include "json/json_spirit_value.h"
 
 #include "leveldb/db.h"
+
+#include <openssl/sha.h>
 
 #include "mastercore.h"
 
@@ -46,8 +50,10 @@ uint64_t global_MSC_total = 0;
 uint64_t global_MSC_RESERVED_total = 0;
 
 static string exodus = "1EXoDusjGwvnjZUyKkxZ4UHEf77z6A5S4P";
-static uint64_t exodus_prev = DEV_MSC_BLOCK_290629;
+static uint64_t exodus_prev = 0;
 static uint64_t exodus_balance;
+
+static boost::filesystem::path MPPersistencePath;
 
 static FILE *mp_fp = NULL;
 
@@ -180,6 +186,11 @@ private:
       fprintf(mp_fp, "%s(%lu), line %d, file: %s\n", __FUNCTION__, a, __LINE__, __FILE__);
     }
 
+    CMPAccept(uint64_t origA, uint64_t remA, uint64_t f, int b):accept_amount_remaining(remA),accept_amount_original(origA),fee_paid(f),block(b)
+    {
+      fprintf(mp_fp, "%s(%lu), line %d, file: %s\n", __FUNCTION__, origA, __LINE__, __FILE__);
+    }
+
     ~CMPAccept()
     {
     }
@@ -197,11 +208,29 @@ private:
 
       return accept_amount_remaining;
     }
-
     void reduceAcceptAmount(uint64_t really_purchased)
     {
       accept_amount_remaining -= really_purchased;
     } // TODO: check for negatives ? assert ?
+
+    void saveAccept(ofstream &file, SHA256_CTX *shaCtx, string const &addr, unsigned int currency, string const &buyer ) const {
+      // compose the outputline
+      // seller-address, currency, buyer-address, amount, fee, block
+      string lineOut = (boost::format("%s,%d,%s,%d,%d,%d,%d")
+        % addr
+        % currency
+        % buyer
+        % accept_amount_remaining
+        % accept_amount_original
+        % fee_paid
+        % block).str();
+
+      // add the line to the hash
+      SHA256_Update(shaCtx, lineOut.c_str(), lineOut.length());
+
+      // write the line
+      file << lineOut << endl;
+    }
   };
 
   map<string, CMPAccept> my_accepts;
@@ -322,6 +351,44 @@ public:
     fprintf(mp_fp, "%s();my_accepts.size= %lu, line %d, file: %s\n", __FUNCTION__, my_accepts.size(), __LINE__, __FILE__);
   }
 
+  void saveOffer(ofstream &file, SHA256_CTX *shaCtx, string const &addr ) const {
+    // compose the outputline
+    // seller-address, ...
+    string lineOut = (boost::format("%s,%d,%d,%d,%d,%d,%d,%d,%d")
+      % addr
+      % offerBlock
+      % offer_amount_remaining
+      % offer_amount_original
+      % reserved_accepted_amount
+      % currency
+      % BTC_desired_original
+      % min_fee
+      % (int)blocktimelimit).str();
+
+    // add the line to the hash
+    SHA256_Update(shaCtx, lineOut.c_str(), lineOut.length());
+
+    // write the line
+    file << lineOut << endl;
+  }
+
+  void saveAccepts( ofstream &file, SHA256_CTX *shaCtx, string const &addr ) const {
+    map<string, CMPOffer::CMPAccept>::const_iterator iter;
+    for (iter = my_accepts.begin(); iter != my_accepts.end(); ++iter) {
+      (*iter).second.saveAccept(file, shaCtx, addr, currency, (*iter).first);
+    }
+  }
+
+  int loadAccept( string const &buyerAddr, uint64_t amountRemaining, uint64_t amountOriginal, uint64_t feePaid, int block ) {
+    CMPAccept newAccept(amountRemaining, amountOriginal, feePaid, block);
+    if (my_accepts.insert(std::make_pair(buyerAddr, newAccept)).second) {
+      return 0;
+    } else {
+      return -1;
+    }
+  }
+
+
   CMPOffer(int b, uint64_t a, unsigned int cu, uint64_t d, uint64_t fee, unsigned char btl)
    :offerBlock(b),offer_amount_remaining(a),offer_amount_original(a),currency(cu),BTC_desired_original(d),min_fee(fee),blocktimelimit(btl)
   {
@@ -329,6 +396,13 @@ public:
 
     reserved_accepted_amount = 0;
 
+    my_accepts.clear();
+  }
+
+  CMPOffer(int b, uint64_t origA, uint64_t remainingA, uint64_t reservedA, unsigned int cu, uint64_t d, uint64_t fee, unsigned char btl)
+     :offerBlock(b),offer_amount_remaining(remainingA),offer_amount_original(origA),reserved_accepted_amount(reservedA),currency(cu),BTC_desired_original(d),min_fee(fee),blocktimelimit(btl)
+  {
+    if (msc_debug4) fprintf(mp_fp, "%s(%lu), line %d, file: %s\n", __FUNCTION__, remainingA, __LINE__, __FILE__);
     my_accepts.clear();
   }
 
@@ -965,7 +1039,7 @@ const unsigned int currency = MASTERCOIN_CURRENCY_MSC;  // FIXME: hard-coded for
 
 // called once per block
 // it performs cleanup and other functions
-int mastercore_handler_block(int nBlockNow, unsigned int nTime)
+int mastercore_handler_block(int nBlockNow, CBlockIndex const * pBlockIndex)
 {
 // for every new received block must do:
 // 1) remove expired entries from the accept list (per spec accept entries are valid until their blocklimit expiration; because the customer can keep paying BTC for the offer in several installments)
@@ -978,13 +1052,16 @@ uint64_t devmsc = 0;
    __FUNCTION__, how_many_erased, nBlockNow, __LINE__, __FILE__);
 
   // calculate devmsc as of this block and update the Exodus' balance
-  devmsc = calculate_and_update_devmsc(nTime);
+  devmsc = calculate_and_update_devmsc(pBlockIndex->GetBlockTime());
 
   fprintf(mp_fp, "devmsc for block %d: %lu, Exodus balance: %lu\n", nBlockNow, devmsc, getMPbalance(exodus, MASTERCOIN_CURRENCY_MSC));
 
   // get the total MSC for this wallet, for QT display
   (void) set_wallet_totals();
 //  printf("the globals: MSC_total= %lu, MSC_RESERVED_total= %lu\n", global_MSC_total, global_MSC_RESERVED_total);
+
+  // save out the state after this block
+  mastercore_save_state(pBlockIndex);
 
   return 0;
 }
@@ -1517,7 +1594,6 @@ const int max_block = GetHeight();
   // this function is useless if there are not enough blocks in the blockchain yet!
   if ((0 >= nHeight) || (max_block < nHeight)) return -1;
 
-  my_offers.clear();
   printf("starting block= %d, max_block= %d\n", nHeight, max_block);
 
   CBlock block;
@@ -1542,7 +1618,7 @@ const int max_block = GetHeight();
     n_total += tx_count;
     if (msc_debug0) fprintf(mp_fp, "%4d:n_total= %d, n_found= %d\n", blockNum, n_total, n_found);
 
-    mastercore_handler_block(blockNum, pblockindex->GetBlockTime());
+    mastercore_handler_block(blockNum, pblockindex);
   }
 
   for(map<string, mp_tally>::iterator my_it = mp_tally_map.begin(); my_it != mp_tally_map.end(); ++my_it)
@@ -1589,34 +1665,35 @@ string strAddress = vstr[0];
 // 13z1JFtDMGTYQvtMq5gs4LmCztK3rmEZga,299076,76375000,1,6415500,10000,6
 int input_mp_offers_string(const string &s)
 {
-int offerBlock;
-uint64_t Amount, Desired_BTC;
-unsigned int curr;
-uint64_t min_fee;
-unsigned char blocktimelimit;
-std::vector<std::string> vstr;
-boost::split(vstr, s, boost::is_any_of(" ,="), token_compress_on);
-string sellerAddr;
-int i = 0;
+  int offerBlock;
+  uint64_t amountRemaining, amountOriginal, amountReserved, btcDesired, minFee;
+  unsigned int curr;
+  unsigned char blocktimelimit;
+  std::vector<std::string> vstr;
+  boost::split(vstr, s, boost::is_any_of(" ,="), token_compress_on);
+  string sellerAddr;
+  int i = 0;
 
-  if (7 != vstr.size()) return -1;
+  if (9 != vstr.size()) return -1;
 
-  printf("%s(%s), line %d, file: %s\n", __FUNCTION__, s.c_str(), __LINE__, __FILE__);
 
   sellerAddr = vstr[i++];
   offerBlock = atoi(vstr[i++]);
-  Amount = boost::lexical_cast<uint64_t>(vstr[i++]);
+  amountRemaining = boost::lexical_cast<uint64_t>(vstr[i++]);
+  amountOriginal = boost::lexical_cast<uint64_t>(vstr[i++]);
+  amountReserved = boost::lexical_cast<uint64_t>(vstr[i++]);
   curr = boost::lexical_cast<unsigned int>(vstr[i++]);
-  Desired_BTC = boost::lexical_cast<uint64_t>(vstr[i++]);
-  min_fee = boost::lexical_cast<uint64_t>(vstr[i++]);
+  btcDesired = boost::lexical_cast<uint64_t>(vstr[i++]);
+  minFee = boost::lexical_cast<uint64_t>(vstr[i++]);
   blocktimelimit = atoi(vstr[i++]);
 
-  if (msc_debug4) { BOOST_FOREACH(const string &debug_str, vstr) fprintf(mp_fp, "%s\n", debug_str.c_str()); }
-
   const string combo = STR_ADDR_CURR_COMBO(sellerAddr);
-
-  printf("%s(%s):%s:%d:%ld:%d:%ld:%ld:%d\n", __FUNCTION__,
-   combo.c_str(), sellerAddr.c_str(), offerBlock, Amount, curr, Desired_BTC, min_fee, blocktimelimit);
+  CMPOffer newOffer(offerBlock, amountOriginal, amountRemaining, amountReserved, curr, btcDesired, minFee, blocktimelimit);
+  if (my_offers.insert(std::make_pair(combo, newOffer)).second) {
+    return 0;
+  } else {
+    return -1;
+  }
 
   return 0;
 }
@@ -1626,50 +1703,61 @@ int i = 0;
 // 13z1JFtDMGTYQvtMq5gs4LmCztK3rmEZga,1,1Md8GwMtWpiobRnjRabMT98EW6Jh4rEUNy,50000000,11000,299132
 int input_mp_accepts_string(const string &s)
 {
-int nBlock;
-std::vector<std::string> vstr;
-boost::split(vstr, s, boost::is_any_of(" ,="), token_compress_on);
-uint64_t Amount;
-uint64_t fee;
-unsigned int curr;
-string sellerAddr, buyerAddr;
-int i = 0;
+  int nBlock;
+  std::vector<std::string> vstr;
+  boost::split(vstr, s, boost::is_any_of(" ,="), token_compress_on);
+  uint64_t amountRemaining, amountOriginal;
+  uint64_t fee;
+  unsigned int curr;
+  string sellerAddr, buyerAddr;
+  int i = 0;
 
-  if (6 != vstr.size()) return -1;
-
-  printf("%s(%s), line %d, file: %s\n", __FUNCTION__, s.c_str(), __LINE__, __FILE__);
+  if (7 != vstr.size()) return -1;
 
   sellerAddr = vstr[i++];
   curr = boost::lexical_cast<unsigned int>(vstr[i++]);
   buyerAddr = vstr[i++];
-  Amount = boost::lexical_cast<uint64_t>(vstr[i++]);
+  amountRemaining = boost::lexical_cast<uint64_t>(vstr[i++]);
+  amountOriginal = boost::lexical_cast<uint64_t>(vstr[i++]);
   fee = boost::lexical_cast<uint64_t>(vstr[i++]);
   nBlock = atoi(vstr[i++]);
 
-  if (msc_debug4) { BOOST_FOREACH(const string &debug_str, vstr) fprintf(mp_fp, "%s\n", debug_str.c_str()); }
-
   const string combo = STR_ADDR_CURR_COMBO(sellerAddr);
+  std::map<string,CMPOffer>::iterator iter = my_offers.find(combo);
+  if (iter == my_offers.end()) {
+    fprintf(mp_fp, "No offer from seller:%s found for accept from buyer:%s", sellerAddr.c_str(), buyerAddr.c_str());
+    return -1;
+  }
 
-  printf("%s(%s):%s:%d:%s:%ld:%ld:%d\n", __FUNCTION__,
-   combo.c_str(), sellerAddr.c_str(), curr, buyerAddr.c_str(), Amount, fee, nBlock);
+  return (*iter).second.loadAccept(buyerAddr, amountRemaining, amountOriginal, fee, nBlock);
+}
+
+// exodus_prev
+int input_devmsc_state_string(const string &s)
+{
+  uint64_t exodusPrev;
+  std::vector<std::string> vstr;
+  boost::split(vstr, s, boost::is_any_of(" ,="), token_compress_on);
+  if (1 != vstr.size()) return -1;
+
+  int i = 0;
+  exodusPrev = boost::lexical_cast<uint64_t>(vstr[i++]);
+  exodus_prev = exodusPrev;
 
   return 0;
 }
 
-int msc_file_load(int what)
+static int msc_file_load(const string &filename, int what, bool verifyHash = false)
 {
-int lines = 0;
-int (*inputLineFunc)(const string &) = NULL;
-const string filename = GetDataDir().string() + "/" + string(mastercore_filenames[what]);
+  int lines = 0;
+  int (*inputLineFunc)(const string &) = NULL;
 
-#ifdef  WIN32
-// FIXME -- switch to boost:path for Windows compatibility !
-#error Implement boost path here
-#endif
+  // TODO: think about placement for preseed files -- perhaps the directory where executables live is better?
+  // these files are read-only preseeds
+  // all run-time updates should go to a KV-store (leveldb is envisioned)
 
-// TODO: think about placement for preseed files -- perhaps the directory where executables live is better?
-// these files are read-only preseeds
-// all run-time updates should go to a KV-store (leveldb is envisioned)
+  SHA256_CTX shaCtx;
+  SHA256_Init(&shaCtx);
 
   switch (what)
   {
@@ -1687,38 +1775,315 @@ const string filename = GetDataDir().string() + "/" + string(mastercore_filename
       inputLineFunc = input_mp_accepts_string;
       break;
 
+    case FILETYPE_DEVMSC:
+      inputLineFunc = input_devmsc_state_string;
+      break;
+
     default:
       return -1;
   }
 
-    LogPrintf("Loading %s ... \n", filename);
+  LogPrintf("Loading %s ... \n", filename);
 
-    ifstream file;
-    file.open(filename.c_str());
-    if (!file.is_open())
-    {
-      LogPrintf("%s(): file not found, line %d, file: %s\n", __FUNCTION__, __LINE__, __FILE__);
-      return -1;
+  ifstream file;
+  file.open(filename.c_str());
+  if (!file.is_open())
+  {
+    LogPrintf("%s(): file not found, line %d, file: %s\n", __FUNCTION__, __LINE__, __FILE__);
+    return -1;
+  }
+
+  int res = 0;
+
+  std::string fileHash;
+  while (file.good())
+  {
+    std::string line;
+    std::getline(file, line);
+    if (line.empty() || line[0] == '#') continue;
+
+    // remove \r if the file came from Windows
+    line.erase( std::remove( line.begin(), line.end(), '\r' ), line.end() ) ;
+
+    // record and skip hashes in the file
+    if (line[0] == '!') {
+      fileHash = line.substr(1);
+      continue;
     }
 
-    while (file.good())
-    {
-        std::string line;
-        std::getline(file, line);
-        if (line.empty() || line[0] == '#') continue;
-
-        // remove \r if the file came from Windows
-        line.erase( std::remove( line.begin(), line.end(), '\r' ), line.end() ) ;
-
-        if (inputLineFunc) inputLineFunc(line);
-
-        ++lines;
+    // update hash?
+    if (verifyHash) {
+      SHA256_Update(&shaCtx, line.c_str(), line.length());
     }
 
-    file.close();
+    if (inputLineFunc) {
+      if (inputLineFunc(line) < 0) {
+        res = -1;
+        break;
+      }
+    }
 
-    printf("%s(): file: %s, loaded lines= %d\n", __FUNCTION__, filename.c_str(), lines);
-    LogPrintf("%s(): file: %s, loaded lines= %d\n", __FUNCTION__, filename, lines);
+    ++lines;
+  }
+
+  file.close();
+
+  if (verifyHash && res == 0) {
+    // generate and wite the double hash of all the contents written
+    uint256 hash1;
+    SHA256_Final((unsigned char*)&hash1, &shaCtx);
+    uint256 hash2;
+    SHA256((unsigned char*)&hash1, sizeof(hash1), (unsigned char*)&hash2);
+
+    if (false == boost::iequals(hash2.ToString(), fileHash)) {
+      fprintf(mp_fp, "File %s loaded, but failed hash validation!\n", filename.c_str());
+      res = -1;
+    }
+  }
+
+  printf("%s(): file: %s, loaded lines= %d\n", __FUNCTION__, filename.c_str(), lines);
+  LogPrintf("%s(): file: %s, loaded lines= %d\n", __FUNCTION__, filename, lines);
+
+  return res;
+}
+
+static int msc_preseed_file_load(int what)
+{
+  // uses boost::filesystem::path
+  const string filename = (GetDataDir() / mastercore_filenames[what]).string();
+  return msc_file_load(filename, what);
+}
+
+static char const * const statePrefix[NUM_FILETYPES] = {
+    "balances",
+    "offers",
+    "accepts",
+    "devmsc",
+};
+
+// returns the height of the state loaded
+static int load_most_relevant_state()
+{
+  int res = -1;
+  // get the tip of the current best chain
+  CBlockIndex const *curTip = chainActive.Tip();
+
+  // walk backwards until we find a valid and full set of persisted state files
+  while (NULL != curTip) {
+    int success = -1;
+    for (int i = 0; i < NUM_FILETYPES; ++i) {
+      const string filename = (MPPersistencePath / (boost::format("%s-%s.dat") % statePrefix[i] % curTip->GetBlockHash().ToString()).str().c_str()).string();
+      success = msc_file_load(filename, i, true);
+      if (success < 0) {
+        break;
+      }
+    }
+
+    if (success >= 0) {
+      res = curTip->nHeight;
+      break;
+    }
+
+    // go to the previous block
+    curTip = curTip->pprev;
+  }
+
+  // return the height of the block we settled at
+  return res;
+}
+
+static int write_msc_balances(ofstream &file, SHA256_CTX *shaCtx)
+{
+  LOCK(cs_tally);
+
+  map<string, mp_tally>::const_iterator iter;
+  for (iter = mp_tally_map.begin(); iter != mp_tally_map.end(); ++iter) {
+    uint64_t mscBalance = (*iter).second.getMoney(MASTERCOIN_CURRENCY_MSC, false);
+    uint64_t mscReserved = (*iter).second.getMoney(MASTERCOIN_CURRENCY_MSC, true);
+
+    // we don't allow 0 balances to read in, so if we don't write them
+    // it makes things match up better between peristed state and processed state
+    if ( 0 == mscBalance && 0 == mscReserved ) {
+      continue;
+    }
+
+    string lineOut = (boost::format("%s,%d,%d")
+        % (*iter).first
+        % mscBalance
+        % mscReserved).str();
+
+    // add the line to the hash
+    SHA256_Update(shaCtx, lineOut.c_str(), lineOut.length());
+
+    // write the line
+    file << lineOut << endl;
+  }
+
+  return 0;
+}
+
+static int write_mp_offers(ofstream &file, SHA256_CTX *shaCtx)
+{
+  map<string, CMPOffer>::const_iterator iter;
+  for (iter = my_offers.begin(); iter != my_offers.end(); ++iter) {
+    // decompose the key for address
+    std::vector<std::string> vstr;
+    boost::split(vstr, (*iter).first, boost::is_any_of("-"), token_compress_on);
+    CMPOffer const &offer = (*iter).second;
+    offer.saveOffer(file, shaCtx, vstr[0]);
+  }
+
+
+  return 0;
+}
+
+static int write_mp_accepts(ofstream &file, SHA256_CTX *shaCtx)
+{
+  map<string, CMPOffer>::const_iterator iter;
+   for (iter = my_offers.begin(); iter != my_offers.end(); ++iter) {
+     // decompose the key for address
+     std::vector<std::string> vstr;
+     boost::split(vstr, (*iter).first, boost::is_any_of("-"), token_compress_on);
+     CMPOffer const &offer = (*iter).second;
+     offer.saveAccepts(file, shaCtx, vstr[0]);
+   }
+
+  return 0;
+}
+
+static int write_devmsc_state(ofstream &file, SHA256_CTX *shaCtx)
+{
+  string lineOut = (boost::format("%d") % exodus_prev).str();
+
+  // add the line to the hash
+  SHA256_Update(shaCtx, lineOut.c_str(), lineOut.length());
+
+  // write the line
+  file << lineOut << endl;
+
+  return 0;
+}
+
+
+static int write_state_file( CBlockIndex const *pBlockIndex, int what )
+{
+  const char *blockHash = pBlockIndex->GetBlockHash().ToString().c_str();
+  boost::filesystem::path balancePath = MPPersistencePath / (boost::format("%s-%s.dat") % statePrefix[what] % blockHash).str();
+  ofstream file;
+  file.open(balancePath.string().c_str());
+
+  SHA256_CTX shaCtx;
+  SHA256_Init(&shaCtx);
+
+  int result = 0;
+
+  switch(what) {
+  case FILETYPE_BALANCES:
+    result = write_msc_balances(file, &shaCtx);
+    break;
+
+  case FILETYPE_OFFERS:
+    result = write_mp_offers(file, &shaCtx);
+    break;
+
+  case FILETYPE_ACCEPTS:
+    result = write_mp_accepts(file, &shaCtx);
+    break;
+
+  case FILETYPE_DEVMSC:
+    result = write_devmsc_state(file, &shaCtx);
+    break;
+  }
+
+  // generate and wite the double hash of all the contents written
+  uint256 hash1;
+  SHA256_Final((unsigned char*)&hash1, &shaCtx);
+  uint256 hash2;
+  SHA256((unsigned char*)&hash1, sizeof(hash1), (unsigned char*)&hash2);
+  file << "!" << hash2.ToString() << endl;
+
+  file.flush();
+  file.close();
+  return result;
+}
+
+static bool is_state_prefix( std::string const &str )
+{
+  for (int i = 0; i < NUM_FILETYPES; ++i) {
+    if (boost::equals(str,  statePrefix[i])) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+static void prune_state_files( CBlockIndex const *topIndex )
+{
+  static int const MAX_STATE_HISTORY = 50;
+
+  // build a set of blockHashes for which we have any state files
+  std::set<uint256> statefulBlockHashes;
+
+  boost::filesystem::directory_iterator dIter(MPPersistencePath);
+  boost::filesystem::directory_iterator endIter;
+  for (; dIter != endIter; ++dIter) {
+    if (false == boost::filesystem::is_regular_file(dIter->status())) {
+      // skip funny business
+      fprintf(mp_fp, "Non-regular file found in persistence directory : %s\n", dIter->path().filename().string().c_str());
+      continue;
+    }
+
+    std::vector<std::string> vstr;
+    boost::split(vstr, dIter->path().filename().string(), boost::is_any_of("-."), token_compress_on);
+    if (  vstr.size() == 3 &&
+          is_state_prefix(vstr[0]) &&
+          boost::equals(vstr[2], "dat")) {
+      uint256 blockHash;
+      blockHash.SetHex(vstr[1]);
+      statefulBlockHashes.insert(blockHash);
+    } else {
+      fprintf(mp_fp, "None state file found in persistence directory : %s\n", dIter->path().filename().string().c_str());
+    }
+  }
+
+  // for each blockHash in the set, determine the distance from the given block
+  std::set<uint256>::const_iterator iter;
+  for (iter = statefulBlockHashes.begin(); iter != statefulBlockHashes.end(); ++iter) {
+    // look up the CBlockIndex for height info
+    CBlockIndex const *curIndex = NULL;
+    map<uint256,CBlockIndex *>::const_iterator indexIter = mapBlockIndex.find((*iter));
+    if (indexIter != mapBlockIndex.end()) {
+      curIndex = (*indexIter).second;
+    }
+
+    // if we have nothing int the index, or this block is too old..
+    if (NULL == curIndex || (topIndex->nHeight - curIndex->nHeight) > MAX_STATE_HISTORY ) {
+      if (curIndex) {
+        fprintf(mp_fp, "State from Block:%s is no longer need, removing files (age-from-tip: %d)\n", (*iter).ToString().c_str(), topIndex->nHeight - curIndex->nHeight);
+      } else {
+        fprintf(mp_fp, "State from Block:%s is no longer need, removing files (not in index)\n", (*iter).ToString().c_str());
+      }
+
+      // destroy the associated files!
+      const char *blockHashStr = (*iter).ToString().c_str();
+      for (int i = 0; i < NUM_FILETYPES; ++i) {
+        boost::filesystem::remove(MPPersistencePath / (boost::format("%s-%s.dat") % statePrefix[i] % blockHashStr).str());
+      }
+    }
+  }
+}
+
+int mastercore_save_state( CBlockIndex const *pBlockIndex )
+{
+  // write the new state as of the given block
+  write_state_file(pBlockIndex, FILETYPE_BALANCES);
+  write_state_file(pBlockIndex, FILETYPE_OFFERS);
+  write_state_file(pBlockIndex, FILETYPE_ACCEPTS);
+  write_state_file(pBlockIndex, FILETYPE_DEVMSC);
+
+  // clean-up the directory
+  prune_state_files(pBlockIndex);
 
   return 0;
 }
@@ -1739,9 +2104,22 @@ const bool bTestnet = TestNet();
   }
 
   p_txlistdb = new MP_txlist(GetDataDir() / "MP_txlist", 1<<20, false, fReindex);
+  MPPersistencePath = GetDataDir() / "MP_persist";
+  boost::filesystem::create_directories(MPPersistencePath);
 
-  (void) msc_file_load(FILETYPE_BALANCES);
-  (void) msc_file_load(FILETYPE_OFFERS);
+  // this is the height of the data included in the preseeds
+  static const int snapshotHeight = 290629;
+  static const uint64_t snapshotDevMSC = 1743358325718;
+
+  int loadedStateHeight = load_most_relevant_state();
+  if (loadedStateHeight < snapshotHeight) {
+    // the DEX block, using Zathras' msc_balances_290629.txt
+    (void) msc_preseed_file_load(FILETYPE_BALANCES);
+    (void) msc_preseed_file_load(FILETYPE_OFFERS);
+    loadedStateHeight = snapshotHeight;
+    exodus_prev=snapshotDevMSC;
+  }
+
 //  (void) msc_file_load(FILETYPE_ACCEPTS); // not needed per Zathras -- we are capturing blocks for which there are no outstanding accepts!
 
 //  (void) msc_post_preseed(249497);  // Exodus block, dump for Zathras
@@ -1756,7 +2134,7 @@ const bool bTestnet = TestNet();
 //    (void) msc_post_preseed(282083);  // Bart had an issue with this block
 //    (void) msc_post_preseed(282080);  // Bart had an issue with this block
 
-    (void) msc_post_preseed(290630);  // the DEX block, using Zathras' msc_balances_290629.txt
+    (void) msc_post_preseed(loadedStateHeight + 1);
   }
   else
   {
