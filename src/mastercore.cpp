@@ -1235,10 +1235,22 @@ vector<vector<unsigned char> > vSolutions;
   return true;
 }
 
-int TXExodusFundraiser(const CTransaction &wtx, int nBlock, unsigned int nTime) {
-  printf("nBlock is: %d\n, nTime is: %u", nBlock, nTime);
+int TXExodusFundraiser(const CTransaction &wtx, int64_t ExodusHighestValue, int nBlock, unsigned int nTime) {
+  #include <algorithm>
+  #include <cmath>
+
+  printf("txHash is: %s\nnBlock is: %d, nTime is: %u, exovalue is: %ld\n", 
+      wtx.GetHash().ToString().c_str(), 
+      nBlock, 
+      nTime, 
+      ExodusHighestValue );
   if (nBlock >= 249498 && nBlock <= 255365) { //Exodus Fundraiser start/end blocks
-    printf("transaction: %s\n", wtx.ToString().c_str() );
+    //printf("transaction: %s\n", wtx.ToString().c_str() );
+    int deadline_timeleft=1377993600-nTime;
+    double bonus= 1 + std::max( 0.10 * deadline_timeleft / 604800 , 0.0 );
+    uint64_t msc_tot= round( 100 * ExodusHighestValue * bonus ); 
+    
+    printf("deadline_timeleft: %d, bonus: %f, msc tot: %lu.%08lu\n", deadline_timeleft, bonus, msc_tot / COIN, msc_tot % COIN );
     return 0;
   }
   return -1;
@@ -1307,9 +1319,9 @@ uint64_t txFee = 0;
               return -1;
             }
             
-            if(0==TXExodusFundraiser(wtx, nBlock, nTime)) {
+            if(0==TXExodusFundraiser(wtx, ExodusHighestValue, nBlock, nTime)) {
                //Exodus Fundraiser
-               printf("I've done nothing.\n");
+               printf("I've calculated an Exodus Fundraiser.\n");
                //fprintf data
             }
 
