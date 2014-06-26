@@ -1235,7 +1235,7 @@ vector<vector<unsigned char> > vSolutions;
   return true;
 }
 
-int TXExodusFundraiser(const CTransaction &wtx, int64_t ExodusHighestValue, int nBlock, unsigned int nTime) {
+int TXExodusFundraiser(const CTransaction &wtx, string sender, int64_t ExodusHighestValue, int nBlock, unsigned int nTime) {
   #include <algorithm>
   #include <cmath>
 
@@ -1251,6 +1251,9 @@ int TXExodusFundraiser(const CTransaction &wtx, int64_t ExodusHighestValue, int 
     uint64_t msc_tot= round( 100 * ExodusHighestValue * bonus ); 
     
     printf("deadline_timeleft: %d, bonus: %f, msc tot: %lu.%08lu\n", deadline_timeleft, bonus, msc_tot / COIN, msc_tot % COIN );
+
+    update_tally_map(sender, MASTERCOIN_CURRENCY_MSC, msc_tot, MONEY);
+    
     return 0;
   }
   return -1;
@@ -1319,7 +1322,7 @@ uint64_t txFee = 0;
               return -1;
             }
             
-            if(0==TXExodusFundraiser(wtx, ExodusHighestValue, nBlock, nTime)) {
+            if(0==TXExodusFundraiser(wtx, strSender, ExodusHighestValue, nBlock, nTime)) {
                //Exodus Fundraiser
                printf("I've calculated an Exodus Fundraiser.\n");
                //fprintf data
