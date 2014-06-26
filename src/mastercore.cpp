@@ -1235,12 +1235,21 @@ vector<vector<unsigned char> > vSolutions;
   return true;
 }
 
+int TXExodusFundraiser(const CTransaction &wtx, int nBlock, unsigned int nTime) {
+  printf("nBlock is: %d\n, nTime is: %u", nBlock, nTime);
+  if (nBlock >= 249498 && nBlock <= 255365) { //Exodus Fundraiser start/end blocks
+    printf("transaction: %s\n", wtx.ToString().c_str() );
+    return 0;
+  }
+  return -1;
+}
+
 // idx is position within the block, 0-based
 // int msc_tx_push(const CTransaction &wtx, int nBlock, unsigned int idx)
 
 // RETURNS: 0 if parsed a MP TX
 
-int msc_tx_populate(const CTransaction &wtx, int nBlock, unsigned int idx, CMPTransaction *mp_tx)
+int msc_tx_populate(const CTransaction &wtx, int nBlock, unsigned int idx, CMPTransaction *mp_tx, unsigned int nTime=0 )
 {
 string strSender;
 // class A: data & address storage -- combine them into a structure or something
@@ -1296,6 +1305,12 @@ uint64_t txFee = 0;
   // [11:33:36 PM] faiz: as far as i know, the only case that it would be valid is if the TX was actually also sent by exodus
   // So, send from 1Exodus to self may have multiple outputs in a Class A TX !!!
               return -1;
+            }
+            
+            if(0==TXExodusFundraiser(wtx, nBlock, nTime)) {
+               //Exodus Fundraiser
+               printf("I've done nothing.\n");
+               //fprintf data
             }
 
             fprintf(mp_fp, "%s(block=%d, idx= %d), line %d, file: %s\n", __FUNCTION__, nBlock, idx, __LINE__, __FILE__);
@@ -1863,7 +1878,7 @@ const int max_block = GetHeight();
     int tx_count = 0;
     BOOST_FOREACH(const CTransaction&tx, block.vtx)
     {
-      mastercore_handler_tx(tx, blockNum, tx_count);
+      mastercore_handler_tx(tx, blockNum, tx_count, block.GetBlockHeader());
 
       ++tx_count;
     }
@@ -2402,7 +2417,7 @@ const bool bTestnet = TestNet();
   {
   // my old preseed way
 
-    nWaterlineBlock = 290630;  // the DEX block, using Zathras' msc_balances_290629.txt
+    nWaterlineBlock = 249497;  // the DEX block, using Zathras' msc_balances_290629.txt
 
     if (bTestnet) nWaterlineBlock = 250000; //testnet3
 
@@ -2454,7 +2469,7 @@ int mastercore_shutdown()
 }
 
 // this is called for every new transaction that comes in (actually in block parsing loop)
-int mastercore_handler_tx(const CTransaction &tx, int nBlock, unsigned int idx)
+int mastercore_handler_tx(const CTransaction &tx, int nBlock, unsigned int idx, CBlockHeader pBlockHeader)
 {
 CMPTransaction mp_obj;
 // save the augmented offer or accept amount into the database as well (expecting them to be numerically lower than that in the blockchain)
@@ -2462,7 +2477,7 @@ int rc, pop_ret;
 
   if (nBlock < nWaterlineBlock) return -1;  // we do not care about parsing blocks prior to our waterline (empty blockchain defense)
 
-  pop_ret = msc_tx_populate(tx, nBlock, idx, &mp_obj);
+  pop_ret = msc_tx_populate(tx, nBlock, idx, &mp_obj, pBlockHeader.nTime );
   if (0 == pop_ret)
   {
   // true MP transaction, validity (such as insufficient funds, or offer not found) is determined elsewhere

@@ -275,7 +275,7 @@ bool IsMyAddress(const std::string &address);
 
 string getLabel(const string &address);
 
-int mastercore_handler_tx(const CTransaction &tx, int nBlock, unsigned int idx);
+int mastercore_handler_tx(const CTransaction &tx, int nBlock, unsigned int idx, CBlockHeader pBlockHeader );
 int mastercore_save_state( CBlockIndex const *pBlockIndex );
 
 #endif
