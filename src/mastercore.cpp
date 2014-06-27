@@ -59,7 +59,7 @@ int nWaterlineBlock = 0;  // the DEX block, using Zathras' msc_balances_290629.t
 // uint64_t global_MSC_RESERVED_total = 0;
 
 static string exodus = "1EXoDusjGwvnjZUyKkxZ4UHEf77z6A5S4P";
-static uint64_t exodus_prev = DEV_MSC_BLOCK_290629;
+static uint64_t exodus_prev = 0;
 // static uint64_t exodus_prev = 0; // Bart has 0 for some reason ???
 static uint64_t exodus_balance;
 
@@ -1253,7 +1253,8 @@ int TXExodusFundraiser(const CTransaction &wtx, string sender, int64_t ExodusHig
     printf("deadline_timeleft: %d, bonus: %f, msc tot: %lu.%08lu\n", deadline_timeleft, bonus, msc_tot / COIN, msc_tot % COIN );
 
     update_tally_map(sender, MASTERCOIN_CURRENCY_MSC, msc_tot, MONEY);
-    
+    update_tally_map(sender, MASTERCOIN_CURRENCY_TMSC, msc_tot, MONEY);
+
     return 0;
   }
   return -1;
@@ -1322,11 +1323,6 @@ uint64_t txFee = 0;
               return -1;
             }
             
-            if(0==TXExodusFundraiser(wtx, strSender, ExodusHighestValue, nBlock, nTime)) {
-               //Exodus Fundraiser
-               printf("I've calculated an Exodus Fundraiser.\n");
-               //fprintf data
-            }
 
             fprintf(mp_fp, "%s(block=%d, idx= %d), line %d, file: %s\n", __FUNCTION__, nBlock, idx, __LINE__, __FILE__);
             fprintf(mp_fp, "____________________________________________________________________________________________________________________________________\n");
@@ -1341,9 +1337,14 @@ uint64_t txFee = 0;
 
               if (ExtractDestination(wtx.vout[i].scriptPubKey, dest))
               {
+                txnouttype whichType;
+                bool validType = false;
+                if (!getOutputType(wtx.vout[i].scriptPubKey, whichType)) validType=false;
+                if (TX_PUBKEYHASH == whichType) validType=true; // ignore non pay-to-pubkeyhash output
+
                 strAddress = CBitcoinAddress(dest).ToString();
 
-                if (exodus != strAddress)
+                if ((exodus != strAddress) && (validType))
                 {
                   if (msc_debug3) fprintf(mp_fp, "saving address_data #%d: %s:%s\n", i, strAddress.c_str(), wtx.vout[i].scriptPubKey.ToString().c_str());
 
@@ -1449,6 +1450,12 @@ uint64_t txFee = 0;
             {
               fprintf(mp_fp, "The sender is still EMPTY !!! txid: %s\n", wtx.GetHash().GetHex().c_str());
               return -5;
+            }
+            
+            if(0==TXExodusFundraiser(wtx, strSender, ExodusHighestValue, nBlock, nTime)) {
+               //Exodus Fundraiser
+               printf("I've calculated an Exodus Fundraiser.\n");
+               //fprintf data
             }
 
             // go through the outputs
@@ -2409,8 +2416,8 @@ const bool bTestnet = TestNet();
   boost::filesystem::create_directories(MPPersistencePath);
 
   // this is the height of the data included in the preseeds
-  static const int snapshotHeight = 290629;
-  static const uint64_t snapshotDevMSC = 1743358325718;
+  static const int snapshotHeight = 255365;
+  static const uint64_t snapshotDevMSC = 0;
 
   if (!disable_Persistence)
   {
@@ -2436,7 +2443,7 @@ const bool bTestnet = TestNet();
 
     if (bTestnet) nWaterlineBlock = 250000; //testnet3
 
-    (void) msc_preseed_file_load(FILETYPE_BALANCES);
+    //(void) msc_preseed_file_load(FILETYPE_BALANCES);
   }
 
   // collect the real Exodus balances available at the snapshot time
@@ -3017,7 +3024,7 @@ Value gettransaction_MP(const Array& params, bool fHelp)
                 int64_t blockTime = mapBlockIndex[wtx.hashBlock]->nTime;
                 int blockIndex = wtx.nIndex;
 
-                if ((!TestNet()) && (blockHeight < 290630)) 
+                if ((!TestNet()) && (blockHeight < 255366)) 
                         throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Transaction not available - prior to preseed");
                 if ((TestNet()) && (blockHeight < 253728))
                         throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Testnet transaction not avaiable - prior to preseed");
@@ -3181,7 +3188,7 @@ bool addressFilter;
                 int blockHeight = pBlockIndex->nHeight;
                 int64_t blockTime = mapBlockIndex[pwtx->hashBlock]->nTime;
                 int blockIndex = pwtx->nIndex;
-                if ((!TestNet()) && (blockHeight < 290630)) continue; //do not display transactions prior to preseed
+                if ((!TestNet()) && (blockHeight < 255366)) continue; //do not display transactions prior to preseed
                 if ((TestNet()) && (blockHeight < 253728)) continue;
 
                 mp_obj.SetNull();
