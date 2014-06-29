@@ -27,6 +27,7 @@
 
 #define PACKET_SIZE_CLASS_A 19
 #define PACKET_SIZE         31
+// #define MAX_PACKETS         5
 #define MAX_PACKETS         64
 
 #define MSC_TYPE_SIMPLE_SEND              0
@@ -35,12 +36,6 @@
 #define MSC_TYPE_CREATE_PROPERTY_FIXED    50
 #define MSC_TYPE_CREATE_PROPERTY_VARIABLE 51
 #define MSC_TYPE_PROMOTE_PROPERTY         52
-
-enum BLOCKHEIGHTRESTRICTIONS {
-  SOME_TESTNET_BLOCK= 253728,
-  POST_EXODUS_BLOCK = 255366,
-  MSC_DEX_BLOCK     = 290630,
-};
 
 enum FILETYPES {
   FILETYPE_BALANCES = 0,
@@ -69,7 +64,8 @@ const char *mastercore_filenames[NUM_FILETYPES]={
 #define MASTERCOIN_CURRENCY_TMSC  2
 #define MASTERCOIN_CURRENCY_SP1   3
 
-#define MSC_MAX_KNOWN_CURRENCIES  4
+// #define MSC_MAX_KNOWN_CURRENCIES  4
+#define MSC_MAX_KNOWN_CURRENCIES  3
 
 inline uint64_t rounduint64(double d)
 {
@@ -184,16 +180,12 @@ public:
     }
   }
 
-  void print(int curr = MASTERCOIN_CURRENCY_MSC)
+  void print()
   {
-    if (!(MSC_MAX_KNOWN_CURRENCIES > curr))
-    {
-      // limited
-      return;
-    }
+  int i = MASTERCOIN_CURRENCY_MSC;  // Hard-coded for MSC
 
     printf("%+20.8lf [SO_RESERVE= %+20.8lf , ACCEPT_RESERVE= %+20.8lf ]\n",
-     (double)moneys[curr]/(double)COIN, (double)reserved[curr]/(double)COIN, (double)raccepted[curr]/(double)COIN);
+     (double)moneys[i]/(double)COIN, (double)reserved[i]/(double)COIN, (double)raccepted[i]/(double)COIN);
   }
 
   string getMSC();  // this function was created for QT only -- hard-coded internally, TODO: use getMoney()
@@ -283,7 +275,7 @@ bool IsMyAddress(const std::string &address);
 
 string getLabel(const string &address);
 
-int mastercore_handler_tx(const CTransaction &tx, int nBlock, unsigned int idx);
+int mastercore_handler_tx(const CTransaction &tx, int nBlock, unsigned int idx, CBlockHeader pBlockHeader );
 int mastercore_save_state( CBlockIndex const *pBlockIndex );
 
 #endif
