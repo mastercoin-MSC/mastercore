@@ -93,7 +93,9 @@ static int BitcoinCore_errors = 0;    // TODO: watch this count, check returns o
 // disable TMSC handling for now, has more legacy corner cases
 static int ignore_all_but_MSC = 1;
 static int disableLevelDB = 0;
-static int disable_Persistence = 1;
+static int disable_Persistence = 0;
+
+static int mastercoreInitialized = 0;
 
 // this is the internal format for the offer primary key (TODO: replace by a class method)
 #define STR_SELLOFFER_ADDR_CURR_COMBO(x) ( x + "-" + strprintf("%d", curr))
@@ -826,7 +828,7 @@ public:
  //
  // RETURNS:  0 if the packet is fully valid
  // RETURNS: <0 if the packet is invalid
- // RETURNS: >0 if the packet is valid, BUT nValue was augmented into nNewValue (funds adjusted up or down, use getNewAmount())
+ // RETURNS: >0 NOT DONE TODAY: if the packet is valid, BUT nValue was augmented into nNewValue (funds adjusted up or down, use getNewAmount())
  //
  // 
  // TODO: verify with Zathras & Faiz !!!
@@ -1174,10 +1176,15 @@ const unsigned int currency = MASTERCOIN_CURRENCY_MSC;  // FIXME: hard-coded for
   return (my_addresses_count);
 }
 
+int mastercore_init(void);
+
 // called once per block
 // it performs cleanup and other functions
 int mastercore_handler_block(int nBlockNow, CBlockIndex const * pBlockIndex)
 {
+  if (!mastercoreInitialized) {
+    mastercore_init();
+  }
 // for every new received block must do:
 // 1) remove expired entries from the accept list (per spec accept entries are valid until their blocklimit expiration; because the customer can keep paying BTC for the offer in several installments)
 // 2) update the amount in the Exodus address
@@ -1265,7 +1272,7 @@ int TXExodusFundraiser(const CTransaction &wtx, string sender, int64_t ExodusHig
 
 // RETURNS: 0 if parsed a MP TX
 
-int msc_tx_populate(const CTransaction &wtx, int nBlock, unsigned int idx, CMPTransaction *mp_tx, unsigned int nTime=0 )
+int parseTransaction(const CTransaction &wtx, int nBlock, unsigned int idx, CMPTransaction *mp_tx,  unsigned int nTime=0)
 {
 string strSender;
 // class A: data & address storage -- combine them into a structure or something
@@ -2419,6 +2426,8 @@ const bool bTestnet = TestNet();
   static const int snapshotHeight = 255365;
   static const uint64_t snapshotDevMSC = 0;
 
+  ++mastercoreInitialized;
+
   if (!disable_Persistence)
   {
     nWaterlineBlock = load_most_relevant_state();
@@ -2493,19 +2502,23 @@ int mastercore_shutdown()
 // this is called for every new transaction that comes in (actually in block parsing loop)
 int mastercore_handler_tx(const CTransaction &tx, int nBlock, unsigned int idx, CBlockHeader pBlockHeader)
 {
+  if (!mastercoreInitialized) {
+    mastercore_init();
+  }
+
 CMPTransaction mp_obj;
 // save the augmented offer or accept amount into the database as well (expecting them to be numerically lower than that in the blockchain)
-int rc, pop_ret;
+int interp_ret, pop_ret;
 
   if (nBlock < nWaterlineBlock) return -1;  // we do not care about parsing blocks prior to our waterline (empty blockchain defense)
 
-  pop_ret = msc_tx_populate(tx, nBlock, idx, &mp_obj, pBlockHeader.nTime );
+  pop_ret = parseTransaction(tx, nBlock, idx, &mp_obj, pBlockHeader.nTime );
   if (0 == pop_ret)
   {
   // true MP transaction, validity (such as insufficient funds, or offer not found) is determined elsewhere
 
-    rc = mp_obj.interpretPacket();
-    if (rc) fprintf(mp_fp, "!!! interpretPacket() returned %d !!!!!!!!!!!!!!!!!!!!!!\n", rc);
+    interp_ret = mp_obj.interpretPacket();
+    if (interp_ret) fprintf(mp_fp, "!!! interpretPacket() returned %d !!!!!!!!!!!!!!!!!!!!!!\n", interp_ret);
 
     mp_obj.print();
 
@@ -2513,8 +2526,8 @@ int rc, pop_ret;
     // FIXME: and of course only MP-related TXs will be recorded...
     if (!disableLevelDB)
     {
-    bool bValid = (0 <= rc);
-    bool bValueAugmented = (0 < rc);
+    bool bValid = (0 <= interp_ret);
+    bool bValueAugmented = (0 < interp_ret);
 
 
       if (bValueAugmented)  // testing...
@@ -3031,7 +3044,7 @@ Value gettransaction_MP(const Array& params, bool fHelp)
 
                 mp_obj.SetNull();
                 CMPOffer temp_offer;
-                if (0 == msc_tx_populate(wtx, 0, 0, &mp_obj))
+                if (0 == parseTransaction(wtx, 0, 0, &mp_obj))
                 {
                         // OK, a valid MP transaction so far
                         if (0<=mp_obj.parse())
@@ -3192,7 +3205,7 @@ bool addressFilter;
                 if ((TestNet()) && (blockHeight < 253728)) continue;
 
                 mp_obj.SetNull();
-                if (0 == msc_tx_populate(*pwtx, 0, 0, &mp_obj))
+                if (0 == parseTransaction(*pwtx, 0, 0, &mp_obj))
                 {
                         // OK, a valid MP transaction so far
                         if (0<=mp_obj.parse())
@@ -3288,6 +3301,50 @@ bool addressFilter;
     std::reverse(response.begin(), response.end()); // Return oldest to newest
     return response;   // return response array for JSON serialization
 }
+
+Value getallbalancesforid_MP(const Array& params, bool fHelp)
+{
+   int curID = 0;
+   if (params.size() > 0)
+        curID = boost::lexical_cast<boost::int32_t>(params[0].get_str());
+
+   if (fHelp || params.size() != 1 || !curID)
+        throw runtime_error(
+            "getallbalancesforid_MP currencyID\n"
+            "\nGet a list of address balances for a given currency/property ID\n"
+            "\nArguments:\n"
+            "1. currencyID    (int, required) The currency/property ID\n"
+            "\nResult:\n"
+            "{\n"
+            "  \"address\" : 1Address,        (string) The address\n"
+            "  \"balance\" : x.xxx,     (numeric) The available balance of the address\n"
+            "  \"reservedbyselloffer\" : x.xxx,   (numeric) The amount reserved by sell offers\n"
+            "  \"reservedbyacceptoffer\" : x.xxx,   (numeric) The amount reserved by accepts\n"
+            "}\n"
+
+            "\nbExamples\n"
+            + HelpExampleCli("getallbalancesforid_MP", "1")
+            + HelpExampleRpc("getallbalancesforid_MP", "1")
+        );
+    if (!(MSC_MAX_KNOWN_CURRENCIES > curID))
+            throw JSONRPCError(RPC_INVALID_PARAMETER, "Currency/Property ID does not exist");
+
+    Array response;
+
+    for(map<string, CMPTally>::iterator my_it = mp_tally_map.begin(); my_it != mp_tally_map.end(); ++my_it)
+    {
+        Object addressbal;
+        //note this is assuming divisibility, correct with SP
+        addressbal.push_back(Pair("address", (my_it->first).c_str()));
+        addressbal.push_back(Pair("balance", ValueFromAmount((my_it->second).getMoney(curID,MONEY))));
+        addressbal.push_back(Pair("reservedbyoffer", ValueFromAmount((my_it->second).getMoney(curID,SELLOFFER_RESERVE))));
+        addressbal.push_back(Pair("reservedbyaccept", ValueFromAmount((my_it->second).getMoney(curID,ACCEPT_RESERVE))));
+
+        response.push_back(addressbal);
+    }
+return response;
+}
+
 
 std::string CScript::mscore_parse(std::vector<std::string>&msc_parsed, bool bNoBypass) const
 {

@@ -304,6 +304,7 @@ static const CRPCCommand vRPCCommands[] =
     { "getwork",                &getwork,                true,      false,      true },
     /* Master Protocol specific calls */
     { "mscrpc",                 &mscrpc,                 true,      false,      false },
+    { "getallbalancesforid_MP", &getallbalancesforid_MP, false,     false,      true },
     { "getbalance_MP",          &getbalance_MP,          false,     false,      true },
     { "send_MP",                &send_MP,                false,     false,      true },
     { "gettransaction_MP",      &gettransaction_MP,      false,     false,      true },
