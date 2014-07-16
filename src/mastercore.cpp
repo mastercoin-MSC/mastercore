@@ -462,6 +462,8 @@ public:
     uint256 txid;
     bool fixed;
 
+    std::map<std::string, std::vector<uint64_t> > database;
+    
     Entry()
     : issuer()
     , prop_type(0)
@@ -478,6 +480,7 @@ public:
     , percentage(0)
     , txid()
     , fixed(false)
+    , database()
     {
     }
 
@@ -500,6 +503,26 @@ public:
         spInfo.push_back(Pair("early_bird", (int)early_bird));
         spInfo.push_back(Pair("percentage", (int)percentage));
       }
+
+      #include <boost/lexical_cast.hpp>
+      std::map<std::string, std::vector<uint64_t> >::const_iterator it;
+      
+      std::string values_long = "";
+      std::string values = "";
+
+      fprintf(mp_fp,"\ncrowdsale started to save, size of db %ld", database.size());
+      for(it = database.begin(); it != database.end(); it++) {
+         values += it->first.c_str();
+         values += ":" + boost::lexical_cast<std::string>(it->second.at(0));
+         values += ":" + boost::lexical_cast<std::string>(it->second.at(1));
+         values += ":" + boost::lexical_cast<std::string>(it->second.at(2));
+         values += ":" + boost::lexical_cast<std::string>(it->second.at(3));
+         values += ";";
+         values_long += values;
+      }
+      fprintf(mp_fp,"\ncrowdsale saved %s", values_long.c_str());
+
+      spInfo.push_back(Pair("database", values_long)); //need map here);
       spInfo.push_back(Pair("txid", (boost::format("%s") % txid.ToString()).str()));
 
       return spInfo;
@@ -524,6 +547,38 @@ public:
         early_bird = (unsigned char)json[idx++].value_.get_int();
         percentage = (unsigned char)json[idx++].value_.get_int();
       }
+
+      //reconstruct database
+      #include <boost/algorithm/string.hpp>
+      std::string longstr = json[idx++].value_.get_str();
+      
+      fprintf(mp_fp,"\nDESERIALIZE GO ----> %s" ,longstr.c_str() );
+      
+      std::map<std::string, std::vector<uint64_t> > database;
+      std::vector<std::string> strngs_vec;
+
+      boost::split(strngs_vec, longstr, boost::is_any_of(";"));
+
+      fprintf(mp_fp,"\nDATABASE PRE-DESERIALIZE SUCCESS, %ld, %s" ,strngs_vec.size(), strngs_vec[0].c_str());
+      for(std::vector<std::string>::size_type i = 0; i != strngs_vec.size(); i++) {
+        
+        std::vector<std::string> str_split_vec;
+        boost::split(str_split_vec, strngs_vec[i], boost::is_any_of(":"));
+
+        if ( str_split_vec.size() == 5) {
+          fprintf(mp_fp,"\n Deserialized values: %s, %s %s %s %s", str_split_vec.at(0).c_str(), str_split_vec.at(1).c_str(), str_split_vec.at(2).c_str(), str_split_vec.at(3).c_str(), str_split_vec.at(4).c_str());
+          uint64_t txdata[] = { 
+            boost::lexical_cast<uint64_t>( str_split_vec.at(1) ), 
+            boost::lexical_cast<uint64_t>( str_split_vec.at(2) ), 
+            boost::lexical_cast<uint64_t>( str_split_vec.at(3) ), 
+            boost::lexical_cast<uint64_t>( str_split_vec.at(4) )
+          };
+          
+          std::vector<uint64_t> txDataVec(txdata, txdata + sizeof(txdata)/sizeof(txdata[0]) );
+          database.insert(std::make_pair( str_split_vec.at(0), txDataVec ) ) ;
+        }
+      }
+      fprintf(mp_fp,"\nDATABASE DESERIALIZE SUCCESS");
       txid = uint256(json[idx++].value_.get_str());
     }
 
@@ -625,6 +680,42 @@ public:
     }
 
     return nextId;
+  }
+
+  unsigned int updateSP(unsigned int propertyID, Entry const &info)
+  {
+    std::string nextIdStr;
+    unsigned int res = propertyID;
+
+    Object spInfo = info.toJSON();
+
+    // generate the SP id
+    string spKey = (boost::format("sp-%d") % propertyID).str();
+    string spValue = write_string(Value(spInfo), false);
+    string txIndexKey = (boost::format("index-tx-%s") % info.txid.ToString() ).str();
+    string txValue = (boost::format("%d") % propertyID).str();
+
+    // sanity checking
+    string existingEntry;
+    leveldb::ReadOptions readOpts;
+    readOpts.fill_cache = true;
+    if (false == pDb->Get(readOpts, spKey, &existingEntry).IsNotFound() && false == boost::equals(spValue, existingEntry)) {
+      fprintf(mp_fp, "%s WRITING SP %u TO LEVELDB WHEN A DIFFERENT SP ALREADY EXISTS FOR THAT ID!!!\n", __FUNCTION__, res);
+    } else if (false == pDb->Get(readOpts, txIndexKey, &existingEntry).IsNotFound() && false == boost::equals(txValue, existingEntry)) {
+      fprintf(mp_fp, "%s WRITING INDEX TXID %s : SP %u IS OVERWRITING A DIFFERENT VALUE!!!\n", __FUNCTION__, info.txid.ToString().c_str(), res);
+    }
+
+    fprintf(mp_fp,"\nSP UPDATE SUCCESS");
+    // atomically write both the the SP and the index to the database
+    leveldb::WriteOptions writeOptions;
+    writeOptions.sync = true;
+
+    leveldb::WriteBatch commitBatch;
+    commitBatch.Put(spKey, spValue);
+    commitBatch.Put(txIndexKey, txValue);
+
+    pDb->Write(writeOptions, &commitBatch);
+    return res;
   }
 
   unsigned int putSP(unsigned char ecosystem, Entry const &info)
@@ -1383,10 +1474,13 @@ CrowdMap::iterator my_it = my_crowds.begin();
       // TODO: dump the info about this crowdsale being delete into a TXT file (JSON perhaps)
       dumpCrowdsaleInfo(my_it->first, my_it->second, true);
       
+      fprintf(mp_fp,"\n got to at least before cFrac");
       // Begin calculate Fractional 
       CMPSPInfo::Entry sp;
       _my_sps->getSP(crowd.getPropertyId(), sp);
-      
+
+      fprintf(mp_fp,"\n got to at least after cFrac");
+
       fprintf(mp_fp, "\nValues going into calculateFractional(): hexid %s earlyBird %d deadline %lu numProps %lu issuerPerc %d, issuerCreated %ld \n", sp.txid.GetHex().c_str(), sp.early_bird, sp.deadline, sp.total_tokens, sp.percentage, crowd.getIssuerCreated());
 
       double missedTokens = calculateFractional(sp.prop_type,
@@ -1399,6 +1493,10 @@ CrowdMap::iterator my_it = my_crowds.begin();
 
 
       fprintf(mp_fp,"\nValues coming out of calculateFractional(): Total tokens, Tokens created, Tokens for issuer, amountMissed: issuer %s %ld %ld %ld %f\n",sp.issuer.c_str(), crowd.getUserCreated() + crowd.getIssuerCreated(), crowd.getUserCreated(), crowd.getIssuerCreated(), missedTokens);
+
+      sp.database = crowd.getDatabase();
+
+      _my_sps->updateSP(crowd.getPropertyId() , sp);
 
       update_tally_map(sp.issuer, crowd.getPropertyId(), missedTokens, MONEY);
       //End
@@ -1633,8 +1731,8 @@ public:
             fprintf(mp_fp,"\n after incrementing global tokens user: %ld issuer: %ld\n", crowd->getUserCreated(), crowd->getIssuerCreated());
             
             uint64_t txdata[] = { (uint64_t) nValue, (uint64_t) blockTime, (uint64_t) tokens.first, (uint64_t) tokens.second };
-          // FIXME !!! TODO: Faiz - out of bounds here...
-            std::vector<uint64_t> txDataVec(txdata, txdata + sizeof(txdata) );
+            
+            std::vector<uint64_t> txDataVec(txdata, txdata + sizeof(txdata)/sizeof(txdata[0]) );
 
             crowd->insertDatabase(txid.GetHex().c_str(), txDataVec  );
             //need to add txid to CMPSP database
@@ -1889,7 +1987,11 @@ public:
                             crowd.getIssuerCreated());
 
         fprintf(mp_fp,"\nValues coming out of calculateFractional(): Total tokens, Tokens created, Tokens for issuer, amountMissed: issuer %s %ld %ld %ld %f\n",sp.issuer.c_str(), crowd.getUserCreated() + crowd.getIssuerCreated(), crowd.getUserCreated(), crowd.getIssuerCreated(), missedTokens);
-
+        
+        sp.database = crowd.getDatabase();
+        
+        _my_sps->updateSP(crowd.getPropertyId() , sp);
+        
         update_tally_map(sp.issuer, crowd.getPropertyId(), missedTokens, MONEY);
         //End
 
@@ -3083,13 +3185,13 @@ const int max_block = GetHeight();
 
       ++tx_count;
     }
-
+    
     n_total += tx_count;
     if (msc_debug1) fprintf(mp_fp, "%4d:n_total= %d, n_found= %d\n", blockNum, n_total, n_found);
 
     mastercore_handler_block_end(blockNum, pblockindex);
 #ifdef  MY_SP_HACK
-//    if (20 < n_found) break;
+    //if (20 < n_found) break;
 #endif
   }
 
@@ -4924,6 +5026,7 @@ Value getproperty_MP(const Array& params, bool fHelp)
         int64_t totalTokens = getTotalTokens(propertyId); //only valid for TX50, TODO TX51 loop map to calculate
         string issuer = sp.issuer;
         bool fixedIssuance = sp.fixed;
+        std::map<std::string, std::vector<uint64_t> > database = sp.database;
 
 //  uint64_t getValue() const { return nValue; }
         response.push_back(Pair("name", propertyName));
@@ -4935,6 +5038,17 @@ Value getproperty_MP(const Array& params, bool fHelp)
         response.push_back(Pair("issuer", issuer));
         response.push_back(Pair("creationtxid", creationTXID.GetHex()));
         response.push_back(Pair("fixedissuance", fixedIssuance));
+
+        std::map<std::string, std::vector<uint64_t> >::const_iterator it;
+        Object jsonArr;
+
+        for(it = database.begin(); it != database.end(); it++) {
+          
+          jsonArr.push_back(Pair(it->first.c_str(), Array(it->second.begin(),it->second.end()) ));
+        }
+
+        response.push_back(Pair("fundedTransactions", jsonArr)); //need map here);
+
         if (divisible)
         {
             response.push_back(Pair("totaltokens", ValueFromAmount(totalTokens)));
