@@ -4279,6 +4279,29 @@ CWallet *wallet = pwalletMain;
 }
 
 //
+// Determines minimum output amount to be spent by an output based on
+// scriptPubKey size in relation to the minimum relay fee.
+//
+int64_t GetDustLimit(const CScript& scriptPubKey)
+{
+    // The total size is based on a typical scriptSig size of 148 byte,
+    // 8 byte accounted for the size of output value and the serialized
+    // size of scriptPubKey.
+    size_t nSize = ::GetSerializeSize(scriptPubKey, SER_DISK, 0) + 156u;
+    
+    // The minimum relay fee dictates a threshold value under which a
+    // transaction won't be relayed.
+    int64_t nMinRelayFee = CTransaction::nMinRelayTxFee;
+    
+    // A transaction is considered as "dust", if less than 1/3 of the
+    // minimum fee required to relay a transaction is spent by one of
+    // it's outputs. The minimum relay fee is defined per 1000 byte.
+    int64_t nDustLimit = 1 + (((nSize * nMinRelayFee * 3) - 1) / 1000);
+    
+    return nDustLimit;
+}
+
+//
 // Do we care if this is true: pubkeys[i].IsCompressed() ???
 //
 static int ClassB_send(const string &strSender, const string &strReceiver, const string &strDataPacket, CCoinControl &coinControl, uint256 &txid)
