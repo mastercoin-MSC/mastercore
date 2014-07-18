@@ -4311,7 +4311,6 @@ static int ClassB_send(const string &strSender, const string &strReceiver, const
     vPubKeys.resize(MAX_DATA_PACKAGES);
     CWallet *wallet = pwalletMain;
     int nPacket = 0;
-    const int64_t nDustLimit = MP_DUST_LIMIT;
     
     txid = 0;
 
@@ -4344,12 +4343,12 @@ static int ClassB_send(const string &strSender, const string &strReceiver, const
     // the marker output
     CScript scriptMarker;
     scriptMarker.SetDestination(CBitcoinAddress(exodus).Get());
-    vecSend.push_back(make_pair(scriptMarker, nDustLimit));
+    vecSend.push_back(make_pair(scriptMarker, GetDustLimit(scriptMarker)));
 
     // the 1-multisig-2 Class B with data & sender
     CScript scriptMultisigData;
     scriptMultisigData.SetMultisig(1, vPubKeys);
-    vecSend.push_back(make_pair(scriptMultisigData, nDustLimit));
+    vecSend.push_back(make_pair(scriptMultisigData, GetDustLimit(scriptMultisigData)));
     
     printf("%s(): %s, line %d, file: %s\n", __FUNCTION__, scriptMultisigData.ToString().c_str(), __LINE__, __FILE__);
 
@@ -4359,7 +4358,7 @@ static int ClassB_send(const string &strSender, const string &strReceiver, const
         // Send To Owners is the first use case where the receiver is empty
         CScript scriptReference;
         scriptReference.SetDestination(CBitcoinAddress(strReceiver).Get());
-        vecSend.push_back(make_pair(scriptReference, nDustLimit));
+        vecSend.push_back(make_pair(scriptReference, GetDustLimit(scriptReference)));
     }    
     
     // change goes back to us
