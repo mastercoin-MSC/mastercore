@@ -2734,6 +2734,14 @@ const unsigned int currency = MASTERCOIN_CURRENCY_MSC;  // FIXME: hard-coded for
   return (my_addresses_count);
 }
 
+int mastercore_handler_disc_begin(int nBlockNow, CBlockIndex const * pBlockIndex) {
+
+}
+
+int mastercore_handler_disc_end(int nBlockNow, CBlockIndex const * pBlockIndex) {
+
+}
+
 int mastercore_handler_block_begin(int nBlockNow, CBlockIndex const * pBlockIndex)
 {
   (void) eraseExpiredCrowdsale(pBlockIndex->GetBlockTime());
