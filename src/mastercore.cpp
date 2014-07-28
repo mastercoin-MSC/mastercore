@@ -5956,11 +5956,19 @@ int mastercore_handler_disc_begin(int nBlockNow, CBlockIndex const * pBlockIndex
 }
 
 int mastercore_handler_disc_end(int nBlockNow, CBlockIndex const * pBlockIndex) {
+    printf("\n\n\n BLOCK DISCONNECTED !!!! blockinfo %s \n\n\n", pBlockIndex->ToString().c_str() );
+    //from prune_state_files();
+    const char *blockHashStr = pBlockIndex->GetBlockHash().ToString().c_str();
+    for (int i = 0; i < NUM_FILETYPES; ++i) {
+      boost::filesystem::remove(MPPersistencePath / (boost::format("%s-%s.dat") % statePrefix[i] % blockHashStr).str());
+    }
 
-    prune_state_files(pBlockIndex);
+    printf("\n\n\n Noticed a re-org, disabling persistence for your own safety. Please restart this instance for the most accurate balances. \n\n\n" );
+    //Bad blocks found, must restart to persist.
+    disable_Persistence = 1;
+
     int scan_ret=msc_initial_scan(pBlockIndex->nHeight);
-    printf("\n\n\n TIP DISCONNECTED !!!! init scan %d \n\n\n", scan_ret);
-    fprintf(mp_fp,"\n\n\n TIP DISCONNECTED !!!! init scan %d\n\n\n", scan_ret);
-
+    printf("Restarted scan? %d", scan_ret);
+    
     return 0;
 }
