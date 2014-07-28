@@ -143,13 +143,13 @@ callnode3() {
    echo -e "Feel free to stop here and inspect, old transactions in raw above are not part of the longest chain"
    sleep 30
 
-   callnode1 stop
+   #callnode1 stop
 
-   echo -e "Start node 1..."
-   sleep 15
+   #echo -e "Start node 1..."
+   #sleep 15
 
-   callnode1 getallbalancesforid_MP 1 #old balances are back
+   #callnode1 getallbalancesforid_MP 1 #old balances are back
 
    #done
    callnode1 stop
-   callnode2 stop
+   callnode3 stop
