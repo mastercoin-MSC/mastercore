@@ -28,6 +28,8 @@ using namespace boost;
 
 int mastercore_handler_block_begin(int nBlockNow, CBlockIndex const * pBlockIndex);
 int mastercore_handler_block_end(int nBlockNow, CBlockIndex const * pBlockIndex);
+int mastercore_handler_disc_begin(int nBlockNow, CBlockIndex const * pBlockIndex);
+int mastercore_handler_disc_end(int nBlockNow, CBlockIndex const * pBlockIndex);
 int mastercore_handler_tx(const CTransaction &tx, int nBlock, unsigned int idx, CBlockIndex const * pBlockIndex );
 
 #if defined(NDEBUG)
@@ -1983,14 +1985,14 @@ bool static DisconnectTip(CValidationState &state) {
     // Update chainActive and related variables.
     UpdateTip(pindexDelete->pprev);
     
-    (void) mastercore_handler_disc_begin(GetHeight(), pindexNew);
+    (void) mastercore_handler_disc_begin(GetHeight(), pindexDelete);
     // Let wallets know transactions went from 1-confirmed to
     // 0-confirmed or conflicted:
     BOOST_FOREACH(const CTransaction &tx, block.vtx) {
         SyncWithWallets(tx.GetHash(), tx, NULL);
     }
 
-    (void) mastercore_handler_disc_end(GetHeight(), pindexNew);
+    (void) mastercore_handler_disc_end(GetHeight(), pindexDelete);
     return true;
 }
 

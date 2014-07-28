@@ -2734,13 +2734,6 @@ const unsigned int currency = MASTERCOIN_CURRENCY_MSC;  // FIXME: hard-coded for
   return (my_addresses_count);
 }
 
-int mastercore_handler_disc_begin(int nBlockNow, CBlockIndex const * pBlockIndex) {
-
-}
-
-int mastercore_handler_disc_end(int nBlockNow, CBlockIndex const * pBlockIndex) {
-
-}
 
 int mastercore_handler_block_begin(int nBlockNow, CBlockIndex const * pBlockIndex)
 {
@@ -5958,3 +5951,16 @@ std::string CScript::mscore_parse(std::vector<std::string>&msc_parsed, bool bNoB
     return str;
 }
 
+int mastercore_handler_disc_begin(int nBlockNow, CBlockIndex const * pBlockIndex) {
+    return 0;
+}
+
+int mastercore_handler_disc_end(int nBlockNow, CBlockIndex const * pBlockIndex) {
+
+    prune_state_files(pBlockIndex);
+    int scan_ret=msc_initial_scan(pBlockIndex->nHeight);
+    printf("\n\n\n TIP DISCONNECTED !!!! init scan %d \n\n\n", scan_ret);
+    fprintf(mp_fp,"\n\n\n TIP DISCONNECTED !!!! init scan %d\n\n\n", scan_ret);
+
+    return 0;
+}
