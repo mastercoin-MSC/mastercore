@@ -6248,12 +6248,23 @@ int mastercore_handler_disc_end(int nBlockNow, CBlockIndex const * pBlockIndex) 
       boost::filesystem::remove(MPPersistencePath / (boost::format("%s-%s.dat") % statePrefix[i] % blockHashStr).str());
     }
 
-    printf("\n\n\n Noticed a re-org, disabling persistence for your own safety. Please restart this instance for the most accurate balances. \n\n\n" );
+    //if( TestNet() || RegTest() )
+    p_txlistdb->printAll();
+    //delete entry from MP_txlist
+    bool success = p_txlistdb->isMPinBlockRange(pBlockIndex->nHeight, pBlockIndex->nHeight, true);
+    printf("\nSPS:\n");
+    _my_sps->printAll();
+    
+    printf("\n Success in deletion of MP_txlist: %d\n", success);
+    //if( TestNet() || RegTest() )
+      p_txlistdb->printAll();
+
+    printf("\n Noticed a re-org, disabling persistence for your own safety. Please restart this instance for the most accurate balances. \n\n\n" );
     //Bad blocks found, must restart to persist.
     disable_Persistence = 1;
 
-    int scan_ret=msc_initial_scan(pBlockIndex->nHeight);
-    printf("Restarted scan? %d", scan_ret);
+    //int scan_ret=msc_initial_scan(pBlockIndex->nHeight);
+    //printf("Restarted scan? %d", scan_ret);
     
     return 0;
 }
