@@ -465,7 +465,10 @@ public:
 
     // other information
     uint256 txid;
+    uint256 creation_block;
+    uint256 update_block;
     bool fixed;
+
 
     std::map<std::string, std::vector<uint64_t> > txFundraiserData; // schema is 'txid:amtSent:deadlineUnix:userIssuedTokens:IssuerIssuedTokens;'
     
@@ -484,6 +487,8 @@ public:
     , early_bird(0)
     , percentage(0)
     , txid()
+    , creation_block()
+    , update_block()
     , fixed(false)
     , txFundraiserData()
     {
@@ -531,6 +536,8 @@ public:
 
       spInfo.push_back(Pair("txFundraiserData", values_long)); 
       spInfo.push_back(Pair("txid", (boost::format("%s") % txid.ToString()).str()));
+      spInfo.push_back(Pair("creation_block", (boost::format("%s") % creation_block.ToString()).str()));
+      spInfo.push_back(Pair("update_block", (boost::format("%s") % update_block.ToString()).str()));
 
       return spInfo;
     }
@@ -588,6 +595,8 @@ public:
       }
       //fprintf(mp_fp,"\nDATABASE DESERIALIZE SUCCESS %lu", database.size());
       txid = uint256(json[idx++].value_.get_str());
+      creation_block = uint256(json[idx++].value_.get_str());
+      update_block = uint256(json[idx++].value_.get_str());
     }
 
     bool isDivisible() const
@@ -617,6 +626,7 @@ public:
 
 private:
   leveldb::DB *pDb;
+  boost::filesystem::path const path;
 
   // implied version of msc and tmsc so they don't hit the leveldb
   Entry implied_msc;
@@ -625,19 +635,29 @@ private:
   unsigned int next_spid;
   unsigned int next_test_spid;
 
-public:
-
-  CMPSPInfo(const boost::filesystem::path &path)
-  {
+  void openDB() {
     leveldb::Options options;
     options.paranoid_checks = true;
     options.create_if_missing = true;
 
     leveldb::Status s = leveldb::DB::Open(options, path.string(), &pDb);
 
-    if (false == s.ok()) {
-      printf("Failed to create or read LevelDB for Smart Property at %s", path.c_str());
-    }
+     if (false == s.ok()) {
+       printf("Failed to create or read LevelDB for Smart Property at %s", path.c_str());
+     }
+  }
+
+  void closeDB() {
+    delete pDb;
+    pDb = NULL;
+  }
+
+public:
+
+  CMPSPInfo(const boost::filesystem::path &_path)
+    : path(_path)
+  {
+    openDB();
 
     // special cases for constant SPs MSC and TMSC
     implied_msc.issuer = exodus;
@@ -662,14 +682,20 @@ public:
 
   ~CMPSPInfo()
   {
-    delete pDb;
-    pDb = NULL;
+    closeDB();
   }
 
   void init(unsigned int nextSPID = 0x3UL, unsigned int nextTestSPID = TEST_ECO_PROPERTY_1)
   {
     next_spid = nextSPID;
     next_test_spid = nextTestSPID;
+  }
+
+  void clear() {
+    closeDB();
+    leveldb::DestroyDB(path.string(), leveldb::Options());
+    openDB();
+    init();
   }
 
   unsigned int peekNextSPID(unsigned char ecosystem)
@@ -692,6 +718,11 @@ public:
 
   unsigned int updateSP(unsigned int propertyID, Entry const &info)
   {
+    // cannot update implied SP
+    if (MASTERCOIN_CURRENCY_MSC == propertyID || MASTERCOIN_CURRENCY_TMSC == propertyID) {
+      return propertyID;
+    }
+
     std::string nextIdStr;
     unsigned int res = propertyID;
 
@@ -700,20 +731,24 @@ public:
     // generate the SP id
     string spKey = (boost::format("sp-%d") % propertyID).str();
     string spValue = write_string(Value(spInfo), false);
-    string txIndexKey = (boost::format("index-tx-%s") % info.txid.ToString() ).str();
-    string txValue = (boost::format("%d") % propertyID).str();
+    string spPrevKey = (boost::format("blk-%s:sp-%d") % info.update_block.ToString() % propertyID).str();
+    string spPrevValue;
 
-    fprintf(mp_fp,"\nUpdated LevelDB with SP data successfully\n");
+    leveldb::WriteBatch commitBatch;
     
-    // atomically write both the the SP and the index to the database
+    leveldb::ReadOptions readOpts;
+    readOpts.fill_cache = false;
     leveldb::WriteOptions writeOptions;
     writeOptions.sync = true;
 
-    leveldb::WriteBatch commitBatch;
+    // if a value exists move it to the old key
+    if (false == pDb->Get(readOpts, spKey, &spPrevValue).IsNotFound()) {
+      commitBatch.Put(spPrevKey, spPrevValue);
+    }
     commitBatch.Put(spKey, spValue);
-    commitBatch.Put(txIndexKey, txValue);
-
     pDb->Write(writeOptions, &commitBatch);
+
+    fprintf(mp_fp,"\nUpdated LevelDB with SP data successfully\n");
     return res;
   }
 
@@ -807,11 +842,11 @@ public:
     string spKey = (boost::format(FORMAT_BOOST_SPKEY) % spid).str();
     leveldb::Iterator *iter = pDb->NewIterator(readOpts);
     iter->Seek(spKey);
-    if (iter->Valid() && iter->key().compare(spKey) == 0) {
-      return true;
-    }
+    bool res = (iter->Valid() && iter->key().compare(spKey) == 0);
+    // clean up the iterator
+    delete iter;
 
-    return false;
+    return res;
   }
 
   unsigned int findSPByTX(uint256 const &txid)
@@ -827,6 +862,96 @@ public:
     }
 
     return res;
+  }
+
+  int popBlock(uint256 const &block_hash)
+  {
+    int res = 0;
+    int remainingSPs = 0;
+    leveldb::WriteBatch commitBatch;
+
+    leveldb::ReadOptions readOpts;
+    readOpts.fill_cache = false;
+    leveldb::Iterator *iter = pDb->NewIterator(readOpts);
+    for (iter->Seek("sp-"); iter->Valid() && iter->key().starts_with("sp-"); iter->Next()) {
+      // parse the encoded json, failing if it doesnt parse or is an object
+      Value spInfoVal;
+      if (read_string(iter->value().ToString(), spInfoVal) && spInfoVal.type() == obj_type ) {
+        Entry info;
+        info.fromJSON(spInfoVal.get_obj());
+        if (info.update_block == block_hash) {
+          // need to roll this SP back
+          if (info.update_block == info.creation_block) {
+            // this is the block that created this SP, so delete the SP and the tx index entry
+            string txIndexKey = (boost::format(FORMAT_BOOST_TXINDEXKEY) % info.txid.ToString() ).str();
+            commitBatch.Delete(iter->key());
+            commitBatch.Delete(txIndexKey);
+          } else {
+            std::vector<std::string> vstr;
+            std::string key = iter->key().ToString();
+            boost::split(vstr, key, boost::is_any_of("-"), token_compress_on);
+            unsigned int propertyID = boost::lexical_cast<unsigned int>(vstr[1]);
+
+            string spPrevKey = (boost::format("blk-%s:sp-%d") % info.update_block.ToString() % propertyID).str();
+            string spPrevValue;
+
+            if (false == pDb->Get(readOpts, spPrevKey, &spPrevValue).IsNotFound()) {
+              // copy the prev state to the current state and delete the old state
+              commitBatch.Put(iter->key(), spPrevValue);
+              commitBatch.Delete(spPrevKey);
+              remainingSPs++;
+            } else {
+              // failed to find a previous SP entry, trigger reparse
+              res = -1;
+            }
+          }
+        } else {
+          remainingSPs++;
+        }
+      } else {
+        // failed to parse the db json, trigger reparse
+        res = -1;
+      }
+    }
+
+    // clean up the iterator
+    delete iter;
+
+    leveldb::WriteOptions writeOptions;
+    writeOptions.sync = true;
+
+    pDb->Write(writeOptions, &commitBatch);
+
+    if (res < 0) {
+      return res;
+    } else {
+      return remainingSPs;
+    }
+  }
+
+  static string const watermarkKey;
+  void setWatermark(uint256 const &watermark)
+  {
+    leveldb::WriteOptions writeOptions;
+    writeOptions.sync = true;
+
+    leveldb::WriteBatch commitBatch;
+    commitBatch.Delete(watermarkKey);
+    commitBatch.Put(watermarkKey, watermark.ToString());
+    pDb->Write(writeOptions, &commitBatch);
+  }
+
+  int getWatermark(uint256 &watermark)
+  {
+    leveldb::ReadOptions readOpts;
+    readOpts.fill_cache = false;
+    string watermarkVal;
+    if (pDb->Get(readOpts, watermarkKey, &watermarkVal).ok()) {
+      watermark.SetHex(watermarkVal);
+      return 0;
+    } else {
+      return -1;
+    }
   }
 
   void printAll()
@@ -864,8 +989,13 @@ public:
         }
       }
     }
+
+    // clean up the iterator
+    delete iter;
   }
 };
+
+string const CMPSPInfo::watermarkKey("watermark");
 
 CCriticalSection cs_tally;
 
@@ -1585,8 +1715,9 @@ int calculateFractional(unsigned short int propType, unsigned char bonusPerc, ui
   return missedTokens;
 }
 
-unsigned int eraseExpiredCrowdsale(const int64_t blockTime)
+unsigned int eraseExpiredCrowdsale(CBlockIndex const * pBlockIndex)
 {
+  const int64_t blockTime = pBlockIndex->GetBlockTime();
 unsigned int how_many_erased = 0;
 CrowdMap::iterator my_it = my_crowds.begin();
 
@@ -1626,6 +1757,7 @@ CrowdMap::iterator my_it = my_crowds.begin();
 
       //get txdata
       sp.txFundraiserData = crowd.getDatabase();
+      sp.update_block = pBlockIndex->GetBlockHash();
 
       //update SP with this data
       _my_sps->updateSP(crowd.getPropertyId() , sp);
@@ -1705,7 +1837,7 @@ int block_FirstAllowed;
   // BTC as currency/property is never allowed
   if (MASTERCOIN_CURRENCY_BTC == txCurrency) return false;
 
-  if ((TestNet()) || isTestEcosystemProperty(txCurrency)) return true; // everything is always allowed on Bitcoin's TestNet or with TMSC/TestEcosystem on MainNet
+  if (( RegTest() || TestNet()) || isTestEcosystemProperty(txCurrency)) return true; // everything is always allowed on Bitcoin's TestNet or with TMSC/TestEcosystem on MainNet
 
   for (unsigned int i = 0; i < sizeof(txBlockRestrictions)/sizeof(txBlockRestrictions[0]); i++)
   {
@@ -2264,6 +2396,7 @@ public:
         newSP.url.assign(url);
         newSP.data.assign(data);
         newSP.fixed = true;
+        newSP.creation_block = newSP.update_block = chainActive[block]->GetBlockHash();
 
         const unsigned int id = _my_sps->putSP(ecosystem, newSP);
         update_tally_map(sender, id, nValue, MONEY);
@@ -2304,6 +2437,7 @@ public:
         newSP.deadline = deadline;
         newSP.early_bird = early_bird;
         newSP.percentage = percentage;
+        newSP.creation_block = newSP.update_block = chainActive[block]->GetBlockHash();
 
         const unsigned int id = _my_sps->putSP(ecosystem, newSP);
         my_crowds.insert(std::make_pair(sender, CMPCrowd(id, nValue, currency, deadline, early_bird, percentage, 0, 0)));
@@ -2355,6 +2489,7 @@ public:
         //fprintf(mp_fp,"\nValues coming out of calculateFractional(): Total tokens, Tokens created, Tokens for issuer, amountMissed: issuer %s %ld %ld %ld %f\n",sp.issuer.c_str(), crowd.getUserCreated() + crowd.getIssuerCreated(), crowd.getUserCreated(), crowd.getIssuerCreated(), missedTokens);
         
         sp.txFundraiserData = crowd.getDatabase();
+        sp.update_block = chainActive[block]->GetBlockHash();
         
         _my_sps->updateSP(crowd.getPropertyId() , sp);
         
@@ -2743,9 +2878,10 @@ const unsigned int currency = MASTERCOIN_CURRENCY_MSC;  // FIXME: hard-coded for
   return (my_addresses_count);
 }
 
+
 int mastercore_handler_block_begin(int nBlockNow, CBlockIndex const * pBlockIndex)
 {
-  (void) eraseExpiredCrowdsale(pBlockIndex->GetBlockTime());
+  (void) eraseExpiredCrowdsale(pBlockIndex);
 
   return 0;
 }
@@ -2819,13 +2955,13 @@ vector<vector<unsigned char> > vSolutions;
 
 int TXExodusFundraiser(const CTransaction &wtx, const string &sender, int64_t ExodusHighestValue, int nBlock, unsigned int nTime)
 {
-  if ((nBlock >= GENESIS_BLOCK && nBlock <= LAST_EXODUS_BLOCK) || (TestNet()))
+  if ((nBlock >= GENESIS_BLOCK && nBlock <= LAST_EXODUS_BLOCK) || (TestNet()) || (RegTest()))
   { //Exodus Fundraiser start/end blocks
     //printf("transaction: %s\n", wtx.ToString().c_str() );
     int deadline_timeleft=1377993600-nTime;
     double bonus= 1 + std::max( 0.10 * deadline_timeleft / (60 * 60 * 24 * 7), 0.0 );
 
-    if (TestNet())
+    if (TestNet() || RegTest())
     {
       bonus = 1;
 
@@ -2887,14 +3023,15 @@ uint64_t txFee = 0;
                 {
                   ExodusValues[marker_count++] = wtx.vout[i].nValue;
                 }
-                else if (TestNet() && (getmoney_testnet == strAddress))
+                else if (( RegTest() || TestNet()) && (getmoney_testnet == strAddress))
                 {
                   TestNetMoneyValues[getmoney_count++] = wtx.vout[i].nValue;
                 }
               }
             }
 
-            if ((TestNet() && getmoney_count))
+            if ((RegTest() || TestNet()) && getmoney_count)
+
             {
             }
             else if (!marker_count)
@@ -3031,7 +3168,7 @@ uint64_t txFee = 0;
             
             //This calculates exodus fundraiser for each tx within a given block
             int64_t BTC_amount = ExodusValues[0];
-            if (TestNet())
+            if (RegTest() || TestNet())
             {
               if (MONEYMAN_TESTNET_BLOCK <= nBlock) BTC_amount = TestNetMoneyValues[0];
             }
@@ -3766,7 +3903,7 @@ static char const * const statePrefix[NUM_FILETYPES] = {
     "balances",
     "offers",
     "accepts",
-    "devmsc",
+    "globals",
     "crowdsales",
 };
 
@@ -3774,27 +3911,96 @@ static char const * const statePrefix[NUM_FILETYPES] = {
 static int load_most_relevant_state()
 {
   int res = -1;
-  // get the tip of the current best chain
-  CBlockIndex const *curTip = chainActive.Tip();
+  // check the SP database and roll it back to its latest valid state
+  // according to the active chain
+  uint256 spWatermark;
+  if (0 > _my_sps->getWatermark(spWatermark)) {
+    //trigger a full reparse, if the SP database has no watermark
+    return -1;
+  }
 
-  // walk backwards until we find a valid and full set of persisted state files
-  while (NULL != curTip) {
-    int success = -1;
-    for (int i = 0; i < NUM_FILETYPES; ++i) {
-      const string filename = (MPPersistencePath / (boost::format("%s-%s.dat") % statePrefix[i] % curTip->GetBlockHash().ToString()).str().c_str()).string();
-      success = msc_file_load(filename, i, true);
-      if (success < 0) {
-        break;
-      }
+  CBlockIndex const *spBlockIndex = mapBlockIndex[spWatermark];
+  if (NULL == spBlockIndex) {
+    //trigger a full reparse, if the watermark isn't a real block
+    return -1;
+  }
+
+  while(false == chainActive.Contains(spBlockIndex)) {
+    int remainingSPs = _my_sps->popBlock(*spBlockIndex->phashBlock);
+    if (remainingSPs < 0) {
+      // trigger a full reparse, if the levelDB cannot roll back
+      return -1;
+    } /*else if (remainingSPs == 0) {
+      // potential optimization here?
+    }*/
+    spBlockIndex = spBlockIndex->pprev;
+    _my_sps->setWatermark(*spBlockIndex->phashBlock);
+  }
+
+  // prepare a set of available files by block hash pruning any that are
+  // not in the active chain
+  std::set<uint256> persistedBlocks;
+  boost::filesystem::directory_iterator dIter(MPPersistencePath);
+  boost::filesystem::directory_iterator endIter;
+  for (; dIter != endIter; ++dIter) {
+    if (false == boost::filesystem::is_regular_file(dIter->status()) || dIter->path().empty()) {
+      // skip funny business
+      continue;
     }
 
-    if (success >= 0) {
-      res = curTip->nHeight;
-      break;
+    std::string fName = (*--dIter->path().end()).c_str();
+    std::vector<std::string> vstr;
+    boost::split(vstr, fName, boost::is_any_of("-."), token_compress_on);
+    if (  vstr.size() == 3 &&
+          boost::equals(vstr[2], "dat")) {
+      uint256 blockHash;
+      blockHash.SetHex(vstr[1]);
+      CBlockIndex *pBlockIndex = mapBlockIndex[blockHash];
+      if (pBlockIndex == NULL || false == chainActive.Contains(pBlockIndex)) {
+        continue;
+      }
+
+      // this is a valid block in the active chain, store it
+      persistedBlocks.insert(blockHash);
+    }
+  }
+
+  // using the SP's watermark after its fixed-up as the tip
+  // walk backwards until we find a valid and full set of persisted state files
+  // for each block we discard, roll back the SP database
+  CBlockIndex const *curTip = spBlockIndex;
+  while (NULL != curTip && persistedBlocks.size() > 0) {
+    if (persistedBlocks.find(*spBlockIndex->phashBlock) != persistedBlocks.end()) {
+      int success = -1;
+      for (int i = 0; i < NUM_FILETYPES; ++i) {
+        const string filename = (MPPersistencePath / (boost::format("%s-%s.dat") % statePrefix[i] % curTip->GetBlockHash().ToString()).str().c_str()).string();
+        success = msc_file_load(filename, i, true);
+        if (success < 0) {
+          break;
+        }
+      }
+
+      if (success >= 0) {
+        res = curTip->nHeight;
+        break;
+      }
+
+      // remove this from the persistedBlock Set
+      persistedBlocks.erase(*spBlockIndex->phashBlock);
     }
 
     // go to the previous block
+    if (0 > _my_sps->popBlock(*curTip->phashBlock)) {
+      // trigger a full reparse, if the levelDB cannot roll back
+      return -1;
+    }
     curTip = curTip->pprev;
+    _my_sps->setWatermark(*curTip->phashBlock);
+  }
+
+  if (persistedBlocks.size() == 0) {
+    // trigger a reparse if we exhausted the persistence files without success
+    return -1;
   }
 
   // return the height of the block we settled at
@@ -4037,6 +4243,8 @@ int mastercore_save_state( CBlockIndex const *pBlockIndex )
   // clean-up the directory
   prune_state_files(pBlockIndex);
 
+  _my_sps->setWatermark(*pBlockIndex->phashBlock);
+
   return 0;
 }
 
@@ -4060,6 +4268,10 @@ int mastercore_init()
   {
     exodus = exodus_testnet;
   }
+  if (RegTest())
+  {
+    exodus = exodus_testnet;
+  }
 
   p_txlistdb = new CMPTxList(GetDataDir() / "MP_txlist", 1<<20, false, fReindex);
   _my_sps = new CMPSPInfo(GetDataDir() / "MP_spinfo");
@@ -4072,11 +4284,21 @@ int mastercore_init()
 
   if (TestNet()) snapshotHeight = START_TESTNET_BLOCK - 1;
 
+  if (RegTest()) snapshotHeight = START_REGTEST_BLOCK - 1;
+
   ++mastercoreInitialized;
 
   if (!disable_Persistence)
   {
     nWaterlineBlock = load_most_relevant_state();
+    if (nWaterlineBlock < 0) {
+      // persistence says we reparse!, nuke some stuff in case the partial loads left stale bits
+      mp_tally_map.clear();
+      my_offers.clear();
+      my_accepts.clear();
+      my_crowds.clear();
+      _my_sps->clear();
+    }
 
     if (nWaterlineBlock < snapshotHeight)
     {
@@ -4119,6 +4341,8 @@ int mastercore_init()
 #endif
 
     if (TestNet()) nWaterlineBlock = START_TESTNET_BLOCK; //testnet3
+
+    if (RegTest()) nWaterlineBlock = START_REGTEST_BLOCK; //testnet3
   }
 
   // collect the real Exodus balances available at the snapshot time
@@ -4163,6 +4387,11 @@ int mastercore_shutdown()
     fclose(mp_fp);
 #endif
     mp_fp = NULL;
+  }
+
+  if (_my_sps)
+  {
+    delete _my_sps; _my_sps = NULL;
   }
 
   return 0;
@@ -4887,10 +5116,6 @@ Value gettransaction_MP(const Array& params, bool fHelp)
                 int confirmations =  1 + GetHeight() - pBlockIndex->nHeight;
                 int64_t blockTime = mapBlockIndex[blockHash]->nTime; 
 
-                if ((!TestNet()) && (blockHeight < POST_EXODUS_BLOCK)) 
-                        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Transaction not available - prior to preseed");
-                if ((TestNet()) && (blockHeight < START_TESTNET_BLOCK))
-                        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Testnet transaction not avaiable - prior to preseed");
 
                 mp_obj.SetNull();
                 CMPOffer temp_offer;
@@ -5119,8 +5344,6 @@ bool addressFilter;
                 int blockHeight = pBlockIndex->nHeight;
                 int64_t blockTime = mapBlockIndex[pwtx->hashBlock]->nTime;
                 int blockIndex = pwtx->nIndex;
-                if ((!TestNet()) && (blockHeight < POST_EXODUS_BLOCK)) continue; //do not display transactions prior to preseed
-                if ((TestNet()) && (blockHeight < START_TESTNET_BLOCK)) continue;
 
                 //ignore transactions not between nStartBlock and nEndBlock
                 if ((blockHeight < nStartBlock) || (blockHeight > nEndBlock)) continue;
@@ -6032,3 +6255,38 @@ std::string CScript::mscore_parse(std::vector<std::string>&msc_parsed, bool bNoB
     return str;
 }
 
+int mastercore_handler_disc_begin(int nBlockNow, CBlockIndex const * pBlockIndex) {
+    return 0;
+}
+
+int mastercore_handler_disc_end(int nBlockNow, CBlockIndex const * pBlockIndex) {
+    printf("\n BLOCK DISCONNECTED: blockinfo %s \n\n", pBlockIndex->ToString().c_str() );
+
+    //from prune_state_files();
+    const char *blockHashStr = pBlockIndex->GetBlockHash().ToString().c_str();
+    for (int i = 0; i < NUM_FILETYPES; ++i) {
+      boost::filesystem::remove(MPPersistencePath / (boost::format("%s-%s.dat") % statePrefix[i] % blockHashStr).str());
+    }
+
+    if( TestNet() || RegTest() ) //loggging
+      p_txlistdb->printAll();
+    
+    //delete entry from MP_txlist
+    bool success = p_txlistdb->isMPinBlockRange(pBlockIndex->nHeight, pBlockIndex->nHeight, true);
+    if( TestNet() || RegTest() ) //loggging
+    _my_sps->printAll();
+    
+    printf("\n Success in deletion of MP_txlist: %d\n", success);
+    if( TestNet() || RegTest() ) //logging
+      p_txlistdb->printAll();
+
+    printf("\n Noticed a re-org, disabling persistence for your own safety. Please restart this instance for the most accurate balances. \n\n\n" );
+    //Bad blocks found, must restart to persist.
+    disable_Persistence = 1;
+    
+    //TODO add some reparsing on the fly instead of making the user restart
+    //int scan_ret=msc_initial_scan(pBlockIndex->nHeight);
+    //printf("Restarted scan? %d", scan_ret);
+    
+    return 0;
+}
