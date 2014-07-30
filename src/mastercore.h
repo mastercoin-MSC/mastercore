@@ -27,9 +27,6 @@
 #define FORMAT_BOOST_TXINDEXKEY "index-tx-%s"
 #define FORMAT_BOOST_SPKEY      "sp-%d"
 
-// the min amount to send to marker, reference, data outputs, used in send_MP() & related functions
-#define MP_DUST_LIMIT 5678
-
 // Master Protocol Transaction (Packet) Version
 #define MP_TX_PKT_V0  0
 #define MP_TX_PKT_V1  1

@@ -4228,89 +4228,110 @@ CWallet *wallet = pwalletMain;
 }
 
 //
+// Determines minimum output amount to be spent by an output based on
+// scriptPubKey size in relation to the minimum relay fee.
+//
+int64_t GetDustLimit(const CScript& scriptPubKey)
+{
+    // The total size is based on a typical scriptSig size of 148 byte,
+    // 8 byte accounted for the size of output value and the serialized
+    // size of scriptPubKey.
+    size_t nSize = ::GetSerializeSize(scriptPubKey, SER_DISK, 0) + 156u;
+    
+    // The minimum relay fee dictates a threshold value under which a
+    // transaction won't be relayed.
+    int64_t nMinRelayFee = CTransaction::nMinRelayTxFee;
+    
+    // A transaction is considered as "dust", if less than 1/3 of the
+    // minimum fee required to relay a transaction is spent by one of
+    // it's outputs. The minimum relay fee is defined per 1000 byte.
+    int64_t nDustLimit = 1 + (((nSize * nMinRelayFee * 3) - 1) / 1000);
+    
+    return nDustLimit;
+}
+
+//
 // Do we care if this is true: pubkeys[i].IsCompressed() ???
 //
-static int ClassB_send(const string &senderAddress, const string &receiverAddress, const string &data_packet, CCoinControl &coinControl, uint256 & txid)
+static int ClassB_send(const string &strSender, const string &strReceiver, const string &strDataPacket, CCoinControl &coinControl, uint256 &txid)
 {
-const int n_keys = 2;
-int i = 0;
-std::vector<CPubKey> pubkeys;
-pubkeys.resize(n_keys);
-CWallet *wallet = pwalletMain;
-const int64_t nDustLimit = MP_DUST_LIMIT;
+    const int MAX_DATA_PACKAGES = 2;
+    std::vector<CPubKey> vPubKeys;
+    vPubKeys.resize(MAX_DATA_PACKAGES);
+    CWallet *wallet = pwalletMain;
+    int nPacket = 0;
+    
+    txid = 0;
 
-  txid = 0;
+    CBitcoinAddress addrSender(strSender);
+    if (wallet && addrSender.IsValid())
+    {
+        CKeyID keyID;
+        if (!addrSender.GetKeyID(keyID)) return -20;
 
-  // partially copied from _createmultisig()
+        CPubKey vchPubKey;
+        if (!wallet->GetPubKey(keyID, vchPubKey)) return -21;
+        if (!vchPubKey.IsFullyValid()) return -22;
 
-  CBitcoinAddress address(senderAddress);
-  if (wallet && address.IsValid())
-  {
-  CKeyID keyID;
+        vPubKeys[nPacket++] = vchPubKey;
+    }
+    else return -23;
 
-    if (!address.GetKeyID(keyID)) return -20;
+    vPubKeys[nPacket] = ParseHex(strDataPacket);
 
-    CPubKey vchPubKey;
-    if (!wallet->GetPubKey(keyID, vchPubKey)) return -21;
-    if (!vchPubKey.IsFullyValid()) return -22;
+    // 2nd (& 3rd) is the data packet(s)
+    if (!vPubKeys[nPacket].IsFullyValid()) return -1;
 
-    pubkeys[i++] = vchPubKey;
-  }
-  else return -23;
+    CWalletTx wtxNew;
+    int64_t nFeeRet = 0;
+    std::vector<pair<CScript, int64_t> > vecSend;
+    std::string strFailReason;
+    CReserveKey reserveKey(wallet);
 
-  pubkeys[i] = ParseHex(data_packet);
+    
+    // the marker output
+    CScript scriptMarker;
+    scriptMarker.SetDestination(CBitcoinAddress(exodus).Get());
+    vecSend.push_back(make_pair(scriptMarker, GetDustLimit(scriptMarker)));
 
-  // 2nd (& 3rd) is the data packet(s)
-  if (!pubkeys[i].IsFullyValid()) return -1;
+    // the 1-multisig-2 Class B with data & sender
+    CScript scriptMultisigData;
+    scriptMultisigData.SetMultisig(1, vPubKeys);
+    vecSend.push_back(make_pair(scriptMultisigData, GetDustLimit(scriptMultisigData)));
+    
+    printf("%s(): %s, line %d, file: %s\n", __FUNCTION__, scriptMultisigData.ToString().c_str(), __LINE__, __FILE__);
 
-  CScript multisig_output;
-  multisig_output.SetMultisig(1, pubkeys);
-  printf("%s(): %s, line %d, file: %s\n", __FUNCTION__, multisig_output.ToString().c_str(), __LINE__, __FILE__);
+    // the reference/recepient/receiver
+    if (!strReceiver.empty())
+    {
+        // Send To Owners is the first use case where the receiver is empty
+        CScript scriptReference;
+        scriptReference.SetDestination(CBitcoinAddress(strReceiver).Get());
+        vecSend.push_back(make_pair(scriptReference, GetDustLimit(scriptReference)));
+    }    
+    
+    // change goes back to us
+    coinControl.destChange = addrSender.Get();
 
-  CWalletTx wtxNew;
-  int64_t nFeeRet = 0;
-  vector< pair<CScript, int64_t> > vecSend;
-  std::string strFailReason;
-  CReserveKey reserveKey(wallet);
+    // selected in the parent function, i.e.: ensure we are only using the address passed in as the Sender
+    if (!coinControl.HasSelected()) return -6;
 
-  CBitcoinAddress addr = CBitcoinAddress(senderAddress);  // change goes back to us
-  coinControl.destChange = addr.Get();
+    LOCK(wallet->cs_wallet);  // TODO: is this needed?
 
-  if (!wallet) return -5;
+    // transaction fee is based on nTransactionFee and can be defined via -paytxfee=<amount>
+    if (!wallet->CreateTransaction(vecSend, wtxNew, reserveKey, nFeeRet, strFailReason, &coinControl))
+    {
+        printf("%s(): CreateTransaction() failed: %s, line %d, file: %s\n", __FUNCTION__, strFailReason.c_str(), __LINE__, __FILE__);
+        return -11;
+    }
 
-  CScript scriptPubKey;
+    printf("%s():%s; nFeeRet = %lu, line %d, file: %s\n", __FUNCTION__, wtxNew.ToString().c_str(), nFeeRet, __LINE__, __FILE__);
 
-  // the 1-multisig-2 Class B with data & sender
-  vecSend.push_back(make_pair(multisig_output, nDustLimit));
+    if (!wallet->CommitTransaction(wtxNew, reserveKey)) return -13;
 
-  // the reference/recepient/receiver
-  if (!receiverAddress.empty())
-  {
-    // Send To Owners is the first use case where the receiver is empty
-    scriptPubKey.SetDestination(CBitcoinAddress(receiverAddress).Get());
-    vecSend.push_back(make_pair(scriptPubKey, nDustLimit));
-  }
+    txid = wtxNew.GetHash();
 
-  // the marker output
-  scriptPubKey.SetDestination(CBitcoinAddress(exodus).Get());
-  vecSend.push_back(make_pair(scriptPubKey, nDustLimit));
-
-  // selected in the parent function, i.e.: ensure we are only using the address passed in as the Sender
-  if (!coinControl.HasSelected()) return -6;
-
-  LOCK(wallet->cs_wallet);  // TODO: is this needed?
-
-  // the fee will be computed by Bitcoin Core, need an override (?)
-  // TODO: look at Bitcoin Core's global: nTransactionFee (?)
-  if (!wallet->CreateTransaction(vecSend, wtxNew, reserveKey, nFeeRet, strFailReason, &coinControl)) return -11;
-
-  printf("%s():%s; nFeeRet = %lu, line %d, file: %s\n", __FUNCTION__, wtxNew.ToString().c_str(), nFeeRet, __LINE__, __FILE__);
-
-  if (!wallet->CommitTransaction(wtxNew, reserveKey)) return -13;
-
-  txid = wtxNew.GetHash();
-
-  return 0;
+    return 0;
 }
 
 // WIP: expanding the function to a general-purpose one, but still sending 1 packet only for now (30-31 bytes)
