@@ -318,6 +318,8 @@ public:
     }
 
     void printAll();
+
+    bool isMPinBlockRange(int, int);
 };
 
 // extern map<string, CMPTally> mp_tally_map;

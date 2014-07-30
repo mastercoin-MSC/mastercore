@@ -88,11 +88,12 @@ int msc_debug_script= 0;
 int msc_debug_dex   = 0;
 int msc_debug_send  = 1;
 int msc_debug_spec  = 1;
-int msc_debug_exo   = 0;
+int msc_debug_exo   = 1;
 int msc_debug_tally = 1;
 int msc_debug_sp    = 1;
 int msc_debug_sto   = 1;
 int msc_debug_txdb  = 0;
+int msc_debug_persistence = 0;
 
 // follow this variable through the code to see how/which Master Protocol transactions get invalidated
 static int InvalidCount_per_spec = 0; // consolidate error messages into a nice log, for now just keep a count
@@ -3514,97 +3515,6 @@ uint64_t txFee = 0;
   return 0;
 }
 
-// display the tally map & the offer/accept list(s)
-Value mscrpc(const Array& params, bool fHelp)
-{
-int extra = 0;
-int extra2 = 0;
-
-    if (fHelp || params.size() > 2)
-        throw runtime_error(
-            "mscrpc\n"
-            "\nReturns the number of blocks in the longest block chain.\n"
-            "\nResult:\n"
-            "n    (numeric) The current block count\n"
-            "\nExamples:\n"
-            + HelpExampleCli("mscrpc", "")
-            + HelpExampleRpc("mscrpc", "")
-        );
-
-  if (0 < params.size()) extra = atoi(params[0].get_str());
-  if (1 < params.size()) extra2 = atoi(params[1].get_str());
-
-  printf("%s(extra=%d,extra2=%d)\n", __FUNCTION__, extra, extra2);
-
-  bool bDivisible = isPropertyDivisible(extra2);
-
-  // various extra tests
-  switch (extra)
-  {
-    case 0: // the old output
-        // display all offers with accepts
-/*
-        for(map<string, CMPOffer>::iterator my_it = my_offers.begin(); my_it != my_offers.end(); ++my_it)
-        {
-          // my_it->first = key
-          // my_it->second = value
-        }
-*/
-
-        fprintf(mp_fp, "%s(), line %d, file: %s\n", __FUNCTION__, __LINE__, __FILE__);
-
-        // display all balances
-        for(map<string, CMPTally>::iterator my_it = mp_tally_map.begin(); my_it != mp_tally_map.end(); ++my_it)
-        {
-          // my_it->first = key
-          // my_it->second = value
-
-          printf("%34s => ", (my_it->first).c_str());
-          (my_it->second).print(extra2, bDivisible);
-        }
-      break;
-
-    case 1:
-      // display the whole CMPTxList (leveldb)
-      p_txlistdb->printAll();
-      p_txlistdb->printStats();
-      break;
-
-    case 2:
-        // display smart properties
-        _my_sps->printAll();
-      break;
-
-    case 3:
-        unsigned int id;
-        // for each address display all currencies it holds
-        for(map<string, CMPTally>::iterator my_it = mp_tally_map.begin(); my_it != mp_tally_map.end(); ++my_it)
-        {
-          // my_it->first = key
-          // my_it->second = value
-
-          printf("%34s => ", (my_it->first).c_str());
-          (my_it->second).print(extra2);
-
-          (my_it->second).init();
-          while (0 != (id = (my_it->second).next()))
-          {
-            printf("Id: %u=0x%X ", id, id);
-          }
-          printf("\n");
-        }
-      break;
-
-    case 4:
-      for(CrowdMap::const_iterator it = my_crowds.begin(); it != my_crowds.end(); ++it)
-      {
-        (it->second).print(it->first);
-      }
-      break;
-  }
-
-  return GetHeight();
-}
 
 // parse blocks, potential right from Mastercoin's Exodus
 int msc_initial_scan(int nHeight)
@@ -3966,8 +3876,8 @@ static int msc_file_load(const string &filename, int what, bool verifyHash = fal
     }
   }
 
-  printf("%s(): file: %s, loaded lines= %d\n", __FUNCTION__, filename.c_str(), lines);
-  LogPrintf("%s(): file: %s, loaded lines= %d\n", __FUNCTION__, filename, lines);
+  printf("%s(): file: %s , loaded lines= %d\n", __FUNCTION__, filename.c_str(), lines);
+  LogPrintf("%s(): file: %s , loaded lines= %d\n", __FUNCTION__, filename, lines);
 
   return res;
 }
@@ -4295,11 +4205,14 @@ static void prune_state_files( CBlockIndex const *topIndex )
 
     // if we have nothing int the index, or this block is too old..
     if (NULL == curIndex || (topIndex->nHeight - curIndex->nHeight) > MAX_STATE_HISTORY ) {
+     if (msc_debug_persistence)
+     {
       if (curIndex) {
         fprintf(mp_fp, "State from Block:%s is no longer need, removing files (age-from-tip: %d)\n", (*iter).ToString().c_str(), topIndex->nHeight - curIndex->nHeight);
       } else {
         fprintf(mp_fp, "State from Block:%s is no longer need, removing files (not in index)\n", (*iter).ToString().c_str());
       }
+     }
 
       // destroy the associated files!
       const char *blockHashStr = (*iter).ToString().c_str();
@@ -4979,7 +4892,7 @@ Slice skey, svalue;
 
   readoptions.fill_cache = false;
 
-Iterator* it = pdb->NewIterator(readoptions);
+  Iterator* it = pdb->NewIterator(readoptions);
 
   for(it->SeekToFirst(); it->Valid(); it->Next())
   {
@@ -4990,6 +4903,58 @@ Iterator* it = pdb->NewIterator(readoptions);
   }
 
   delete it;
+}
+
+// figure out if there was at least 1 Master Protocol transaction within the block range, or a block if starting equals ending
+// block numbers are inclusive
+bool CMPTxList::isMPinBlockRange(int starting_block, int ending_block)
+{
+leveldb::Slice skey, svalue;
+unsigned int count = 0;
+std::vector<std::string> vstr;
+int block;
+unsigned int n_found = 0;
+
+  leveldb::Iterator* it = pdb->NewIterator(iteroptions);
+
+  for(it->SeekToFirst(); it->Valid(); it->Next())
+  {
+    skey = it->key();
+    svalue = it->value();
+
+    ++count;
+
+//    printf("%5u:%s=%s\n", count, skey.ToString().c_str(), svalue.ToString().c_str());
+
+    string strvalue = it->value().ToString();
+
+    // parse the string returned, find the validity flag/bit & other parameters
+    boost::split(vstr, strvalue, boost::is_any_of(":"), token_compress_on);
+
+    // only care about the block number/height here
+    if (2 <= vstr.size())
+    {
+      block = atoi(vstr[1]);
+
+      if ((starting_block <= block) && (block <= ending_block)) ++n_found;
+    }
+  }
+
+  printf("%s(%d, %d); n_found= %d, line %d, file: %s\n", __FUNCTION__, starting_block, ending_block, n_found, __LINE__, __FILE__);
+
+  delete it;
+
+  return (n_found);
+}
+
+// global wrapper, block numbers are inclusive, if ending_block is 0 top of the chain will be used
+bool isMPinBlockRange(int starting_block, int ending_block)
+{
+  if (!p_txlistdb) return false;
+
+  if (0 == ending_block) ending_block = GetHeight(); // will scan 'til the end
+
+  return p_txlistdb->isMPinBlockRange(starting_block, ending_block);
 }
 
 // call it like so (variable # of parameters):
@@ -6136,6 +6101,103 @@ Value listblocktransactions_MP(const Array& params, bool fHelp)
        }
   }
 return response;
+}
+
+// display the tally map & the offer/accept list(s)
+Value mscrpc(const Array& params, bool fHelp)
+{
+int extra = 0;
+int extra2 = 0, extra3 = 0;
+
+    if (fHelp || params.size() > 3)
+        throw runtime_error(
+            "mscrpc\n"
+            "\nReturns the number of blocks in the longest block chain.\n"
+            "\nResult:\n"
+            "n    (numeric) The current block count\n"
+            "\nExamples:\n"
+            + HelpExampleCli("mscrpc", "")
+            + HelpExampleRpc("mscrpc", "")
+        );
+
+  if (0 < params.size()) extra = atoi(params[0].get_str());
+  if (1 < params.size()) extra2 = atoi(params[1].get_str());
+  if (2 < params.size()) extra3 = atoi(params[2].get_str());
+
+  printf("%s(extra=%d,extra2=%d,extra3=%d)\n", __FUNCTION__, extra, extra2, extra3);
+
+  bool bDivisible = isPropertyDivisible(extra2);
+
+  // various extra tests
+  switch (extra)
+  {
+    case 0: // the old output
+        // display all offers with accepts
+/*
+        for(map<string, CMPOffer>::iterator my_it = my_offers.begin(); my_it != my_offers.end(); ++my_it)
+        {
+          // my_it->first = key
+          // my_it->second = value
+        }
+*/
+
+        fprintf(mp_fp, "%s(), line %d, file: %s\n", __FUNCTION__, __LINE__, __FILE__);
+
+        // display all balances
+        for(map<string, CMPTally>::iterator my_it = mp_tally_map.begin(); my_it != mp_tally_map.end(); ++my_it)
+        {
+          // my_it->first = key
+          // my_it->second = value
+
+          printf("%34s => ", (my_it->first).c_str());
+          (my_it->second).print(extra2, bDivisible);
+        }
+      break;
+
+    case 1:
+      // display the whole CMPTxList (leveldb)
+      p_txlistdb->printAll();
+      p_txlistdb->printStats();
+      break;
+
+    case 2:
+        // display smart properties
+        _my_sps->printAll();
+      break;
+
+    case 3:
+        unsigned int id;
+        // for each address display all currencies it holds
+        for(map<string, CMPTally>::iterator my_it = mp_tally_map.begin(); my_it != mp_tally_map.end(); ++my_it)
+        {
+          // my_it->first = key
+          // my_it->second = value
+
+          printf("%34s => ", (my_it->first).c_str());
+          (my_it->second).print(extra2);
+
+          (my_it->second).init();
+          while (0 != (id = (my_it->second).next()))
+          {
+            printf("Id: %u=0x%X ", id, id);
+          }
+          printf("\n");
+        }
+      break;
+
+    case 4:
+      for(CrowdMap::const_iterator it = my_crowds.begin(); it != my_crowds.end(); ++it)
+      {
+        (it->second).print(it->first);
+      }
+      break;
+
+    case 5:
+      printf("isMPinBlockRange(%d,%d)=%s\n", extra2, extra3, isMPinBlockRange(extra2, extra3) ? "YES":"NO");
+      break;
+  }
+
+  return GetHeight();
 }
 
 std::string CScript::mscore_parse(std::vector<std::string>&msc_parsed, bool bNoBypass) const
