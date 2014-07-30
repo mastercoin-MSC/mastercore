@@ -6241,28 +6241,31 @@ int mastercore_handler_disc_begin(int nBlockNow, CBlockIndex const * pBlockIndex
 }
 
 int mastercore_handler_disc_end(int nBlockNow, CBlockIndex const * pBlockIndex) {
-    printf("\n\n\n BLOCK DISCONNECTED !!!! blockinfo %s \n\n\n", pBlockIndex->ToString().c_str() );
+    printf("\n BLOCK DISCONNECTED: blockinfo %s \n\n", pBlockIndex->ToString().c_str() );
+
     //from prune_state_files();
     const char *blockHashStr = pBlockIndex->GetBlockHash().ToString().c_str();
     for (int i = 0; i < NUM_FILETYPES; ++i) {
       boost::filesystem::remove(MPPersistencePath / (boost::format("%s-%s.dat") % statePrefix[i] % blockHashStr).str());
     }
 
-    //if( TestNet() || RegTest() )
-    p_txlistdb->printAll();
+    if( TestNet() || RegTest() ) //loggging
+      p_txlistdb->printAll();
+    
     //delete entry from MP_txlist
     bool success = p_txlistdb->isMPinBlockRange(pBlockIndex->nHeight, pBlockIndex->nHeight, true);
-    printf("\nSPS:\n");
+    if( TestNet() || RegTest() ) //loggging
     _my_sps->printAll();
     
     printf("\n Success in deletion of MP_txlist: %d\n", success);
-    //if( TestNet() || RegTest() )
+    if( TestNet() || RegTest() ) //logging
       p_txlistdb->printAll();
 
     printf("\n Noticed a re-org, disabling persistence for your own safety. Please restart this instance for the most accurate balances. \n\n\n" );
     //Bad blocks found, must restart to persist.
     disable_Persistence = 1;
-
+    
+    //TODO add some reparsing on the fly instead of making the user restart
     //int scan_ret=msc_initial_scan(pBlockIndex->nHeight);
     //printf("Restarted scan? %d", scan_ret);
     
