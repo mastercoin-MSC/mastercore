@@ -4907,7 +4907,7 @@ Slice skey, svalue;
 
 // figure out if there was at least 1 Master Protocol transaction within the block range, or a block if starting equals ending
 // block numbers are inclusive
-bool CMPTxList::isMPinBlockRange(int starting_block, int ending_block)
+bool CMPTxList::isMPinBlockRange(int starting_block, int ending_block, bool bDeleteFound)
 {
 leveldb::Slice skey, svalue;
 unsigned int count = 0;
@@ -4936,7 +4936,11 @@ unsigned int n_found = 0;
     {
       block = atoi(vstr[1]);
 
-      if ((starting_block <= block) && (block <= ending_block)) ++n_found;
+      if ((starting_block <= block) && (block <= ending_block))
+      {
+        ++n_found;
+        if (bDeleteFound) pdb->Delete(writeoptions, skey);
+      }
     }
   }
 
@@ -4948,13 +4952,13 @@ unsigned int n_found = 0;
 }
 
 // global wrapper, block numbers are inclusive, if ending_block is 0 top of the chain will be used
-bool isMPinBlockRange(int starting_block, int ending_block)
+bool isMPinBlockRange(int starting_block, int ending_block, bool bDeleteFound)
 {
   if (!p_txlistdb) return false;
 
   if (0 == ending_block) ending_block = GetHeight(); // will scan 'til the end
 
-  return p_txlistdb->isMPinBlockRange(starting_block, ending_block);
+  return p_txlistdb->isMPinBlockRange(starting_block, ending_block, bDeleteFound);
 }
 
 // call it like so (variable # of parameters):
@@ -6193,7 +6197,7 @@ int extra2 = 0, extra3 = 0;
       break;
 
     case 5:
-      printf("isMPinBlockRange(%d,%d)=%s\n", extra2, extra3, isMPinBlockRange(extra2, extra3) ? "YES":"NO");
+      printf("isMPinBlockRange(%d,%d)=%s\n", extra2, extra3, isMPinBlockRange(extra2, extra3, false) ? "YES":"NO");
       break;
   }
 

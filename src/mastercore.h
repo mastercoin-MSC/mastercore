@@ -319,7 +319,7 @@ public:
 
     void printAll();
 
-    bool isMPinBlockRange(int, int);
+    bool isMPinBlockRange(int, int, bool);
 };
 
 // extern map<string, CMPTally> mp_tally_map;
