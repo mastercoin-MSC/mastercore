@@ -33,10 +33,6 @@
 
 #include <openssl/sha.h>
 
-#include <boost/multiprecision/cpp_int.hpp>
-
-using boost::multiprecision::int128_t;
-using boost::multiprecision::cpp_int;
 using namespace std;
 using namespace boost;
 using namespace boost::assign;
