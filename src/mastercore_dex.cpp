@@ -474,7 +474,7 @@ AcceptMap::iterator my_it = my_accepts.begin();
 
       // extract the seller, buyer & currency from the Key
       std::vector<std::string> vstr;
-      boost::split(vstr, my_it->first, boost::is_any_of("-+"), token_compress_on);
+      boost::split(vstr, my_it->first, boost::is_any_of("-+"), boost::token_compress_on);
       string seller = vstr[0];
       int currency = atoi(vstr[1]);
       string buyer = vstr[2];

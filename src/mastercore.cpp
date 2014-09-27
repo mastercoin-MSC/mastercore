@@ -1507,7 +1507,7 @@ const int max_block = GetHeight();
 int input_msc_balances_string(const string &s)
 {
   std::vector<std::string> addrData;
-  boost::split(addrData, s, boost::is_any_of("="), token_compress_on);
+  boost::split(addrData, s, boost::is_any_of("="), boost::token_compress_on);
   if (addrData.size() != 2) {
     return -1;
   }
@@ -1516,7 +1516,7 @@ int input_msc_balances_string(const string &s)
 
   // split the tuples of currencies
   std::vector<std::string> vCurrencies;
-  boost::split(vCurrencies, addrData[1], boost::is_any_of(";"), token_compress_on);
+  boost::split(vCurrencies, addrData[1], boost::is_any_of(";"), boost::token_compress_on);
 
   std::vector<std::string>::const_iterator iter;
   for (iter = vCurrencies.begin(); iter != vCurrencies.end(); ++iter) {
@@ -1525,7 +1525,7 @@ int input_msc_balances_string(const string &s)
     }
 
     std::vector<std::string> curData;
-    boost::split(curData, *iter, boost::is_any_of(","), token_compress_on);
+    boost::split(curData, *iter, boost::is_any_of(","), boost::token_compress_on);
     if (curData.size() < 1) {
       // malformed currency entry
        return -1;
@@ -1571,7 +1571,7 @@ int input_mp_offers_string(const string &s)
   unsigned int curr;
   unsigned char blocktimelimit;
   std::vector<std::string> vstr;
-  boost::split(vstr, s, boost::is_any_of(" ,="), token_compress_on);
+  boost::split(vstr, s, boost::is_any_of(" ,="), boost::token_compress_on);
   string sellerAddr;
   string txidStr;
   int i = 0;
@@ -1606,7 +1606,7 @@ int input_mp_accepts_string(const string &s)
   int nBlock;
   unsigned char blocktimelimit;
   std::vector<std::string> vstr;
-  boost::split(vstr, s, boost::is_any_of(" ,="), token_compress_on);
+  boost::split(vstr, s, boost::is_any_of(" ,="), boost::token_compress_on);
   uint64_t amountRemaining, amountOriginal, offerOriginal, btcDesired;
   unsigned int curr;
   string sellerAddr, buyerAddr, txidStr;
@@ -1640,7 +1640,7 @@ int input_globals_state_string(const string &s)
   uint64_t exodusPrev;
   unsigned int nextSPID, nextTestSPID;
   std::vector<std::string> vstr;
-  boost::split(vstr, s, boost::is_any_of(" ,="), token_compress_on);
+  boost::split(vstr, s, boost::is_any_of(" ,="), boost::token_compress_on);
   if (3 != vstr.size()) return -1;
 
   int i = 0;
@@ -1667,7 +1667,7 @@ int input_mp_crowdsale_string(const string &s)
   uint64_t i_created;
 
   std::vector<std::string> vstr;
-  boost::split(vstr, s, boost::is_any_of(" ,"), token_compress_on);
+  boost::split(vstr, s, boost::is_any_of(" ,"), boost::token_compress_on);
   unsigned int i = 0;
 
   if (9 > vstr.size()) return -1;
@@ -1687,11 +1687,11 @@ int input_mp_crowdsale_string(const string &s)
   // load the remaining as database pairs
   while (i < vstr.size()) {
     std::vector<std::string> entryData;
-    boost::split(entryData, vstr[i++], boost::is_any_of("="), token_compress_on);
+    boost::split(entryData, vstr[i++], boost::is_any_of("="), boost::token_compress_on);
     if ( 2 != entryData.size()) return -1;
 
     std::vector<std::string> valueData;
-    boost::split(valueData, entryData[1], boost::is_any_of(";"), token_compress_on);
+    boost::split(valueData, entryData[1], boost::is_any_of(";"), boost::token_compress_on);
 
     std::vector<uint64_t> vals;
     std::vector<std::string>::const_iterator iter;
@@ -1869,7 +1869,7 @@ static int load_most_relevant_state()
 
     std::string fName = (*--dIter->path().end()).string();
     std::vector<std::string> vstr;
-    boost::split(vstr, fName, boost::is_any_of("-."), token_compress_on);
+    boost::split(vstr, fName, boost::is_any_of("-."), boost::token_compress_on);
     if (  vstr.size() == 3 &&
           boost::equals(vstr[2], "dat")) {
       uint256 blockHash;
@@ -1978,7 +1978,7 @@ static int write_mp_offers(ofstream &file, SHA256_CTX *shaCtx)
   for (iter = my_offers.begin(); iter != my_offers.end(); ++iter) {
     // decompose the key for address
     std::vector<std::string> vstr;
-    boost::split(vstr, (*iter).first, boost::is_any_of("-"), token_compress_on);
+    boost::split(vstr, (*iter).first, boost::is_any_of("-"), boost::token_compress_on);
     CMPOffer const &offer = (*iter).second;
     offer.saveOffer(file, shaCtx, vstr[0]);
   }
@@ -1993,7 +1993,7 @@ static int write_mp_accepts(ofstream &file, SHA256_CTX *shaCtx)
   for (iter = my_accepts.begin(); iter != my_accepts.end(); ++iter) {
     // decompose the key for address
     std::vector<std::string> vstr;
-    boost::split(vstr, (*iter).first, boost::is_any_of("-+"), token_compress_on);
+    boost::split(vstr, (*iter).first, boost::is_any_of("-+"), boost::token_compress_on);
     CMPAccept const &accept = (*iter).second;
     accept.saveAccept(file, shaCtx, vstr[0], vstr[1]);
   }
@@ -2105,7 +2105,7 @@ static void prune_state_files( CBlockIndex const *topIndex )
     }
 
     std::vector<std::string> vstr;
-    boost::split(vstr, fName, boost::is_any_of("-."), token_compress_on);
+    boost::split(vstr, fName, boost::is_any_of("-."), boost::token_compress_on);
     if (  vstr.size() == 3 &&
           is_state_prefix(vstr[0]) &&
           boost::equals(vstr[2], "dat")) {
@@ -2733,7 +2733,7 @@ int CMPTxList::getNumberOfPurchases(const uint256 txid)
     if (status.ok())
     {
         // parse the string returned
-        boost::split(vstr, strValue, boost::is_any_of(":"), token_compress_on);
+        boost::split(vstr, strValue, boost::is_any_of(":"), boost::token_compress_on);
         // obtain the number of purchases
         if (4 <= vstr.size())
         {
@@ -2748,11 +2748,11 @@ bool CMPTxList::getPurchaseDetails(const uint256 txid, int purchaseNumber, strin
     if (!pdb) return 0;
     std::vector<std::string> vstr;
     string strValue;
-    leveldb::Status status = pdb->Get(readoptions, txid.ToString()+"-"+to_string(purchaseNumber), &strValue);
+    leveldb::Status status = pdb->Get(readoptions, txid.ToString()+"-"+boost::to_string(purchaseNumber), &strValue);
     if (status.ok())
     {
         // parse the string returned
-        boost::split(vstr, strValue, boost::is_any_of(":"), token_compress_on);
+        boost::split(vstr, strValue, boost::is_any_of(":"), boost::token_compress_on);
         // obtain the requisite details
         if (5 == vstr.size())
         {
@@ -2791,7 +2791,7 @@ void CMPTxList::recordPaymentTX(const uint256 &txid, bool fValid, int nBlock, un
            if (status.ok())
            {
                // parse the string returned
-               boost::split(vstr, strValue, boost::is_any_of(":"), token_compress_on);
+               boost::split(vstr, strValue, boost::is_any_of(":"), boost::token_compress_on);
 
                // obtain the existing number of payments
                if (4 <= vstr.size())
@@ -2925,7 +2925,7 @@ unsigned int n_found = 0;
     string strvalue = it->value().ToString();
 
     // parse the string returned, find the validity flag/bit & other parameters
-    boost::split(vstr, strvalue, boost::is_any_of(":"), token_compress_on);
+    boost::split(vstr, strvalue, boost::is_any_of(":"), boost::token_compress_on);
 
     // only care about the block number/height here
     if (2 <= vstr.size())
@@ -2978,7 +2978,7 @@ int validity = 0;
 
   // parse the string returned, find the validity flag/bit & other parameters
   std::vector<std::string> vstr;
-  boost::split(vstr, result, boost::is_any_of(":"), token_compress_on);
+  boost::split(vstr, result, boost::is_any_of(":"), boost::token_compress_on);
 
   fprintf(mp_fp, "%s() size=%lu : %s\n", __FUNCTION__, vstr.size(), result.c_str());
 

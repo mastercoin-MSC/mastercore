@@ -216,7 +216,7 @@ int CMPSPInfo::popBlock(uint256 const &block_hash)
           } else {
             std::vector<std::string> vstr;
             std::string key = iter->key().ToString();
-            boost::split(vstr, key, boost::is_any_of("-"), token_compress_on);
+            boost::split(vstr, key, boost::is_any_of("-"), boost::token_compress_on);
             unsigned int propertyID = boost::lexical_cast<unsigned int>(vstr[1]);
 
             string spPrevKey = (boost::format("blk-%s:sp-%d") % info.update_block.ToString() % propertyID).str();

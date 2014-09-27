@@ -369,7 +369,7 @@ public:
       if (iter->key().starts_with("sp-")) {
         std::vector<std::string> vstr;
         std::string key = iter->key().ToString();
-        boost::split(vstr, key, boost::is_any_of("-"), token_compress_on);
+        boost::split(vstr, key, boost::is_any_of("-"), boost::token_compress_on);
 
         printf("%10s => ", vstr[1].c_str());
 
