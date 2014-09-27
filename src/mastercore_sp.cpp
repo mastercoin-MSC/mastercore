@@ -146,7 +146,7 @@ bool CMPSPInfo::getSP(unsigned int spid, Entry &info)
 
     // parse the encoded json, failing if it doesnt parse or is an object
     Value spInfoVal;
-    if (false == read_string(spInfoStr, spInfoVal) || spInfoVal.type() != obj_type ) {
+    if (false == json_spirit::read_string(spInfoStr, spInfoVal) || spInfoVal.type() != json_spirit::obj_type) {
       return false;
     }
 
@@ -203,7 +203,7 @@ int CMPSPInfo::popBlock(uint256 const &block_hash)
     for (iter->Seek("sp-"); iter->Valid() && iter->key().starts_with("sp-"); iter->Next()) {
       // parse the encoded json, failing if it doesnt parse or is an object
       Value spInfoVal;
-      if (read_string(iter->value().ToString(), spInfoVal) && spInfoVal.type() == obj_type ) {
+      if (json_spirit::read_string(iter->value().ToString(), spInfoVal) && spInfoVal.type() == json_spirit::obj_type) {
         Entry info;
         info.fromJSON(spInfoVal.get_obj());
         if (info.update_block == block_hash) {
