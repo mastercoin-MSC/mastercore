@@ -2729,7 +2729,7 @@ int CMPTxList::getNumberOfPurchases(const uint256 txid)
     int numberOfPurchases = 0;
     std::vector<std::string> vstr;
     string strValue;
-    Status status = pdb->Get(readoptions, txid.ToString(), &strValue);
+    leveldb::Status status = pdb->Get(readoptions, txid.ToString(), &strValue);
     if (status.ok())
     {
         // parse the string returned
@@ -2748,7 +2748,7 @@ bool CMPTxList::getPurchaseDetails(const uint256 txid, int purchaseNumber, strin
     if (!pdb) return 0;
     std::vector<std::string> vstr;
     string strValue;
-    Status status = pdb->Get(readoptions, txid.ToString()+"-"+to_string(purchaseNumber), &strValue);
+    leveldb::Status status = pdb->Get(readoptions, txid.ToString()+"-"+to_string(purchaseNumber), &strValue);
     if (status.ok())
     {
         // parse the string returned
@@ -2787,7 +2787,7 @@ void CMPTxList::recordPaymentTX(const uint256 &txid, bool fValid, int nBlock, un
            //retrieve old numberOfPayments
            std::vector<std::string> vstr;
            string strValue;
-           Status status = pdb->Get(readoptions, txid.ToString(), &strValue);
+           leveldb::Status status = pdb->Get(readoptions, txid.ToString(), &strValue);
            if (status.ok())
            {
                // parse the string returned
@@ -2806,7 +2806,7 @@ void CMPTxList::recordPaymentTX(const uint256 &txid, bool fValid, int nBlock, un
        // Step 3 - Create new/update master record for payment tx in TXList
        const string key = txid.ToString();
        const string value = strprintf("%u:%d:%u:%lu", fValid ? 1:0, nBlock, type, numberOfPayments); 
-       Status status;
+       leveldb::Status status;
        fprintf(mp_fp, "DEXPAYDEBUG : Writing master record %s(%s, valid=%s, block= %d, type= %d, number of payments= %lu)\n", __FUNCTION__, txid.ToString().c_str(), fValid ? "YES":"NO", nBlock, type, numberOfPayments);
        if (pdb)
        {
@@ -2818,7 +2818,7 @@ void CMPTxList::recordPaymentTX(const uint256 &txid, bool fValid, int nBlock, un
        const string txidStr = txid.ToString();
        const string subKey = STR_PAYMENT_SUBKEY_TXID_PAYMENT_COMBO(txidStr);
        const string subValue = strprintf("%d:%s:%s:%d:%lu", vout, buyer, seller, propertyId, nValue);
-       Status subStatus;
+       leveldb::Status subStatus;
        fprintf(mp_fp, "DEXPAYDEBUG : Writing sub-record %s with value %s\n", subKey.c_str(), subValue.c_str());
        if (pdb)
        {
@@ -2833,7 +2833,7 @@ void CMPTxList::recordTX(const uint256 &txid, bool fValid, int nBlock, unsigned 
 
 const string key = txid.ToString();
 const string value = strprintf("%u:%d:%u:%lu", fValid ? 1:0, nBlock, type, nValue);
-Status status;
+leveldb::Status status;
 
   fprintf(mp_fp, "%s(%s, valid=%s, block= %d, type= %d, value= %lu)\n",
    __FUNCTION__, txid.ToString().c_str(), fValid ? "YES":"NO", nBlock, type, nValue);
@@ -2851,7 +2851,7 @@ bool CMPTxList::exists(const uint256 &txid)
   if (!pdb) return false;
 
 string strValue;
-Status status = pdb->Get(readoptions, txid.ToString(), &strValue);
+leveldb::Status status = pdb->Get(readoptions, txid.ToString(), &strValue);
 
   if (!status.ok())
   {
@@ -2863,7 +2863,7 @@ Status status = pdb->Get(readoptions, txid.ToString(), &strValue);
 
 bool CMPTxList::getTX(const uint256 &txid, string &value)
 {
-Status status = pdb->Get(readoptions, txid.ToString(), &value);
+leveldb::Status status = pdb->Get(readoptions, txid.ToString(), &value);
 
   ++nRead;
 
@@ -2883,11 +2883,11 @@ void CMPTxList::printStats()
 void CMPTxList::printAll()
 {
 int count = 0;
-Slice skey, svalue;
+leveldb::Slice skey, svalue;
 
   readoptions.fill_cache = false;
 
-  Iterator* it = pdb->NewIterator(readoptions);
+  leveldb::Iterator* it = pdb->NewIterator(readoptions);
 
   for(it->SeekToFirst(); it->Valid(); it->Next())
   {
