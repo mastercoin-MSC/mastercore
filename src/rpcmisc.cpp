@@ -60,7 +60,7 @@ Value getinfo(const Array& params, bool fHelp)
     GetProxy(NET_IPV4, proxy);
 
     Object obj;
-    obj.push_back(Pair("mastercoreversion",  (int)1030008));  // strip the initial '10' : for tagged release go to 10007, etc.
+    obj.push_back(Pair("mastercoreversion",  (int)1030009));  // strip the initial '10' : for tagged release go to 10007, etc.
     obj.push_back(Pair("version",       (int)CLIENT_VERSION));
     obj.push_back(Pair("protocolversion",(int)PROTOCOL_VERSION));
 #ifdef ENABLE_WALLET
