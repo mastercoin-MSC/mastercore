@@ -369,13 +369,13 @@ public:
       if (iter->key().starts_with("sp-")) {
         std::vector<std::string> vstr;
         std::string key = iter->key().ToString();
-        boost::split(vstr, key, boost::is_any_of("-"), token_compress_on);
+        boost::split(vstr, key, boost::is_any_of("-"), boost::token_compress_on);
 
         printf("%10s => ", vstr[1].c_str());
 
         // parse the encoded json, failing if it doesnt parse or is an object
         Value spInfoVal;
-        if (read_string(iter->value().ToString(), spInfoVal) && spInfoVal.type() == obj_type ) {
+        if (json_spirit::read_string(iter->value().ToString(), spInfoVal) && spInfoVal.type() == json_spirit::obj_type) {
           Entry info;
           info.fromJSON(spInfoVal.get_obj());
           info.print();
