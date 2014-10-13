@@ -38,6 +38,77 @@ using namespace mastercore;
 #include "mastercore_tx.h"
 #include "mastercore_sp.h"
 
+enum MPRPCErrorCode
+{
+    //INTERNAL_1packet
+    MP_INSUF_FUNDS_BPENDI      = -1,  // balance before pending
+    MP_INSUF_FUNDS_APENDI      = -2,  // balance after pending
+    MP_INPUT_NOT_IN_RANGE      = -11, // input value larger than supported
+    
+    //ClassB_send
+    MP_INPUTS_INVALID = -212,
+    MP_REDEMP_ILLEGAL = -233,
+    MP_REDEMP_BAD_KEYID = -220,
+    MP_REDEMP_FETCH_ERR_PUBKEY = -221,
+    MP_REDEMP_INVALID_PUBKEY = -222,
+    MP_REDEMP_BAD_VALIDATION = -223,
+    MP_ERR_WALLET_ACCESS = -205,
+    MP_ERR_INPUTSELECT_FAIL = -206,
+    MP_ERR_CREATE_TX = -211,
+    MP_ERR_COMMIT_TX = -213
+};
+
+std::string error_str(int ec) {
+  std::string ec_str;
+  
+  switch (ec)
+  {
+      case MP_INSUF_FUNDS_BPENDI:
+          ec_str = "Not enough funds in user address";
+          break;
+      case MP_INSUF_FUNDS_APENDI:
+          ec_str = "Not enough funds in user address due to PENDING/UNCONFIRMED transactions";
+          break;
+      case MP_INPUT_NOT_IN_RANGE:
+          ec_str = "Input value supplied larger than supported in Master Protocol";
+          break;
+      case MP_INPUTS_INVALID:
+          ec_str = "Error choosing inputs for the send transaction";
+          break;
+      case MP_REDEMP_ILLEGAL:
+          ec_str = "Error with redemption address";
+          break;
+      case MP_REDEMP_BAD_KEYID:
+          ec_str = "Error with redemption address key ID";
+          break;
+      case MP_REDEMP_FETCH_ERR_PUBKEY:
+          ec_str = "Error obtaining public key for redemption address";
+          break;
+      case MP_REDEMP_INVALID_PUBKEY:
+          ec_str = "Error public key for redemption address is not valid";
+          break;
+      case MP_REDEMP_BAD_VALIDATION:
+          ec_str = "Error validating redemption address";
+          break;
+      case MP_ERR_WALLET_ACCESS:
+          ec_str = "Error with wallet object";
+          break;
+      case MP_ERR_INPUTSELECT_FAIL:
+          ec_str = "Error with selected inputs for the send transaction";
+          break;
+      case MP_ERR_CREATE_TX:
+          ec_str = "Error creating transaction (wallet may be locked or fees may not be sufficient)";
+          break;
+      case MP_ERR_COMMIT_TX:
+          ec_str = "Error committing transaction";
+          break;
+      default:
+          ec_str = strprintf("Unknown error ", ec);
+  }
+
+  return ec_str;
+}
+
 // display the tally map & the offer/accept list(s)
 Value mscrpc(const Array& params, bool fHelp)
 {
@@ -245,7 +316,7 @@ if (fHelp || params.size() < 4 || params.size() > 6)
   int code = 0;
   uint256 newTX = send_INTERNAL_1packet(FromAddress, ToAddress, RedeemAddress, propertyId, Amount, 0, 0, MSC_TYPE_SIMPLE_SEND, additional, &code);
 
-  if (0 != code) throw JSONRPCError(RPC_INVALID_PARAMETER, strprintf("error code= %i", code));
+  if (0 != code) throw JSONRPCError(code, error_str(code) );
 
   //we need to do better than just returning a string of 0000000 here if we can't send the TX
   return newTX.GetHex();
@@ -301,7 +372,7 @@ if (fHelp || params.size() < 3 || params.size() > 4)
   int code = 0;
   uint256 newTX = send_INTERNAL_1packet(FromAddress, "", RedeemAddress, propertyId, Amount, 0, 0, MSC_TYPE_SEND_TO_OWNERS, 0, &code);
 
-  if (0 != code) throw JSONRPCError(RPC_INVALID_PARAMETER, strprintf("error code= %i", code));
+  if (0 != code) throw JSONRPCError(code, error_str(code) );
 
   //we need to do better than just returning a string of 0000000 here if we can't send the TX
   return newTX.GetHex();
@@ -1108,8 +1179,8 @@ Value trade_MP(const Array& params, bool fHelp) {
   int code = 0;
   uint256 newTX = send_INTERNAL_1packet(FromAddress, "", RedeemAddress, propertyIdSale, Amount_Sale, propertyIdWant, Amount_Want, MSC_TYPE_METADEX, action, &code);
 
-  if (0 != code) throw JSONRPCError(RPC_INVALID_PARAMETER, strprintf("error code= %i", code));
-
+  if (0 != code) throw JSONRPCError(code, error_str(code) );
+  
   //we need to do better than just returning a string of 0000000 here if we can't send the TX
   return newTX.GetHex();
 } 
