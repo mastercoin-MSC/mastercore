@@ -58,6 +58,8 @@ using namespace leveldb;
 #include "mastercore_dex.h"
 #include "mastercore_tx.h"
 #include "mastercore_sp.h"
+#include "mastercore_convert.h"
+#include "mastercore_format.h"
 
 #include <QDateTime>
 #include <QMessageBox>
@@ -147,7 +149,7 @@ void SendMPDialog::updateFrom()
     }
     else
     {
-       string feeWarning = "Only " + FormatDivisibleMP(inputTotal) + " BTC are available at the sending address for fees, you can attempt to send the transaction anyway but this *may* not be sufficient.";
+       string feeWarning = "Only " + FormatDivisibleAmount(inputTotal) + " BTC are available at the sending address for fees, you can attempt to send the transaction anyway but this *may* not be sufficient.";
        ui->feeWarningLabel->setText(QString::fromStdString(feeWarning));
        ui->feeWarningLabel->setVisible(true);
     }
@@ -217,13 +219,13 @@ void SendMPDialog::updateBalances()
     if (propertyId>2) tokenLabel = " SPT";
     if (isPropertyDivisible(propertyId))
     {
-        balanceLabel = QString::fromStdString("Address Balance (Available): " + FormatDivisibleMP(balanceAvailable) + tokenLabel);
-        globalLabel = QString::fromStdString("Wallet Balance (Available): " + FormatDivisibleMP(globalAvailable) + tokenLabel);
+        balanceLabel = QString::fromStdString("Address Balance (Available): " + FormatDivisibleAmount(balanceAvailable) + tokenLabel);
+        globalLabel = QString::fromStdString("Wallet Balance (Available): " + FormatDivisibleAmount(globalAvailable) + tokenLabel);
     }
     else
     {
-        balanceLabel = QString::fromStdString("Address Balance (Available): " + FormatIndivisibleMP(balanceAvailable) + tokenLabel);
-        globalLabel = QString::fromStdString("Wallet Balance (Available): " + FormatIndivisibleMP(globalAvailable) + tokenLabel);
+        balanceLabel = QString::fromStdString("Address Balance (Available): " + FormatIndivisibleAmount(balanceAvailable) + tokenLabel);
+        globalLabel = QString::fromStdString("Wallet Balance (Available): " + FormatIndivisibleAmount(globalAvailable) + tokenLabel);
     }
     ui->addressBalanceLabel->setText(balanceLabel);
     ui->globalBalanceLabel->setText(globalLabel);
@@ -292,7 +294,7 @@ void SendMPDialog::sendMPTransaction()
     }
 
     // use strToInt64 function to get the amount, using divisibility of the property
-    int64_t sendAmount = strToInt64(strAmount, divisible);
+    int64_t sendAmount = StrToInt64(strAmount, divisible);
     if (0>=sendAmount)
     {
         QMessageBox::critical( this, "Unable to send transaction",
@@ -327,7 +329,7 @@ void SendMPDialog::sendMPTransaction()
     string spNum = static_cast<ostringstream*>( &(ostringstream() << propertyId) )->str();
     propDetails += " (#" + spNum + ")";
     strMsgText += "From: " + fromAddress.ToString() + "\nTo: " + refAddress.ToString() + "\nProperty: " + propDetails + "\nAmount that will be sent: ";
-    if (divisible) { strMsgText += FormatDivisibleMP(sendAmount); } else { strMsgText += FormatIndivisibleMP(sendAmount); }
+    strMsgText += FormatTokenAmount(sendAmount, divisible);
     strMsgText += "\n\nAre you sure you wish to send this transaction?";
     QString msgText = QString::fromStdString(strMsgText);
     QMessageBox::StandardButton responseClick;
