@@ -51,6 +51,8 @@ using namespace mastercore;
 
 #include "mastercore_dex.h"
 #include "mastercore_tx.h"
+#include "mastercore_convert.h"
+#include "mastercore_format.h"
 
 extern int msc_debug_dex, msc_debug_metadex, msc_debug_metadex2;
 
@@ -274,7 +276,7 @@ std::string CMPMetaDEx::ToString() const
 {
   return strprintf("%34s in %d/%03u, txid: %s, trade #%u %s for #%u %s; unit_price = %lu.%010lu, inverse= %lu.%010lu",
    addr.c_str(), block, idx, txid.ToString().substr(0,10).c_str(),
-   currency, FormatDivisibleMP(amount_original), desired_currency, FormatDivisibleMP(desired_amount_original),
+   currency, FormatDivisibleAmount(amount_original), desired_currency, FormatDivisibleAmount(desired_amount_original),
    price_int, price_frac, inverse_int, inverse_frac);
 }
 
@@ -339,7 +341,7 @@ int rc = DEX_ERROR_SELLOFFER;
     // AND we must also re-adjust the BTC desired in this case...
     BTC = amount_desired * balanceReallyAvailable;
     BTC /= (double)nValue;
-    amount_desired = rounduint64(BTC);
+    amount_desired = RoundToUInt64(BTC);
 
     nValue = balanceReallyAvailable;
 
@@ -561,7 +563,7 @@ p_accept = DEx_getAccept(seller, curr, buyer);
   double perc_X = (double)BTC_paid/BTC_desired_original;
   double Purchased = offer_amount_original * perc_X;
 
-  uint64_t units_purchased = rounduint64(Purchased);
+  uint64_t units_purchased = RoundToUInt64(Purchased);
 
   const uint64_t nActualAmount = p_accept->getAcceptAmountRemaining();  // actual amount desired, in the Accept
 

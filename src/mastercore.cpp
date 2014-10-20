@@ -76,7 +76,9 @@ using namespace mastercore;
 #include "mastercore_dex.h"
 #include "mastercore_tx.h"
 #include "mastercore_sp.h"
+#include "mastercore_convert.h"
 #include "mastercore_errors.h"
+#include "mastercore_format.h"
 
 // part of 'breakout' feature
 static const int nBlockTop = 0;
@@ -287,89 +289,9 @@ void swapByteOrder64(uint64_t& ull)
           (ull << 56);
 }
 
-uint64_t rounduint64(double d)
-{
-  return (uint64_t)(abs(0.5 + d));
-}
-
 bool isNonMainNet()
 {
   return (TestNet() || RegTest());
-}
-
-// mostly taken from Bitcoin's FormatMoney()
-string FormatDivisibleMP(int64_t n, bool fSign)
-{
-// Note: not using straight sprintf here because we do NOT want
-// localized number formatting.
-int64_t n_abs = (n > 0 ? n : -n);
-int64_t quotient = n_abs/COIN;
-int64_t remainder = n_abs%COIN;
-string str = strprintf("%d.%08d", quotient, remainder);
-
-  if (!fSign) return str;
-
-  if (n < 0)
-      str.insert((unsigned int)0, 1, '-');
-  else
-      str.insert((unsigned int)0, 1, '+');
-  return str;
-}
-
-int64_t mastercore::strToInt64(std::string strAmount, bool divisible)
-{
-  int64_t Amount = 0;
-
-  //check for a negative (minus sign) and invalidate if present
-  size_t negSignPos = strAmount.find("-");
-  if (negSignPos!=std::string::npos) return 0;
-
-  //convert the string into a usable int64
-  if (divisible)
-  {
-      //check for existance of decimal point
-      size_t pos = strAmount.find(".");
-      if (pos==std::string::npos)
-      { //no decimal point but divisible so pad 8 zeros on right
-          strAmount+="00000000";
-      }
-      else
-      {
-          size_t posSecond = strAmount.find(".", pos+1); //check for existence of second decimal point, if so invalidate amount
-          if (posSecond!=std::string::npos) return 0;
-          if ((strAmount.size()-pos)<9)
-          { //there are decimals either exact or not enough, pad as needed
-              string strRightOfDecimal = strAmount.substr(pos+1);
-              unsigned int zerosToPad = 8-strRightOfDecimal.size();
-              if (zerosToPad>0) //do we need to pad?
-              {
-                  for(unsigned int it = 0; it != zerosToPad; it++)
-                  {
-                      strAmount+="0";
-                  }
-              }
-          }
-          else
-          { //there are too many decimals, truncate after 8
-              strAmount = strAmount.substr(0,pos+9);
-          }
-      }
-      strAmount.erase(std::remove(strAmount.begin(), strAmount.end(), '.'), strAmount.end());
-      try { Amount = boost::lexical_cast<int64_t>(strAmount); } catch(const boost::bad_lexical_cast &e) { }
-  }
-  else
-  {
-      size_t pos = strAmount.find(".");
-      string newStrAmount = strAmount.substr(0,pos);
-      try { Amount = boost::lexical_cast<int64_t>(newStrAmount); } catch(const boost::bad_lexical_cast &e) { }
-  }
-return Amount;
-}
-
-std::string mastercore::FormatIndivisibleMP(int64_t n)
-{
-  string str = strprintf("%ld", n);
-  return str;
 }
 
 string const CMPSPInfo::watermarkKey("watermark");
@@ -800,7 +722,7 @@ const double years = seconds_passed/seconds_in_one_year;
 const double part_available = 1 - pow(0.5, years);
 const double available_reward=all_reward * part_available;
 
-  devmsc = rounduint64(available_reward);
+  devmsc = RoundToUInt64(available_reward);
   exodus_delta = devmsc - exodus_prev;
 
   if (msc_debug_exo) fprintf(mp_fp, "devmsc=%lu, exodus_prev=%lu, exodus_delta=%ld\n", devmsc, exodus_prev, exodus_delta);
@@ -3758,7 +3680,7 @@ int rc = PKT_ERROR_STO -1000;
           owns, address.c_str(), percentage, piece, should_receive, will_really_receive, sent_so_far);
 
         // record the detailed info as needed
-        if (fhandle) fprintf(fhandle, "%s = %s\n", address.c_str(), bDivisible ?  FormatDivisibleMP(will_really_receive).c_str() : FormatIndivisibleMP(will_really_receive).c_str());
+        if (fhandle) fprintf(fhandle, "%s = %s\n", address.c_str(), FormatTokenAmount(will_really_receive, bDivisible).c_str());
 
         if (!update_tally_map(sender, currency, - will_really_receive, MONEY))
         {

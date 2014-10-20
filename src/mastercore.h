@@ -6,6 +6,8 @@
 #ifndef _MASTERCOIN
 #define _MASTERCOIN 1
 
+#include "mastercore_format.h"
+
 #include "netbase.h"
 #include "protocol.h"
 
@@ -130,7 +132,6 @@ enum FILETYPES {
 #define MASTERCOIN_CURRENCY_TMSC  2
 
 // forward declarations
-string FormatDivisibleMP(int64_t n, bool fSign = false);
 uint256 send_MP(const string &FromAddress, const string &ToAddress, const string &RedeemAddress, unsigned int CurrencyID, uint64_t Amount);
 int64_t feeCheck(const string &address);
 
@@ -237,7 +238,7 @@ public:
     if (bDivisible)
     {
       printf("%22s [SO_RESERVE= %22s , ACCEPT_RESERVE= %22s ] %22s\n",
-       FormatDivisibleMP(money, true).c_str(), FormatDivisibleMP(so_r, true).c_str(), FormatDivisibleMP(a_r, true).c_str(), FormatDivisibleMP(pending, true).c_str());
+       FormatDivisibleAmount(money, true).c_str(), FormatDivisibleAmount(so_r, true).c_str(), FormatDivisibleAmount(a_r, true).c_str(), FormatDivisibleAmount(pending, true).c_str());
     }
     else
     {
@@ -362,8 +363,6 @@ int mastercore_handler_block_end(int nBlockNow, CBlockIndex const * pBlockIndex,
 int mastercore_handler_tx(const CTransaction &tx, int nBlock, unsigned int idx, CBlockIndex const *pBlockIndex );
 int mastercore_save_state( CBlockIndex const *pBlockIndex );
 
-uint64_t rounduint64(double d);
-
 bool isBigEndian(void);
 
 void swapByteOrder16(unsigned short& us);
@@ -386,7 +385,6 @@ string getPropertyName(unsigned int propertyId);
 bool isCrowdsaleActive(unsigned int propertyId);
 bool isCrowdsalePurchase(uint256 txid, string address, int64_t *propertyId = NULL, int64_t *userTokens = NULL, int64_t *issuerTokens = NULL);
 bool isMPinBlockRange(int starting_block, int ending_block, bool bDeleteFound);
-std::string FormatIndivisibleMP(int64_t n);
 
 int ClassB_send(const string &senderAddress, const string &receiverAddress, const string &redemptionAddress, const vector<unsigned char> &data, uint256 & txid, int64_t additional = 0);
 
@@ -394,7 +392,6 @@ uint256 send_INTERNAL_1packet(const string &FromAddress, const string &ToAddress
  unsigned int TransactionType, int64_t additional, int *error_code = NULL);
 
 bool isTestEcosystemProperty(unsigned int property);
-int64_t strToInt64(std::string strAmount, bool divisible);
 
 CMPTally *getTally(const string & address);
 
