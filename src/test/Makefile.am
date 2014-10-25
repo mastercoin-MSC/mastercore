@@ -48,6 +48,7 @@ test_bitcoin_SOURCES = \
   key_tests.cpp \
   main_tests.cpp \
   mastercore_strtoint64_tests.cpp \
+  mastercore_format_tests.cpp \
   miner_tests.cpp \
   mruset_tests.cpp \
   multisig_tests.cpp \

@@ -61,6 +61,7 @@ using namespace leveldb;
 #include "mastercore_dex.h"
 #include "mastercore_tx.h"
 #include "mastercore_sp.h"
+#include "mastercore_parse_string.h"
 
 #include <QColor>
 #include <QDateTime>
@@ -897,13 +898,13 @@ int MatrixModel::fillin(unsigned int propertyId)
                 bool divisible = isPropertyDivisible(propertyId);
                 if (divisible)
                 {
-                    ql_avl.append(QString::fromStdString(FormatDivisibleMP(available)));
-                    ql_res.append(QString::fromStdString(FormatDivisibleMP(reserved)));
+                    ql_avl.append(QString::fromStdString(FormatDivisibleAmount(available)));
+                    ql_res.append(QString::fromStdString(FormatDivisibleAmount(reserved)));
                 }
                 else
                 {
-                    ql_avl.append(QString::fromStdString(FormatIndivisibleMP(available)));
-                    ql_res.append(QString::fromStdString(FormatIndivisibleMP(reserved)));
+                    ql_avl.append(QString::fromStdString(FormatIndivisibleAmount(available)));
+                    ql_res.append(QString::fromStdString(FormatIndivisibleAmount(reserved)));
                 }
                 ++count;
             }
@@ -922,13 +923,13 @@ int MatrixModel::fillin(unsigned int propertyId)
                 bool divisible = isPropertyDivisible(propertyId+2147483647);
                 if (divisible)
                 {
-                    ql_avl.append(QString::fromStdString(FormatDivisibleMP(available)));
-                    ql_res.append(QString::fromStdString(FormatDivisibleMP(reserved)));
+                    ql_avl.append(QString::fromStdString(FormatDivisibleAmount(available)));
+                    ql_res.append(QString::fromStdString(FormatDivisibleAmount(reserved)));
                 }
                 else
                 {
-                    ql_avl.append(QString::fromStdString(FormatIndivisibleMP(available)));
-                    ql_res.append(QString::fromStdString(FormatIndivisibleMP(reserved)));
+                    ql_avl.append(QString::fromStdString(FormatIndivisibleAmount(available)));
+                    ql_res.append(QString::fromStdString(FormatIndivisibleAmount(reserved)));
                 }
                 ++count;
              }
@@ -960,13 +961,13 @@ int MatrixModel::fillin(unsigned int propertyId)
             ql_addr.append((my_it->first).c_str());
             if (divisible)
             {
-                ql_avl.append(QString::fromStdString(FormatDivisibleMP(available)));
-                ql_res.append(QString::fromStdString(FormatDivisibleMP(reserved)));
+                ql_avl.append(QString::fromStdString(FormatDivisibleAmount(available)));
+                ql_res.append(QString::fromStdString(FormatDivisibleAmount(reserved)));
             }
             else
             {
-                ql_avl.append(QString::fromStdString(FormatIndivisibleMP(available)));
-                ql_res.append(QString::fromStdString(FormatIndivisibleMP(reserved)));
+                ql_avl.append(QString::fromStdString(FormatIndivisibleAmount(available)));
+                ql_res.append(QString::fromStdString(FormatIndivisibleAmount(reserved)));
             }
             ++count;
         }

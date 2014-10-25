@@ -77,6 +77,7 @@ using namespace mastercore;
 #include "mastercore_tx.h"
 #include "mastercore_sp.h"
 #include "mastercore_errors.h"
+#include "mastercore_parse_string.h"
 
 // part of 'breakout' feature
 static const int nBlockTop = 0;
@@ -297,35 +298,11 @@ bool isNonMainNet()
   return (TestNet() || RegTest());
 }
 
-// mostly taken from Bitcoin's FormatMoney()
-string FormatDivisibleMP(int64_t n, bool fSign)
-{
-// Note: not using straight sprintf here because we do NOT want
-// localized number formatting.
-int64_t n_abs = (n > 0 ? n : -n);
-int64_t quotient = n_abs/COIN;
-int64_t remainder = n_abs%COIN;
-string str = strprintf("%d.%08d", quotient, remainder);
-
-  if (!fSign) return str;
-
-  if (n < 0)
-      str.insert((unsigned int)0, 1, '-');
-  else
-      str.insert((unsigned int)0, 1, '+');
-  return str;
-}
-
-std::string mastercore::FormatIndivisibleMP(int64_t n)
-{
-  string str = strprintf("%ld", n);
-  return str;
-}
-
+// TODO: move into mastercore_parse_string.h/.cpp
 std::string FormatMP(unsigned int property, int64_t n, bool fSign)
 {
-  if (isPropertyDivisible(property)) return FormatDivisibleMP(n, fSign);
-  else return FormatIndivisibleMP(n);
+  if (isPropertyDivisible(property)) return FormatDivisibleAmount(n, fSign);
+  else return FormatIndivisibleAmount(n);
 }
 
 string const CMPSPInfo::watermarkKey("watermark");

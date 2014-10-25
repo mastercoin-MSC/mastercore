@@ -82,7 +82,7 @@ int extra2 = 0, extra3 = 0;
           total += (my_it->second).print(extra2, bDivisible);
         }
 
-        printf("total for property %d  = %X is %s\n", extra2, extra2, FormatDivisibleMP(total).c_str());
+        printf("total for property %d  = %X is %s\n", extra2, extra2, FormatDivisibleAmount(total).c_str());
       }
       break;
 
@@ -171,13 +171,13 @@ Value getbalance_MP(const Array& params, bool fHelp)
 
     if (divisible)
     {
-        balObj.push_back(Pair("balance", FormatDivisibleMP(tmpBalAvailable)));
-        balObj.push_back(Pair("reserved", FormatDivisibleMP(tmpBalReservedSell+tmpBalReservedAccept)));
+        balObj.push_back(Pair("balance", FormatDivisibleAmount(tmpBalAvailable)));
+        balObj.push_back(Pair("reserved", FormatDivisibleAmount(tmpBalReservedSell+tmpBalReservedAccept)));
     }
     else
     {
-        balObj.push_back(Pair("balance", FormatIndivisibleMP(tmpBalAvailable)));
-        balObj.push_back(Pair("reserved", FormatIndivisibleMP(tmpBalReservedSell+tmpBalReservedAccept)));
+        balObj.push_back(Pair("balance", FormatIndivisibleAmount(tmpBalAvailable)));
+        balObj.push_back(Pair("reserved", FormatIndivisibleAmount(tmpBalReservedSell+tmpBalReservedAccept)));
     }
 
     return balObj;
@@ -402,13 +402,13 @@ Value getallbalancesforid_MP(const Array& params, bool fHelp)
         addressbal.push_back(Pair("address", address));
         if(divisible)
         {
-        addressbal.push_back(Pair("balance", FormatDivisibleMP(tmpBalAvailable)));
-        addressbal.push_back(Pair("reserved", FormatDivisibleMP(tmpBalReservedSell+tmpBalReservedAccept)));
+        addressbal.push_back(Pair("balance", FormatDivisibleAmount(tmpBalAvailable)));
+        addressbal.push_back(Pair("reserved", FormatDivisibleAmount(tmpBalReservedSell+tmpBalReservedAccept)));
         }
         else
         {
-        addressbal.push_back(Pair("balance", FormatIndivisibleMP(tmpBalAvailable)));
-        addressbal.push_back(Pair("reserved", FormatIndivisibleMP(tmpBalReservedSell+tmpBalReservedAccept)));
+        addressbal.push_back(Pair("balance", FormatIndivisibleAmount(tmpBalAvailable)));
+        addressbal.push_back(Pair("reserved", FormatIndivisibleAmount(tmpBalReservedSell+tmpBalReservedAccept)));
         }
         response.push_back(addressbal);
     }
@@ -470,13 +470,13 @@ Value getallbalancesforaddress_MP(const Array& params, bool fHelp)
 
             if (divisible)
             {
-                    propertyBal.push_back(Pair("balance", FormatDivisibleMP(tmpBalAvailable)));
-                    propertyBal.push_back(Pair("reserved", FormatDivisibleMP(tmpBalReservedSell+tmpBalReservedAccept)));
+                    propertyBal.push_back(Pair("balance", FormatDivisibleAmount(tmpBalAvailable)));
+                    propertyBal.push_back(Pair("reserved", FormatDivisibleAmount(tmpBalReservedSell+tmpBalReservedAccept)));
             }
             else
             {
-                    propertyBal.push_back(Pair("balance", FormatIndivisibleMP(tmpBalAvailable)));
-                    propertyBal.push_back(Pair("reserved", FormatIndivisibleMP(tmpBalReservedSell+tmpBalReservedAccept)));
+                    propertyBal.push_back(Pair("balance", FormatIndivisibleAmount(tmpBalAvailable)));
+                    propertyBal.push_back(Pair("reserved", FormatIndivisibleAmount(tmpBalReservedSell+tmpBalReservedAccept)));
             }
 
             response.push_back(propertyBal);
@@ -547,11 +547,11 @@ Value getproperty_MP(const Array& params, bool fHelp)
         response.push_back(Pair("fixedissuance", fixedIssuance));
         if (divisible)
         {
-            response.push_back(Pair("totaltokens", FormatDivisibleMP(totalTokens)));
+            response.push_back(Pair("totaltokens", FormatDivisibleAmount(totalTokens)));
         }
         else
         {
-            response.push_back(Pair("totaltokens", FormatIndivisibleMP(totalTokens)));
+            response.push_back(Pair("totaltokens", FormatIndivisibleAmount(totalTokens)));
         }
 
 return response;
@@ -767,27 +767,27 @@ Value getcrowdsale_MP(const Array& params, bool fHelp)
         participanttx.push_back(Pair("txid", txid)); //.GetHex()).c_str();
         if (divisibleDesired)
         {
-             participanttx.push_back(Pair("amountsent", FormatDivisibleMP(amountSent)));
+             participanttx.push_back(Pair("amountsent", FormatDivisibleAmount(amountSent)));
         }
         else
         {
-             participanttx.push_back(Pair("amountsent", FormatIndivisibleMP(amountSent)));
+             participanttx.push_back(Pair("amountsent", FormatIndivisibleAmount(amountSent)));
         }
         if (divisible)
         {
-             participanttx.push_back(Pair("participanttokens", FormatDivisibleMP(userTokens)));
+             participanttx.push_back(Pair("participanttokens", FormatDivisibleAmount(userTokens)));
         }
         else
         {
-             participanttx.push_back(Pair("participanttokens", FormatIndivisibleMP(userTokens)));
+             participanttx.push_back(Pair("participanttokens", FormatIndivisibleAmount(userTokens)));
         }
         if (divisible)
         {
-             participanttx.push_back(Pair("issuertokens", FormatDivisibleMP(issuerTokens)));
+             participanttx.push_back(Pair("issuertokens", FormatDivisibleAmount(issuerTokens)));
         }
         else
         {
-             participanttx.push_back(Pair("issuertokens", FormatIndivisibleMP(issuerTokens)));
+             participanttx.push_back(Pair("issuertokens", FormatIndivisibleAmount(issuerTokens)));
         }
         participanttxs.push_back(participanttx);
     }
@@ -798,11 +798,11 @@ Value getcrowdsale_MP(const Array& params, bool fHelp)
     response.push_back(Pair("propertyiddesired", propertyIdDesired));
     if (divisible)
     {
-        response.push_back(Pair("tokensperunit", FormatDivisibleMP(tokensPerUnit)));
+        response.push_back(Pair("tokensperunit", FormatDivisibleAmount(tokensPerUnit)));
     }
     else
     {
-        response.push_back(Pair("tokensperunit", FormatIndivisibleMP(tokensPerUnit)));
+        response.push_back(Pair("tokensperunit", FormatIndivisibleAmount(tokensPerUnit)));
     }
     response.push_back(Pair("earlybonus", earlyBonus));
     response.push_back(Pair("percenttoissuer", percentToIssuer));
@@ -811,21 +811,21 @@ Value getcrowdsale_MP(const Array& params, bool fHelp)
 
     if (divisibleDesired)
     {
-        response.push_back(Pair("amountraised", FormatDivisibleMP(amountRaised)));
+        response.push_back(Pair("amountraised", FormatDivisibleAmount(amountRaised)));
     }
     else
     {
-        response.push_back(Pair("amountraised", FormatIndivisibleMP(amountRaised)));
+        response.push_back(Pair("amountraised", FormatIndivisibleAmount(amountRaised)));
     }
     if (divisible)
     {
-        response.push_back(Pair("tokensissued", FormatDivisibleMP(tokensIssued)));
-        response.push_back(Pair("addedissuertokens", FormatDivisibleMP(missedTokens)));
+        response.push_back(Pair("tokensissued", FormatDivisibleAmount(tokensIssued)));
+        response.push_back(Pair("addedissuertokens", FormatDivisibleAmount(missedTokens)));
     }
     else
     {
-        response.push_back(Pair("tokensissued", FormatIndivisibleMP(tokensIssued)));
-        response.push_back(Pair("addedissuertokens", FormatIndivisibleMP(missedTokens)));
+        response.push_back(Pair("tokensissued", FormatIndivisibleAmount(tokensIssued)));
+        response.push_back(Pair("addedissuertokens", FormatIndivisibleAmount(missedTokens)));
     }
     if (!active) response.push_back(Pair("closedearly", closeEarly));
     if (!active) response.push_back(Pair("maxtokens", maxTokens));
@@ -903,11 +903,11 @@ Value getactivecrowdsales_MP(const Array& params, bool fHelp)
               responseObj.push_back(Pair("propertyiddesired", propertyIdDesired));
               if (divisible)
               {
-                  responseObj.push_back(Pair("tokensperunit", FormatDivisibleMP(tokensPerUnit)));
+                  responseObj.push_back(Pair("tokensperunit", FormatDivisibleAmount(tokensPerUnit)));
               }
               else
               {
-                  responseObj.push_back(Pair("tokensperunit", FormatIndivisibleMP(tokensPerUnit)));
+                  responseObj.push_back(Pair("tokensperunit", FormatIndivisibleAmount(tokensPerUnit)));
               }
               responseObj.push_back(Pair("earlybonus", earlyBonus));
               responseObj.push_back(Pair("percenttoissuer", percentToIssuer));
@@ -990,9 +990,9 @@ Value getgrants_MP(const Array& params, bool fHelp)
           Object granttx;
           granttx.push_back(Pair("txid", txid));
           if (sp.isDivisible()) {
-            granttx.push_back(Pair("grant", FormatDivisibleMP(grantedTokens)));
+            granttx.push_back(Pair("grant", FormatDivisibleAmount(grantedTokens)));
           } else {
-            granttx.push_back(Pair("grant", FormatIndivisibleMP(grantedTokens)));
+            granttx.push_back(Pair("grant", FormatIndivisibleAmount(grantedTokens)));
           }
           issuancetxs.push_back(granttx);
         }
@@ -1001,9 +1001,9 @@ Value getgrants_MP(const Array& params, bool fHelp)
           Object revoketx;
           revoketx.push_back(Pair("txid", txid));
           if (sp.isDivisible()) {
-            revoketx.push_back(Pair("revoke", FormatDivisibleMP(revokedTokens)));
+            revoketx.push_back(Pair("revoke", FormatDivisibleAmount(revokedTokens)));
           } else {
-            revoketx.push_back(Pair("revoke", FormatIndivisibleMP(revokedTokens)));
+            revoketx.push_back(Pair("revoke", FormatIndivisibleAmount(revokedTokens)));
           }
           issuancetxs.push_back(revoketx);
         }
@@ -1013,9 +1013,9 @@ Value getgrants_MP(const Array& params, bool fHelp)
     response.push_back(Pair("issuer", issuer));
     response.push_back(Pair("creationtxid", creationHash.GetHex()));
     if (sp.isDivisible()) {
-      response.push_back(Pair("totaltokens", FormatDivisibleMP(totalTokens)));
+      response.push_back(Pair("totaltokens", FormatDivisibleAmount(totalTokens)));
     } else {
-      response.push_back(Pair("totaltokens", FormatIndivisibleMP(totalTokens)));
+      response.push_back(Pair("totaltokens", FormatIndivisibleAmount(totalTokens)));
     }
     response.push_back(Pair("issuances", issuancetxs));
     return response;
@@ -1048,8 +1048,8 @@ void add_mdex_fields(Object *metadex_obj, CMPMetaDEx obj, bool c_own_div, bool c
   //metadex_obj->push_back(Pair("unit_price", strprintf("%lu.%.8s",  price[0],  boost::lexical_cast<std::string>(price[1]) ).c_str() ) );
   //metadex_obj->push_back(Pair("inverse_unit_price", strprintf("%lu.%.8s", invprice[0], boost::lexical_cast<std::string>(invprice[1]) ).c_str() ) );
   //active?
-  metadex_obj->push_back(Pair("amount_original", FormatDivisibleMP(obj.getAmtOrig())));
-  metadex_obj->push_back(Pair("amount_desired", FormatDivisibleMP(obj.getAmtDes())));
+  metadex_obj->push_back(Pair("amount_original", FormatDivisibleAmount(obj.getAmtOrig())));
+  metadex_obj->push_back(Pair("amount_desired", FormatDivisibleAmount(obj.getAmtDes())));
   metadex_obj->push_back(Pair("action", (uint64_t) obj.getAction()));
   metadex_obj->push_back(Pair("block", obj.getBlock()));
   metadex_obj->push_back(Pair("blockTime", obj.getBlockTime()));
@@ -1414,14 +1414,14 @@ Value getactivedexsells_MP(const Array& params, bool fHelp)
           responseObj.push_back(Pair("txid", txid));
           responseObj.push_back(Pair("propertyid", propertyId));
           responseObj.push_back(Pair("seller", seller));
-          responseObj.push_back(Pair("amountavailable", FormatDivisibleMP(amountAvailable)));
-          responseObj.push_back(Pair("bitcoindesired", FormatDivisibleMP(bitcoinDesired)));
-          responseObj.push_back(Pair("unitprice", FormatDivisibleMP(unitPrice)));
+          responseObj.push_back(Pair("amountavailable", FormatDivisibleAmount(amountAvailable)));
+          responseObj.push_back(Pair("bitcoindesired", FormatDivisibleAmount(bitcoinDesired)));
+          responseObj.push_back(Pair("unitprice", FormatDivisibleAmount(unitPrice)));
           responseObj.push_back(Pair("timelimit", timeLimit));
-          responseObj.push_back(Pair("minimumfee", FormatDivisibleMP(minFee)));
+          responseObj.push_back(Pair("minimumfee", FormatDivisibleAmount(minFee)));
 
           // display info about accepts related to sell
-          responseObj.push_back(Pair("amountaccepted", FormatDivisibleMP(amountAccepted)));
+          responseObj.push_back(Pair("amountaccepted", FormatDivisibleAmount(amountAccepted)));
           Array acceptsMatched;
           for(AcceptMap::iterator ait = my_accepts.begin(); ait != my_accepts.end(); ++ait)
           {
@@ -1439,7 +1439,7 @@ Value getactivedexsells_MP(const Array& params, bool fHelp)
                   uint64_t acceptAmount = accept.getAcceptAmountRemaining();
                   matchedAccept.push_back(Pair("buyer", buyer));
                   matchedAccept.push_back(Pair("block", acceptBlock));
-                  matchedAccept.push_back(Pair("amount", FormatDivisibleMP(acceptAmount)));
+                  matchedAccept.push_back(Pair("amount", FormatDivisibleAmount(acceptAmount)));
                   acceptsMatched.push_back(matchedAccept);
               }
           }
@@ -1609,11 +1609,11 @@ static int populateRPCTransactionObject(uint256 txid, Object *txobj, string filt
                         if (!filterAddress.empty()) if ((buyer != filterAddress) && (seller != filterAddress)) return -1; // return negative rc if filtering & no match
                         uint64_t amountPaid = wtx.vout[vout].nValue;
                         purchaseObj.push_back(Pair("vout", vout));
-                        purchaseObj.push_back(Pair("amountpaid", FormatDivisibleMP(amountPaid)));
+                        purchaseObj.push_back(Pair("amountpaid", FormatDivisibleAmount(amountPaid)));
                         purchaseObj.push_back(Pair("ismine", bIsMine));
                         purchaseObj.push_back(Pair("referenceaddress", seller));
                         purchaseObj.push_back(Pair("propertyid", propertyId));
-                        purchaseObj.push_back(Pair("amountbought", FormatDivisibleMP(nValue)));
+                        purchaseObj.push_back(Pair("amountbought", FormatDivisibleAmount(nValue)));
                         purchaseObj.push_back(Pair("valid", true)); //only valid purchases are stored, anything else is regular BTC tx
                         purchases.push_back(purchaseObj);
                     }
@@ -1829,11 +1829,11 @@ static int populateRPCTransactionObject(uint256 txid, Object *txobj, string filt
         txobj->push_back(Pair("divisible", divisible));
         if (divisible)
         {
-            txobj->push_back(Pair("amount", FormatDivisibleMP(amount))); //divisible, format w/ bitcoins VFA func
+            txobj->push_back(Pair("amount", FormatDivisibleAmount(amount))); //divisible, format w/ bitcoins VFA func
         }
         else
         {
-            txobj->push_back(Pair("amount", FormatIndivisibleMP(amount))); //indivisible, push raw 64
+            txobj->push_back(Pair("amount", FormatIndivisibleAmount(amount))); //indivisible, push raw 64
         }
         if (crowdPurchase)
         {
@@ -1842,13 +1842,13 @@ static int populateRPCTransactionObject(uint256 txid, Object *txobj, string filt
             txobj->push_back(Pair("purchasedpropertydivisible", crowdDivisible));
             if (crowdDivisible)
             {
-                txobj->push_back(Pair("purchasedtokens", FormatDivisibleMP(crowdTokens))); //divisible, format w/ bitcoins VFA func
-                txobj->push_back(Pair("issuertokens", FormatDivisibleMP(issuerTokens)));
+                txobj->push_back(Pair("purchasedtokens", FormatDivisibleAmount(crowdTokens))); //divisible, format w/ bitcoins VFA func
+                txobj->push_back(Pair("issuertokens", FormatDivisibleAmount(issuerTokens)));
             }
             else
             {
-                txobj->push_back(Pair("purchasedtokens", FormatIndivisibleMP(crowdTokens))); //indivisible, push raw 64
-                txobj->push_back(Pair("issuertokens", FormatIndivisibleMP(issuerTokens)));
+                txobj->push_back(Pair("purchasedtokens", FormatIndivisibleAmount(crowdTokens))); //indivisible, push raw 64
+                txobj->push_back(Pair("issuertokens", FormatIndivisibleAmount(issuerTokens)));
             }
         }
         if (MSC_TYPE_TRADE_OFFER == MPTxTypeInt)
@@ -1869,8 +1869,8 @@ static int populateRPCTransactionObject(uint256 txid, Object *txobj, string filt
             //txobj->push_back(Pair("unit_price", mdex_unitPrice ) );
             //txobj->push_back(Pair("inverse_unit_price", mdex_invUnitPrice ) );
             //active?
-            txobj->push_back(Pair("amount_original", FormatDivisibleMP(mdex_amt_orig_sale)));
-            txobj->push_back(Pair("amount_desired", FormatDivisibleMP(mdex_amt_des)));
+            txobj->push_back(Pair("amount_original", FormatDivisibleAmount(mdex_amt_orig_sale)));
+            txobj->push_back(Pair("amount_desired", FormatDivisibleAmount(mdex_amt_des)));
             txobj->push_back(Pair("action", (uint64_t) mdex_action));
         }
         txobj->push_back(Pair("valid", valid));

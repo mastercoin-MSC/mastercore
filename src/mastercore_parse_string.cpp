@@ -1,5 +1,7 @@
 #include "mastercore_parse_string.h"
 
+#include "util.h"
+
 #include <stdint.h>
 #include <algorithm>
 #include <string>
@@ -8,6 +10,54 @@
 
 namespace mastercore
 {
+std::string FormatDivisibleAmount(int64_t n)
+{
+    // Prepend sign only for negative numbers
+    bool is_negative = (n < 0);
+
+    return FormatDivisibleAmount(n, is_negative);
+}
+
+std::string FormatDivisibleAmount(int64_t n, bool sign)
+{
+    // Note: not using straight sprintf here because we do NOT want
+    // localized number formatting.
+    int64_t n_abs = (n > 0 ? n : -n);
+    int64_t quotient = n_abs / COIN;
+    int64_t remainder = n_abs % COIN;
+    std::string str = tfm::format("%ld.%08d", quotient, remainder);
+
+    if (!sign)
+        return str;
+
+    if (n < 0)
+        str.insert((unsigned int) 0, 1, '-');
+    else
+        str.insert((unsigned int) 0, 1, '+');
+
+    return str;
+}
+
+std::string FormatIndivisibleAmount(int64_t n)
+{
+    return tfm::format("%ld", n);
+}
+
+std::string FormatTokenAmount(int64_t n)
+{
+    // Default token amounts are formatted as indivisible
+    // token which aligns well with an integer input
+    return FormatIndivisibleAmount(n);
+}
+
+std::string FormatTokenAmount(int64_t n, bool divisible)
+{
+    if (divisible)
+        return FormatDivisibleAmount(n);
+
+    return FormatIndivisibleAmount(n);
+}
+
 int64_t StrToInt64(const std::string& str, bool divisible)
 {    
     // copy original, so it remains unchanged

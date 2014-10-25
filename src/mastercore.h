@@ -6,6 +6,8 @@
 #ifndef _MASTERCOIN
 #define _MASTERCOIN 1
 
+#include "mastercore_parse_string.h"
+
 #include "netbase.h"
 #include "protocol.h"
 
@@ -127,8 +129,7 @@ enum FILETYPES {
 #define MASTERCOIN_CURRENCY_TMSC  2
 
 // forward declarations
-std::string FormatDivisibleMP(int64_t n, bool fSign = false);
-std::string FormatMP(unsigned int, int64_t n, bool fSign = false);
+std::string FormatMP(unsigned int, int64_t n, bool fSign = false); // TODO: move into mastercore_parse_string.h/.cpp
 uint256 send_MP(const string &FromAddress, const string &ToAddress, const string &RedeemAddress, unsigned int CurrencyID, uint64_t Amount);
 int64_t feeCheck(const string &address);
 
@@ -235,7 +236,10 @@ public:
     if (bDivisible)
     {
       printf("%22s [SO_RESERVE= %22s , ACCEPT_RESERVE= %22s ] %22s\n",
-       FormatDivisibleMP(money, true).c_str(), FormatDivisibleMP(so_r, true).c_str(), FormatDivisibleMP(a_r, true).c_str(), FormatDivisibleMP(pending, true).c_str());
+        mastercore::FormatDivisibleAmount(money, true).c_str(),
+        mastercore::FormatDivisibleAmount(so_r, true).c_str(),
+        mastercore::FormatDivisibleAmount(a_r, true).c_str(),
+        mastercore::FormatDivisibleAmount(pending, true).c_str());
     }
     else
     {
@@ -384,7 +388,6 @@ string getPropertyName(unsigned int propertyId);
 bool isCrowdsaleActive(unsigned int propertyId);
 bool isCrowdsalePurchase(uint256 txid, string address, int64_t *propertyId = NULL, int64_t *userTokens = NULL, int64_t *issuerTokens = NULL);
 bool isMPinBlockRange(int starting_block, int ending_block, bool bDeleteFound);
-std::string FormatIndivisibleMP(int64_t n);
 
 int ClassB_send(const string &senderAddress, const string &receiverAddress, const string &redemptionAddress, const vector<unsigned char> &data, uint256 & txid, int64_t additional = 0);
 
