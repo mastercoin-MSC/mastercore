@@ -61,7 +61,7 @@ extern int msc_debug_dex, msc_debug_metadex, msc_debug_metadex2;
 
 md_PropertiesMap mastercore::metadex;
 
-md_PricesMap *get_Prices(unsigned int prop)
+md_PricesMap* mastercore::get_Prices(unsigned int prop)
 {
 md_PropertiesMap::iterator it = metadex.find(prop);
 
@@ -70,7 +70,7 @@ md_PropertiesMap::iterator it = metadex.find(prop);
   return (md_PricesMap *) NULL;
 }
 
-md_Set *get_Indexes(md_PricesMap *p, cpp_dec_float_50 price)
+md_Set* mastercore::get_Indexes(md_PricesMap *p, cpp_dec_float_50 price)
 {
 md_PricesMap::iterator it = p->find(price);
 
