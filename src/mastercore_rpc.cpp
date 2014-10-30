@@ -1050,7 +1050,7 @@ void add_mdex_fields(Object *metadex_obj, CMPMetaDEx obj, bool c_own_div, bool c
   //active?
   metadex_obj->push_back(Pair("amount_original", FormatDivisibleMP(obj.getAmount())));
   metadex_obj->push_back(Pair("amount_desired", FormatDivisibleMP(obj.getAmountDesired())));
-  metadex_obj->push_back(Pair("action", (uint64_t) obj.getAction()));
+  metadex_obj->push_back(Pair("action", (int) obj.getAction()));
   metadex_obj->push_back(Pair("block", obj.getBlock()));
   metadex_obj->push_back(Pair("blockTime", obj.getBlockTime()));
 }
