@@ -1664,10 +1664,10 @@ int input_mp_offers_string(const string &s)
   offerBlock = atoi(vstr[i++]);
   amountOriginal = boost::lexical_cast<uint64_t>(vstr[i++]);
   prop = boost::lexical_cast<unsigned int>(vstr[i++]);
-  btcDesired = boost::lexical_cast<uint64_t>(vstr[i++]);
+  btcDesired = boost::lexical_cast<uint64_t>(vstr[i++]); // metadex: amount of desired property
   prop_desired = boost::lexical_cast<unsigned int>(vstr[i++]);
-  minFee = boost::lexical_cast<uint64_t>(vstr[i++]);
-  blocktimelimit = atoi(vstr[i++]);
+  minFee = boost::lexical_cast<uint64_t>(vstr[i++]);  // metadex: subaction
+  blocktimelimit = atoi(vstr[i++]); // metadex: index of tx in block
   txidStr = vstr[i++];
 
   if (MASTERCOIN_PROPERTY_BTC == prop_desired)
@@ -1686,8 +1686,34 @@ int input_mp_offers_string(const string &s)
   }
   else
   {
-    // MetaDEx
-    // TODO ...
+    CMPMetaDEx new_mdex(sellerAddr, offerBlock, prop, amountOriginal, prop_desired, 
+    btcDesired, uint256(txidStr), blocktimelimit);
+
+    new_mdex.setAction((unsigned char)minFee);
+
+    cpp_dec_float_50 neworder_price = (cpp_dec_float_50)amountOriginal / (cpp_dec_float_50)btcDesired;
+
+    if (0 >= neworder_price) return METADEX_ERROR -66;
+
+    md_PricesMap temp_prices, *p_prices = get_Prices(prop);
+    md_Set temp_indexes, *p_indexes = NULL;
+
+    std::pair<md_Set::iterator,bool> ret;
+
+    if (p_prices) p_indexes = get_Indexes(p_prices, neworder_price);
+
+    if (!p_indexes) p_indexes = &temp_indexes;
+    {
+      ret = p_indexes->insert(new_mdex);
+
+      if (false == ret.second) return -1;
+    }
+
+    if (!p_prices) p_prices = &temp_prices;
+
+    (*p_prices)[neworder_price] = *p_indexes;
+
+    metadex[prop] = *p_prices;
   }
 
   return 0;
@@ -1824,6 +1850,7 @@ static int msc_file_load(const string &filename, int what, bool verifyHash = fal
 
     case FILETYPE_OFFERS:
       my_offers.clear();
+      metadex.clear();
       inputLineFunc = input_mp_offers_string;
       break;
 
@@ -2084,10 +2111,19 @@ static int write_mp_offers(ofstream &file, SHA256_CTX *shaCtx)
 
 static int write_mp_metadex(ofstream &file, SHA256_CTX *shaCtx)
 {
-//  printf("%s(), line %d, file: %s\n", __FUNCTION__, __LINE__, __FILE__);
-
-  // TODO
-  // ...
+  for (md_PropertiesMap::iterator my_it = metadex.begin(); my_it != metadex.end(); ++my_it)
+  {
+    md_PricesMap & prices = my_it->second;
+    for (md_PricesMap::iterator it = prices.begin(); it != prices.end(); ++it)
+    {
+      md_Set & indexes = (it->second);
+      for (md_Set::iterator it = indexes.begin(); it != indexes.end(); ++it)
+      {
+        CMPMetaDEx meta = *it;
+        meta.saveOffer(file, shaCtx);
+      }
+    }
+  }
 
   return 0;
 }
