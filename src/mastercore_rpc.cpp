@@ -1032,6 +1032,38 @@ int check_prop_valid(int64_t tmpPropId, string error, string exist_error ) {
   return tmpPropId;
 }
 
+Object find_next_largest(Array *elems) {
+  Object largest;
+  int largest_index = 0, iter = 0, largest_block = 0;
+  for( Array::iterator it = elems->begin(); it != elems->end(); ++it) {
+    Object temp_obj = it->get_obj();
+
+    int block_ = temp_obj[10].value_.get_int(); //10 pos is block
+
+    if ( block_ >= largest_block )
+    {
+      largest_block = block_;
+      largest = temp_obj;
+      largest_index = it - elems->begin();
+    }
+    iter += 1;
+  }
+  elems->at( largest_index ).get_obj()[10] = Pair("block", -1); 
+  return largest;
+}
+
+Array sort_mdex_obj(Array *response) {
+ Array res;
+ Object largest;
+ unsigned int i;
+
+ for( i = 1; i <= response->size(); i++) {
+   largest = find_next_largest(response);
+   res.push_back( largest );
+ }
+ return res;
+}
+
 void add_mdex_fields(Object *metadex_obj, CMPMetaDEx obj, bool c_own_div, bool c_want_div, string eco) {
 
   metadex_obj->push_back(Pair("address", obj.getAddr().c_str()));
@@ -1189,7 +1221,8 @@ Value getorderbook_MP(const Array& params, bool fHelp) {
       }
     }
   }
-  
+  response = sort_mdex_obj( &response );
+
   return response;
 }
  
@@ -1262,7 +1295,7 @@ Value gettradessince_MP(const Array& params, bool fHelp) {
       }
     }
   }
-  
+  response = sort_mdex_obj( &response );
   return response;
 }
 Value getopenorders_MP(const Array& params, bool fHelp) {
@@ -1353,12 +1386,7 @@ Value gettradehistory_MP(const Array& params, bool fHelp) {
       }
     }
   }
-  
-  //for ( json_spirit::Object::iterator it = response.begin(); it != response.end(); ++it) {
-
-   // char firs = it->first[0];
-    //printf ("\n first %s and %s \n", firs, it->first);
-  //}
+  response = sort_mdex_obj( &response );
   return response;
 }
 
