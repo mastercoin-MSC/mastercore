@@ -49,7 +49,7 @@
 
 #include <openssl/sha.h>
 
-#include "tinyformat.h"
+// #include "tinyformat.h"
 
 #include <boost/multiprecision/cpp_int.hpp>
 
@@ -236,33 +236,6 @@ int mp_LogPrintStr(const std::string &str)
 
     return ret;
 }
-
-/* When we switch to C++11, this can be switched to variadic templates instead
- * of this macro-based construction (see tinyformat.h).
- */
-#define MP_MAKE_ERROR_AND_LOG_FUNC(n)                                        \
-    /*   Print to debug.log if -debug=category switch is given OR category is NULL. */ \
-    template<TINYFORMAT_ARGTYPES(n)>                                          \
-    static inline int mp_category_log(const char* category, const char* format, TINYFORMAT_VARARGS(n))  \
-    {                                                                         \
-        if(!LogAcceptCategory(category)) return 0;                            \
-        return mp_LogPrintStr(tfm::format(format, TINYFORMAT_PASSARGS(n))); \
-    }                                                                         \
-    template<TINYFORMAT_ARGTYPES(n)>                                          \
-    static inline int mp_log(const char* format, TINYFORMAT_VARARGS(n))  \
-    {                                                                         \
-        return mp_LogPrintStr(tfm::format(format, TINYFORMAT_PASSARGS(n))); \
-    }                                                                         \
-    /*   Log error and return false */                                        \
-    template<TINYFORMAT_ARGTYPES(n)>                                          \
-    static inline bool mp_error(const char* format, TINYFORMAT_VARARGS(n))                     \
-    {                                                                         \
-        mp_LogPrintStr("ERROR: " + tfm::format(format, TINYFORMAT_PASSARGS(n)) + "\n"); \
-        return false;                                                         \
-    }
-
-TINYFORMAT_FOREACH_ARGNUM(MP_MAKE_ERROR_AND_LOG_FUNC)
-//--- CUT HERE ---
 
 // indicate whether persistence is enabled at this point, or not
 // used to write/read files, for breakout mode, debugging, etc.
@@ -3356,7 +3329,7 @@ static const string addr = "1MpNote1jsHkbQLwEmgoMr29EoUC1nyxxV";
  // optional: provide the pointer to the CMPOffer object, it will get filled in
  // verify that it does via if (MSC_TYPE_TRADE_OFFER == mp_obj.getType())
  //
-int CMPTransaction::interpretPacket(CMPOffer *obj_o)
+int CMPTransaction::interpretPacket(CMPOffer *obj_o, CMPMetaDEx *mdex_o)
 {
 int rc = PKT_ERROR;
 int step_rc;
@@ -3589,7 +3562,9 @@ int step_rc;
 
     case MSC_TYPE_METADEX:
 #ifdef  MY_HACK
-      if (304500 > block) return -31337;
+//      if (304500 > block) return -31337;
+      if (304930 > block) return -31337;
+//      if (305100 > block) return -31337;
 #endif
       step_rc = step2_Value();
       if (0>step_rc) return step_rc;

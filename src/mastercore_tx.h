@@ -122,7 +122,7 @@ public:
   int logicMath_SavingsMark(void);
   int logicMath_SavingsCompromised(void);
 
- int interpretPacket(CMPOffer *obj_o = NULL);
+ int interpretPacket(CMPOffer *obj_o = NULL, CMPMetaDEx *mdex_o = NULL);
  int step1(void);
  int step2_Value(void);
  bool isOverrun(const char *p, unsigned int line);

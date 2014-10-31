@@ -8,6 +8,8 @@
 #define STR_ACCEPT_ADDR_PROP_ADDR_COMBO( _seller , _buyer ) ( _seller + "-" + strprintf("%d", prop) + "+" + _buyer)
 #define STR_PAYMENT_SUBKEY_TXID_PAYMENT_COMBO(txidStr) ( txidStr + "-" + strprintf("%d", paymentNumber))
 
+#define DISPLAY_PRECISION_LEN 20
+
 #include <boost/multiprecision/cpp_dec_float.hpp>
 using boost::multiprecision::cpp_dec_float_50;
 // a single outstanding offer -- from one seller of one property, internally may have many accepts
@@ -191,8 +193,8 @@ public:
   uint64_t getAmount() const { return amount; }
   uint64_t getAmountDesired() const { return amount_desired; }
 
-  void setAmount(int64_t ao) { amount = ao; }
-  void setAmountDesired(int64_t ad) { amount_desired = ad; }
+  void setAmount(int64_t ao) { fprintf(mp_fp, "setAmount(%ld):%s\n", ao, ToString().c_str()); amount = ao; }
+  void setAmountDesired(int64_t ad) { fprintf(mp_fp, "setAmountDesired(%ld):%s\n", ad, ToString().c_str()); amount_desired = ad; }
 
   void nullTxid() { txid = 0; }
 
@@ -261,9 +263,13 @@ public:
 };
 
 // ---------------
+typedef cpp_dec_float_50 XDOUBLE;
+// typedef double XDOUBLE;
+
 typedef std::set < CMPMetaDEx , MetaDEx_compare > md_Set; // set of objects sorted by block+idx
 
-typedef std::map < cpp_dec_float_50 , md_Set > md_PricesMap;         // map of prices; there is a set of sorted objects for each price
+// TODO: replace double with float512 or float1024 // FIXME hitting the limit on trading 1 Satoshi for 100 BTC !!!
+typedef std::map < XDOUBLE , md_Set > md_PricesMap;         // map of prices; there is a set of sorted objects for each price
 typedef std::map < unsigned int, md_PricesMap > md_PropertiesMap; // map of properties; there is a map of prices for each property
 
 extern md_PropertiesMap metadex;
@@ -286,7 +292,7 @@ int MetaDEx_Create(const string &sender_addr, unsigned int, uint64_t amount, int
 int MetaDEx_Destroy(const string &sender_addr, unsigned int);
 
 // void MetaDEx_debug_print();
-void MetaDEx_debug_print3();
+void MetaDEx_debug_print3(FILE * fp = stdout);
 }
 
 #endif // #ifndef _MASTERCOIN_DEX

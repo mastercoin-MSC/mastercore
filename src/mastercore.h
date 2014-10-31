@@ -9,6 +9,8 @@
 #include "netbase.h"
 #include "protocol.h"
 
+#include "tinyformat.h"
+
 #define LOG_FILENAME    "mastercore.log"
 #define INFO_FILENAME   "mastercore_crowdsales.log"
 #define OWNERS_FILENAME "mastercore_owners.log"
@@ -125,6 +127,36 @@ enum FILETYPES {
 #define MASTERCOIN_PROPERTY_BTC   0
 #define MASTERCOIN_PROPERTY_MSC   1
 #define MASTERCOIN_PROPERTY_TMSC  2
+
+int mp_LogPrintStr(const std::string &str);
+
+/* When we switch to C++11, this can be switched to variadic templates instead
+ * of this macro-based construction (see tinyformat.h).
+ */
+#define MP_MAKE_ERROR_AND_LOG_FUNC(n)                                        \
+    /*   Print to debug.log if -debug=category switch is given OR category is NULL. */ \
+    template<TINYFORMAT_ARGTYPES(n)>                                          \
+    static inline int mp_category_log(const char* category, const char* format, TINYFORMAT_VARARGS(n))  \
+    {                                                                         \
+        if(!LogAcceptCategory(category)) return 0;                            \
+        return mp_LogPrintStr(tfm::format(format, TINYFORMAT_PASSARGS(n))); \
+    }                                                                         \
+    template<TINYFORMAT_ARGTYPES(n)>                                          \
+    static inline int mp_log(const char* format, TINYFORMAT_VARARGS(n))  \
+    {                                                                         \
+        return mp_LogPrintStr(tfm::format(format, TINYFORMAT_PASSARGS(n))); \
+    }                                                                         \
+    /*   Log error and return false */                                        \
+    template<TINYFORMAT_ARGTYPES(n)>                                          \
+    static inline bool mp_error(const char* format, TINYFORMAT_VARARGS(n))                     \
+    {                                                                         \
+        mp_LogPrintStr("ERROR: " + tfm::format(format, TINYFORMAT_PASSARGS(n)) + "\n"); \
+        return false;                                                         \
+    }
+
+TINYFORMAT_FOREACH_ARGNUM(MP_MAKE_ERROR_AND_LOG_FUNC)
+//--- CUT HERE ---
+
 
 // forward declarations
 std::string FormatDivisibleMP(int64_t n, bool fSign = false);
