@@ -1059,6 +1059,7 @@ Array sort_mdex_obj(Array *response) {
 
  for( i = 1; i <= response->size(); i++) {
    largest = find_next_largest(response);
+   //add txid sorting TODO
    res.push_back( largest );
  }
  return res;
@@ -1066,8 +1067,14 @@ Array sort_mdex_obj(Array *response) {
 
 void add_mdex_fields(Object *metadex_obj, CMPMetaDEx obj, bool c_own_div, bool c_want_div, string eco) {
 
+  string add_txid; for (int i = 0; i < 64; i++) { add_txid += '0'; }
+ 
   metadex_obj->push_back(Pair("address", obj.getAddr().c_str()));
-  metadex_obj->push_back(Pair("txid", obj.getHash().GetHex()));
+
+  //add detection for ADDs
+  if ( obj.getHash().GetHex() == add_txid ) metadex_obj->push_back(Pair("txid", "ADD transaction" ));  
+  else  metadex_obj->push_back(Pair("txid", obj.getHash().GetHex() )); 
+
   metadex_obj->push_back(Pair("ecosystem", eco ));
   metadex_obj->push_back(Pair("property_owned", (uint64_t) obj.getProperty()));
   metadex_obj->push_back(Pair("property_desired", (uint64_t) obj.getDesProperty()));
