@@ -29,11 +29,11 @@ public:
   uint256 getHash() const { return txid; }
   unsigned int getProperty() const { return property; }
   uint64_t getMinFee() const { return min_fee ; }
-  unsigned char getBlockTimeLimit() { return blocktimelimit; }
-  unsigned char getSubaction() { return subaction; }
+  unsigned char getBlockTimeLimit() const { return blocktimelimit; }
+  unsigned char getSubaction() const { return subaction; }
 
-  uint64_t getOfferAmountOriginal() { return offer_amount_original; }
-  uint64_t getBTCDesiredOriginal() { return BTC_desired_original; }
+  uint64_t getOfferAmountOriginal() const { return offer_amount_original; }
+  uint64_t getBTCDesiredOriginal() const { return BTC_desired_original; }
 
   CMPOffer():offerBlock(0),offer_amount_original(0),property(0),BTC_desired_original(0),min_fee(0),blocktimelimit(0),txid(0)
   {
@@ -167,8 +167,6 @@ public:
 };  // end of CMPAccept class
 
 // a metadex trade
-// TODO
-// ...
 class CMPMetaDEx
 {
 private:
@@ -199,7 +197,6 @@ public:
   void nullTxid() { txid = 0; }
 
   unsigned char getAction() const { return subaction; }
-  void setAction(unsigned char a) { subaction = a; }
 
   int getBlock() const { return block; }
   unsigned int getIdx() const { return idx; } 
@@ -210,9 +207,9 @@ public:
     return pblockindex->GetBlockTime();  
   }
 
-  CMPMetaDEx(const string &, int, unsigned int, uint64_t, unsigned int, uint64_t, const uint256 &, unsigned int);
+  CMPMetaDEx(const string &, int, unsigned int, uint64_t, unsigned int, uint64_t, const uint256 &, unsigned int, unsigned char);
 
-  void Set0(const string &, int, unsigned int, uint64_t, unsigned int, uint64_t, const uint256 &, unsigned int);
+  void Set(const string &, int, unsigned int, uint64_t, unsigned int, uint64_t, const uint256 &, unsigned int, unsigned char);
 
   std::string ToString() const;
 

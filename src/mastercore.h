@@ -107,8 +107,7 @@ enum FILETYPES {
   NUM_FILETYPES
 };
 
-#define PKT_RETURN_OFFER    (1000)
-// #define PKT_RETURN_ACCEPT   (2000)
+#define PKT_RETURNED_OBJECT    (1000)
 
 #define PKT_ERROR             ( -9000)
 #define DEX_ERROR_SELLOFFER   (-10000)

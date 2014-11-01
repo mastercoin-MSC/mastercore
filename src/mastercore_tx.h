@@ -55,9 +55,9 @@ private:
     }
   };
 
+public:
   enum ActionTypes { INVALID = 0, NEW = 1, ADD = 1, UPDATE = 2, SUBTRACT = 2, CANCEL = 3 };
 
-public:
 //  mutable CCriticalSection cs_msc;  // TODO: need to refactor first...
 
   unsigned int getType() const { return type; }
@@ -112,10 +112,10 @@ public:
   }
 
   int logicMath_SimpleSend(void);
-  int logicMath_TradeOffer(CMPOffer *obj_o);
+  int logicMath_TradeOffer(CMPOffer *);
   int logicMath_AcceptOffer_BTC(void);
   int logicMath_SendToOwners(FILE *fp = NULL);
-  int logicMath_MetaDEx(void);
+  int logicMath_MetaDEx(CMPMetaDEx *);
   int logicMath_GrantTokens(void);
   int logicMath_RevokeTokens(void);
   int logicMath_ChangeIssuer(void);

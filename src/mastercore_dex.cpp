@@ -340,7 +340,7 @@ void mastercore::MetaDEx_debug_print3(FILE *fp)
   fprintf(fp, ">>>\n");
 }
 
-void CMPMetaDEx::Set0(const string &sa, int b, unsigned int c, uint64_t nValue, unsigned int cd, uint64_t ad, const uint256 &tx, unsigned int i)
+void CMPMetaDEx::Set(const string &sa, int b, unsigned int c, uint64_t nValue, unsigned int cd, uint64_t ad, const uint256 &tx, unsigned int i, unsigned char suba)
 {
   addr = sa;
   block = b;
@@ -349,13 +349,13 @@ void CMPMetaDEx::Set0(const string &sa, int b, unsigned int c, uint64_t nValue, 
   amount= nValue;
   desired_property = cd;
   amount_desired = ad;
-
   idx = i;
+  subaction = suba;
 }
 
-CMPMetaDEx::CMPMetaDEx(const string &addr, int b, unsigned int c, uint64_t nValue, unsigned int cd, uint64_t ad, const uint256 &tx, unsigned int i)
+CMPMetaDEx::CMPMetaDEx(const string &addr, int b, unsigned int c, uint64_t nValue, unsigned int cd, uint64_t ad, const uint256 &tx, unsigned int i, unsigned char suba)
 {
-  Set0(addr, b,c,nValue,cd,ad,tx,i);
+  Set(addr, b,c,nValue,cd,ad,tx,i,suba);
 }
 
 std::string CMPMetaDEx::ToString() const
@@ -744,7 +744,7 @@ int count_mustInsert = 0;
   // --------------------------------
   {
     // store the data into the temp MetaDEx object here
-    CMPMetaDEx new_mdex(sender_addr, block, prop, amount, property_desired, amount_desired, txid, idx);
+    CMPMetaDEx new_mdex(sender_addr, block, prop, amount, property_desired, amount_desired, txid, idx, CMPTransaction::ADD);
 
     if (msc_debug_metadex) fprintf(mp_fp, "%s(); temp object: %s, line %d, file: %s\n", __FUNCTION__, new_mdex.ToString().c_str(), __LINE__, __FILE__);
 

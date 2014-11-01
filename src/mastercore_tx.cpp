@@ -322,7 +322,7 @@ static const char * const subaction_name[] = { "empty", "new", "update", "cancel
       if (obj_o)
       {
         obj_o->Set(amount_desired, min_fee, blocktimelimit, subaction);
-        return PKT_RETURN_OFFER;
+        return PKT_RETURNED_OBJECT;
       }
 
       // figure out which Action this is based on amount for sale, version & etc.
@@ -413,7 +413,7 @@ int rc = DEX_ERROR_ACCEPT;
     return rc;
 }
 
-int CMPTransaction::logicMath_MetaDEx()
+int CMPTransaction::logicMath_MetaDEx(CMPMetaDEx *mdex_o)
 {
   int rc = PKT_ERROR_METADEX -100;
   unsigned char action = 0;
@@ -432,6 +432,12 @@ int CMPTransaction::logicMath_MetaDEx()
     memcpy(&action, &pkt[28], 1);
 
     fprintf(mp_fp, "\t          action: %u\n", action);
+
+    if (mdex_o)
+    {
+      mdex_o->Set(sender, block, property, nValue, desired_property, desired_value, txid, tx_idx, action);
+      return PKT_RETURNED_OBJECT;
+    }
 
     nNewValue = getMPbalance(sender, property, MONEY);
 

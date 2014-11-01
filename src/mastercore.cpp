@@ -1660,9 +1660,7 @@ int input_mp_offers_string(const string &s)
   else
   {
     CMPMetaDEx new_mdex(sellerAddr, offerBlock, prop, amountOriginal, prop_desired, 
-    btcDesired, uint256(txidStr), blocktimelimit);
-
-    new_mdex.setAction((unsigned char)minFee);
+    btcDesired, uint256(txidStr), blocktimelimit, (unsigned char) minFee);
 
     cpp_dec_float_50 neworder_price = (cpp_dec_float_50)amountOriginal / (cpp_dec_float_50)btcDesired;
 
@@ -3317,7 +3315,7 @@ static const string addr = "1MpNote1jsHkbQLwEmgoMr29EoUC1nyxxV";
  //
  // RETURNS:  0 if the packet is fully valid
  // RETURNS: <0 if the packet is invalid
- // RETURNS: >0 the only known case today is: return PKT_RETURN_OFFER
+ // RETURNS: >0 the only known case today is: return PKT_RETURNED_OBJECT
  //
  // 
  // the following functions may augment the amount in question (nValue):
@@ -3337,6 +3335,7 @@ int step_rc;
   if (0>step1()) return -98765;
 
   if ((obj_o) && (MSC_TYPE_TRADE_OFFER != type)) return -777; // can't fill in the Offer object !
+  if ((mdex_o) && (MSC_TYPE_METADEX != type)) return -778; // can't fill in the MetaDEx object !
 
   // further processing for complex types
   // TODO: version may play a role here !
@@ -3569,7 +3568,7 @@ int step_rc;
       step_rc = step2_Value();
       if (0>step_rc) return step_rc;
 
-      rc = logicMath_MetaDEx();
+      rc = logicMath_MetaDEx(mdex_o);
       break;
 
     case MSC_TYPE_CHANGE_ISSUER_ADDRESS:
