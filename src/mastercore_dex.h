@@ -212,6 +212,25 @@ public:
   void Set(const string &, int, unsigned int, uint64_t, unsigned int, uint64_t, const uint256 &, unsigned int, unsigned char);
 
   std::string ToString() const;
+
+  void saveOffer(ofstream &file, SHA256_CTX *shaCtx) const {
+    string lineOut = (boost::format("%s,%d,%d,%d,%d,%d,%d,%d,%s")
+      % addr
+      % block
+      % amount
+      % property
+      % amount_desired
+      % desired_property
+      % (unsigned int) subaction
+      % idx
+      % txid.ToString()).str();
+
+    // add the line to the hash
+    SHA256_Update(shaCtx, lineOut.c_str(), lineOut.length());
+
+    // write the line
+    file << lineOut << endl;
+  }
 };
 
 unsigned int eraseExpiredAccepts(int blockNow);
@@ -264,6 +283,8 @@ int DEx_acceptCreate(const string &buyer, const string &seller, int, uint64_t nV
 int DEx_acceptDestroy(const string &buyer, const string &seller, int, bool bForceErase = false);
 int DEx_payment(uint256 txid, unsigned int vout, string seller, string buyer, uint64_t BTC_paid, int blockNow, uint64_t *nAmended = NULL);
 
+md_PricesMap *get_Prices(unsigned int prop);
+md_Set *get_Indexes(md_PricesMap *p, cpp_dec_float_50 price);
 int MetaDEx_Create(const string &sender_addr, unsigned int, uint64_t amount, int block, unsigned int property_desired, uint64_t amount_desired, const uint256 &txid, unsigned int idx);
 int MetaDEx_Destroy(const string &sender_addr, unsigned int);
 
