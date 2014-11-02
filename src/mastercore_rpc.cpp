@@ -1032,13 +1032,47 @@ int check_prop_valid(int64_t tmpPropId, string error, string exist_error ) {
   return tmpPropId;
 }
 
+void sort_lexical(std::vector<Object> *unsorted) {
+  std::vector<Object> sorted;
+  std::vector<int> sorted_int;
+
+  for(int i = 0; i < (int) unsorted->size(); i++ ) {
+    Object current = unsorted->at(i);
+    string txid = current[1].value_.get_str().c_str();
+
+    int lexical_value = 0;
+
+    // compute lexical value of txid
+    for ( int j = 0; j < (int) txid.size(); j++) { lexical_value += (int) txid[j]; }
+
+    // collect lexical values for sorting
+    sorted_int.push_back( lexical_value );
+    sorted.push_back( current );
+
+    // sort by lexical value
+    for ( int k = 0; k < (int) sorted_int.size(); k++) {
+      //printf(" \n lexical value %d < sorted_int[k] %d \n ", lexical_value, sorted_int[k] );
+      if ( lexical_value < sorted_int[k]  ) { 
+        sorted.insert( sorted.begin() + k, current );
+        sorted.pop_back(); 
+        break;
+      } 
+    }
+  }
+
+  // sanity check, below check should never be false 
+  if ( sorted.size() == unsorted->size() ) *unsorted = sorted;
+}
+
 Object find_next_largest(Array *elems) {
   Object largest;
+
   int largest_index = 0, iter = 0, largest_block = 0;
+
+  //Look for largest blockheight in elems
   for( Array::iterator it = elems->begin(); it != elems->end(); ++it) {
     Object temp_obj = it->get_obj();
-
-    int block_ = temp_obj[10].value_.get_int(); //10 pos is block
+    int block_ = temp_obj[10].value_.get_int(); //10th pos is blockheight
 
     if ( block_ >= largest_block )
     {
@@ -1048,21 +1082,50 @@ Object find_next_largest(Array *elems) {
     }
     iter += 1;
   }
+  //Mark the largest blockheight as already used
   elems->at( largest_index ).get_obj()[10] = Pair("block", -1); 
   return largest;
 }
 
-Array sort_mdex_obj(Array *response) {
+//Sorts metadex objects that contain more than 1 item
+void sort_mdex_obj(Array *response) {
  Array res;
- Object largest;
- unsigned int i;
+ Object current_largest, next_largest;
 
- for( i = 1; i <= response->size(); i++) {
-   largest = find_next_largest(response);
-   //add txid sorting TODO
-   res.push_back( largest );
+ int c_block, n_block; // current block, last block
+ std::vector<Object> unsorted; //lexical sort
+
+ for(int i = 0; i < (int) response->size(); i+=2) {
+   //Retreive largest and next largest object by blockheight
+   current_largest = find_next_largest(response);
+   c_block = current_largest[10].value_.get_int();
+
+   next_largest = find_next_largest(response);
+   n_block = next_largest[10].value_.get_int(); 
+
+   unsorted.push_back(current_largest);
+
+   //Collect any other objects together that have the same block
+   while( c_block == n_block ) {
+     unsorted.push_back(next_largest);
+     next_largest = find_next_largest(response);
+     n_block = next_largest[10].value_.get_int(); 
+     i++;
+   }
+   
+   //Lexically sort blocks if more than 1 per blockheight
+   //Add sorted data to res object
+   if( c_block != n_block )
+   {
+     if ( unsorted.size() > 1 ) sort_lexical(&unsorted);
+     for(int j = 0; j < (int) unsorted.size(); j++ ) { res.push_back( unsorted[j] ); }
+     unsorted.clear();
+     res.push_back(next_largest); 
+   }
  }
- return res;
+
+ // sanity check, below check should never be false 
+ if( res.size() == response->size() ) *response = res;
 }
 
 void add_mdex_fields(Object *metadex_obj, CMPMetaDEx obj, bool c_own_div, bool c_want_div, string eco) {
@@ -1228,7 +1291,7 @@ Value getorderbook_MP(const Array& params, bool fHelp) {
       }
     }
   }
-  response = sort_mdex_obj( &response );
+  if( response.size() > 1 ) sort_mdex_obj( &response );
 
   return response;
 }
@@ -1302,7 +1365,7 @@ Value gettradessince_MP(const Array& params, bool fHelp) {
       }
     }
   }
-  response = sort_mdex_obj( &response );
+  if( response.size() > 1 ) sort_mdex_obj( &response );
   return response;
 }
 Value getopenorders_MP(const Array& params, bool fHelp) {
@@ -1393,7 +1456,7 @@ Value gettradehistory_MP(const Array& params, bool fHelp) {
       }
     }
   }
-  response = sort_mdex_obj( &response );
+  if( response.size() > 1 ) sort_mdex_obj( &response );
   return response;
 }
 
