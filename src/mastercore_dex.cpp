@@ -101,6 +101,10 @@ const string getTradeReturnType(MatchReturnType ret)
   }
 }
 
+bool operator==( XDOUBLE first, XDOUBLE second) {
+ return first.str(50, std::ios_base::fixed) == second.str(50, std::ios_base::fixed) ? true : false;
+}
+
 // find the best match on the market
 // INPUT: property, desprop, desprice = of the new order being inserted; the new object being processed
 // RETURN: 
