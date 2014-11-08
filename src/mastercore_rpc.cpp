@@ -1039,10 +1039,112 @@ int check_prop_valid(int64_t tmpPropId, string error, string exist_error ) {
   return tmpPropId;
 }
 
+void sort_lexical(std::vector<Object> *unsorted) {
+  std::vector<Object> sorted;
+  std::vector<int> sorted_int;
+
+  for(int i = 0; i < (int) unsorted->size(); i++ ) {
+    Object current = unsorted->at(i);
+    string txid = current[1].value_.get_str().c_str();
+
+    int lexical_value = 0;
+
+    // compute lexical value of txid
+    for ( int j = 0; j < (int) txid.size(); j++) { lexical_value += (int) txid[j]; }
+
+    // collect lexical values for sorting
+    sorted_int.push_back( lexical_value );
+    sorted.push_back( current );
+
+    // sort by lexical value
+    for ( int k = 0; k < (int) sorted_int.size(); k++) {
+      //printf(" \n lexical value %d < sorted_int[k] %d \n ", lexical_value, sorted_int[k] );
+      if ( lexical_value < sorted_int[k]  ) { 
+        sorted.insert( sorted.begin() + k, current );
+        sorted.pop_back(); 
+        break;
+      } 
+    }
+  }
+
+  // sanity check, below check should never be false 
+  if ( sorted.size() == unsorted->size() ) *unsorted = sorted;
+}
+
+Object find_next_largest(Array *elems) {
+  Object largest;
+
+  int largest_index = 0, iter = 0, largest_block = 0;
+
+  //Look for largest blockheight in elems
+  for( Array::iterator it = elems->begin(); it != elems->end(); ++it) {
+    Object temp_obj = it->get_obj();
+    int block_ = temp_obj[10].value_.get_int(); //10th pos is blockheight
+
+    if ( block_ >= largest_block )
+    {
+      largest_block = block_;
+      largest = temp_obj;
+      largest_index = it - elems->begin();
+    }
+    iter += 1;
+  }
+  //Mark the largest blockheight as already used
+  elems->at( largest_index ).get_obj()[10] = Pair("block", -1); 
+  return largest;
+}
+
+//Sorts metadex objects that contain more than 1 item
+void sort_mdex_obj(Array *response) {
+ Array res;
+ Object current_largest, next_largest;
+
+ int c_block, n_block; // current block, last block
+ std::vector<Object> unsorted; //lexical sort
+
+ for(int i = 0; i < (int) response->size(); i+=2) {
+   //Retreive largest and next largest object by blockheight
+   current_largest = find_next_largest(response);
+   c_block = current_largest[10].value_.get_int();
+
+   next_largest = find_next_largest(response);
+   n_block = next_largest[10].value_.get_int(); 
+
+   unsorted.push_back(current_largest);
+
+   //Collect any other objects together that have the same block
+   while( c_block == n_block ) {
+     unsorted.push_back(next_largest);
+     next_largest = find_next_largest(response);
+     n_block = next_largest[10].value_.get_int(); 
+     i++;
+   }
+   
+   //Lexically sort blocks if more than 1 per blockheight
+   //Add sorted data to res object
+   if( c_block != n_block )
+   {
+     if ( unsorted.size() > 1 ) sort_lexical(&unsorted);
+     for(int j = 0; j < (int) unsorted.size(); j++ ) { res.push_back( unsorted[j] ); }
+     unsorted.clear();
+     res.push_back(next_largest); 
+   }
+ }
+
+ // sanity check, below check should never be false 
+ if( res.size() == response->size() ) *response = res;
+}
+
 void add_mdex_fields(Object *metadex_obj, CMPMetaDEx obj, bool c_own_div, bool c_want_div, string eco) {
 
+  string add_txid; for (int i = 0; i < 64; i++) { add_txid += '0'; }
+ 
   metadex_obj->push_back(Pair("address", obj.getAddr().c_str()));
-  metadex_obj->push_back(Pair("txid", obj.getHash().GetHex()));
+
+  //add detection for ADDs
+  if ( obj.getHash().GetHex() == add_txid ) metadex_obj->push_back(Pair("txid", "ADD transaction" ));  
+  else  metadex_obj->push_back(Pair("txid", obj.getHash().GetHex() )); 
+
   metadex_obj->push_back(Pair("ecosystem", eco ));
   metadex_obj->push_back(Pair("property_owned", (uint64_t) obj.getProperty()));
   metadex_obj->push_back(Pair("property_desired", (uint64_t) obj.getDesProperty()));
@@ -1060,6 +1162,53 @@ void add_mdex_fields(Object *metadex_obj, CMPMetaDEx obj, bool c_own_div, bool c
   metadex_obj->push_back(Pair("action", (int) obj.getAction()));
   metadex_obj->push_back(Pair("block", obj.getBlock()));
   metadex_obj->push_back(Pair("blockTime", obj.getBlockTime()));
+}
+
+void MetaDexObjectToJSON(const CMPMetaDEx& obj, Object& metadex_obj)
+{
+    CMPSPInfo::Entry spProperty;
+    CMPSPInfo::Entry spDesProperty;
+
+    _my_sps->getSP(obj.getProperty(), spProperty);
+    _my_sps->getSP(obj.getDesProperty(), spDesProperty);
+
+    // TODO: proper handling of ADD transactions
+    std::string strZeroHash; strZeroHash.resize(64, '0');
+    std::string strTransactionHash = obj.getHash().GetHex();
+    if (strTransactionHash == strZeroHash) strTransactionHash = "ADD transaction";
+
+    std::string strAmountOriginal = FormatMP(obj.getProperty(), obj.getAmount());
+    std::string strAmountDesired = FormatMP(obj.getDesProperty(), obj.getAmountDesired());
+    std::string strEcosystem = isTestEcosystemProperty(obj.getProperty()) ? "Test" : "Main";
+
+    // add data to JSON object
+    metadex_obj.push_back(Pair("address", obj.getAddr()));
+    metadex_obj.push_back(Pair("txid", strTransactionHash));
+    metadex_obj.push_back(Pair("ecosystem", strEcosystem));
+    metadex_obj.push_back(Pair("property_owned", (uint64_t) obj.getProperty()));
+    metadex_obj.push_back(Pair("property_desired", (uint64_t) obj.getDesProperty()));
+    metadex_obj.push_back(Pair("property_owned_divisible", spProperty.isDivisible()));
+    metadex_obj.push_back(Pair("property_desired_divisible", spDesProperty.isDivisible()));
+    metadex_obj.push_back(Pair("amount_original", strAmountOriginal));
+    metadex_obj.push_back(Pair("amount_desired", strAmountDesired));
+    metadex_obj.push_back(Pair("action", (int) obj.getAction()));
+    metadex_obj.push_back(Pair("block", obj.getBlock()));
+    metadex_obj.push_back(Pair("blocktime", obj.getBlockTime()));
+}
+
+void MetaDexObjectsToJSON(std::vector<CMPMetaDEx> vMetaDexObjs, Array& response)
+{
+    MetaDEx_compare compareByHeight;
+
+    // sorts metadex objects based on block height and position in block
+    std::sort (vMetaDexObjs.begin(), vMetaDexObjs.end(), compareByHeight);
+
+    for (std::vector<CMPMetaDEx>::const_iterator it = vMetaDexObjs.begin(); it != vMetaDexObjs.end(); ++it) {
+        Object metadex_obj;
+        MetaDexObjectToJSON(*it, metadex_obj);
+
+        response.push_back(metadex_obj);
+    }
 }
 
 Value trade_MP(const Array& params, bool fHelp) {
@@ -1205,82 +1354,83 @@ Value getorderbook_MP(const Array& params, bool fHelp) {
       }
     }
   }
-  
+  if( response.size() > 1 ) sort_mdex_obj( &response );
+
   return response;
 }
- 
-Value gettradessince_MP(const Array& params, bool fHelp) {
 
-   if (fHelp)
+Value gettradessince_MP(const Array& params, bool fHelp)
+{
+    const unsigned int timeTwoWeeksAgo = GetLatestBlockTime() - 1209600;
+
+    if (fHelp || params.size() > 3)
         throw runtime_error(
-            "gettradessince_MP\n"
-            "\nAllows user to request last known orders from order book\n"
-            
+            "\nReturns the last known orders from the order book with a timestamp equal or \n"
+            "greater than provided.\n"
+
+            "\nNote: the order of property ids for the filter has no relevance, and filters such \n"
+            "as \"gettradessince_MP "+strprintf("%s",timeTwoWeeksAgo)+" 1 3\" and \"gettradessince_MP "
+            +strprintf("%s",timeTwoWeeksAgo)+" 3 1\" can \n"
+            "be used equally.\n"
+
             "\nArguments:\n"
-            "1. timestamp               (int, optional, default=[" + strprintf("%s",GetLatestBlockTime() - 1209600) + "]) starting from the timestamp, orders to show"
-            "2. property_id1            (int, optional) filter orders by property_id1 on either side of the trade \n"
-            "3. property_id2            (int, optional) filter orders by property_id1 and property_id2\n"
+            "1. timestamp       (int, optional, default=["+strprintf("%s",timeTwoWeeksAgo)+"]) earlier orders are excluded\n"
+            "2. property_id1    (int, optional) filter orders by property_id1 on either side of the trade\n"
+            "3. property_id2    (int, optional) filter orders by property_id1 and property_id2\n"
+
+            "\nExamples:\n"
+            + HelpExampleCli("gettradessince_MP", "")
+            + HelpExampleRpc("gettradessince_MP", "")
         );
 
-  Array response;
-  Object metadex_obj;
-  unsigned int propertyIdSaleFilter = 0, propertyIdWantFilter = 0;
+    unsigned int propertyIdSaleFilter = 0;
+    unsigned int propertyIdWantFilter = 0;
 
-  uint64_t timestamp = (params.size() > 0) ? params[0].get_int64() : GetLatestBlockTime() - 1209600; //2 weeks 
+    uint64_t timestamp = (params.size() > 0) ? params[0].get_int64() : timeTwoWeeksAgo;    
 
-  bool filter_by_one = (params.size() > 1) ? true : false;
-  bool filter_by_both = (params.size() > 2) ? true : false;
+    bool filter_by_one = (params.size() > 1);
+    bool filter_by_two = (params.size() > 2);
 
-  if( filter_by_one ) {
-    propertyIdSaleFilter = check_prop_valid( params[1].get_int64() , "Invalid property identifier (Sale)", "Property identifier does not exist (Sale)"); 
-  }
+    if (filter_by_one)
+        propertyIdSaleFilter = check_prop_valid(params[1].get_int64(),
+                "Invalid property identifier (Sale)",
+                "Property identifier does not exist (Sale)");
 
-  if ( filter_by_both ) {
-    propertyIdWantFilter = check_prop_valid( params[2].get_int64() , "Invalid property identifier (Want)", "Property identifier does not exist (Want)"); 
-  }
+    if (filter_by_two)
+        propertyIdWantFilter = check_prop_valid(params[2].get_int64(),
+                "Invalid property identifier (Want)", 
+                "Property identifier does not exist (Want)");
 
-  for (md_PropertiesMap::iterator my_it = metadex.begin(); my_it != metadex.end(); ++my_it)
-  {
-    md_PricesMap & prices = my_it->second;
-    for (md_PricesMap::iterator it = prices.begin(); it != prices.end(); ++it)
-    {
-      md_Set & indexes = (it->second);
-      for (md_Set::iterator it = indexes.begin(); it != indexes.end(); ++it)
-      {
-          CMPMetaDEx obj = *it;
-          CMPSPInfo::Entry sp;
+    std::vector<CMPMetaDEx> vMetaDexObjects;
 
-          bool filter = 1;
+    for (md_PropertiesMap::const_iterator it = metadex.begin(); it != metadex.end(); ++it) {
+        const md_PricesMap& prices = it->second;
+        for (md_PricesMap::const_iterator it = prices.begin(); it != prices.end(); ++it) {
+            const md_Set& indexes = it->second;
+            for (md_Set::const_iterator it = indexes.begin(); it != indexes.end(); ++it) {
+                const CMPMetaDEx& obj = *it;
 
-          if( filter_by_one || filter_by_both ) {
-          //this filter, the first part is filtering by two currencies, the second part is filtering by the first only
-          filter = ( filter_by_both && ( obj.getProperty() == propertyIdSaleFilter ) && ( obj.getDesProperty() == propertyIdWantFilter ) ) || ( !filter_by_both && ( obj.getProperty() == propertyIdSaleFilter ) );
-          }
+                bool sale_filter_property_found =
+                    propertyIdSaleFilter == obj.getProperty() || propertyIdSaleFilter == obj.getDesProperty();
+                bool want_filter_property_found =
+                    propertyIdWantFilter == obj.getProperty() || propertyIdWantFilter == obj.getDesProperty();
 
-          if ( filter &&  (obj.getBlockTime() >= timestamp)) {
-            //clear obj before reuse
-            metadex_obj.clear();
-            
-            _my_sps->getSP(obj.getProperty(), sp);
-            bool c_own_div = sp.isDivisible();
+                if ((filter_by_one && !(sale_filter_property_found || want_filter_property_found)) ||
+                    (filter_by_two && !(sale_filter_property_found && want_filter_property_found)))
+                    continue;
 
-            _my_sps->getSP(obj.getDesProperty(), sp);
-            bool c_want_div = sp.isDivisible();
-
-            string eco = (isTestEcosystemProperty(propertyIdSaleFilter) == true) ? "Test" : "Main";
-
-            // add data to obj
-            add_mdex_fields( &metadex_obj , obj , c_own_div, c_want_div, eco);
-            
-            //add it to response
-            response.push_back(metadex_obj);
-          }
-      }
+                if (obj.getBlockTime() >= timestamp)
+                    vMetaDexObjects.push_back(obj);
+            }
+        }
     }
-  }
-  
-  return response;
+
+    Array response;
+    MetaDexObjectsToJSON(vMetaDexObjects, response);
+
+    return response;
 }
+
 Value getopenorders_MP(const Array& params, bool fHelp) {
 
    if (fHelp)
@@ -1369,12 +1519,7 @@ Value gettradehistory_MP(const Array& params, bool fHelp) {
       }
     }
   }
-  
-  //for ( json_spirit::Object::iterator it = response.begin(); it != response.end(); ++it) {
-
-   // char firs = it->first[0];
-    //printf ("\n first %s and %s \n", firs, it->first);
-  //}
+  if( response.size() > 1 ) sort_mdex_obj( &response );
   return response;
 }
 
