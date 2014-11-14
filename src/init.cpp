@@ -136,7 +136,9 @@ void Shutdown()
         if (pcoinsTip)
             pcoinsTip->Flush();
         delete pcoinsTip; pcoinsTip = NULL;
+#ifdef ENABLE_WALLET
         (void) mastercore_shutdown();
+#endif
         delete pcoinsdbview; pcoinsdbview = NULL;
         delete pblocktree; pblocktree = NULL;
     }
@@ -957,11 +959,11 @@ bool AppInit2(boost::thread_group& threadGroup)
             LogPrintf("No blocks matching %s were found\n", strMatch);
         return false;
     }
-
+#ifdef ENABLE_WALLET
      if (!fTxIndex) return InitError(_("Master Core: Please use -txindex option at the command line or add txindex=1 to bitcoin.conf file !!!\n"));  // mastercore check
      uiInterface.InitMessage(_("Parsing Master Protocol Transactions..."));
      (void) mastercore_init();
-
+#endif
     // ********************************************************* Step 8: load wallet
 #ifdef ENABLE_WALLET
     if (fDisableWallet) {

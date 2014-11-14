@@ -2007,28 +2007,28 @@ bool static DisconnectTip(CValidationState &state) {
     mempool.check(pcoinsTip);
     // Update chainActive and related variables.
     UpdateTip(pindexDelete->pprev);
-
+#ifdef ENABLE_WALLET
     if (!fReindex)
         (void) mastercore_handler_disc_begin(GetHeight(), pindexDelete);
-
+#endif
     // Let wallets know transactions went from 1-confirmed to
     // 0-confirmed or conflicted:
     BOOST_FOREACH(const CTransaction &tx, block.vtx) {
         SyncWithWallets(tx.GetHash(), tx, NULL);
     }
-
+#ifdef ENABLE_WALLET
     if (!fReindex)
         (void) mastercore_handler_disc_end(GetHeight(), pindexDelete);
-
+#endif
     return true;
 }
 
 // Connect a new block to chainActive.
 bool static ConnectTip(CValidationState &state, CBlockIndex *pindexNew) {
     assert(pindexNew->pprev == chainActive.Tip());
-
+#ifdef ENABLE_WALLET
     (void) mastercore_handler_block_begin(GetHeight(), pindexNew);
-
+#endif
     mempool.check(pcoinsTip);
     // Read block from disk.
     CBlock block;
@@ -2073,11 +2073,13 @@ bool static ConnectTip(CValidationState &state, CBlockIndex *pindexNew) {
     // ... and about transactions that got confirmed:
     BOOST_FOREACH(const CTransaction &tx, block.vtx) {
         SyncWithWallets(tx.GetHash(), tx, &block);
+#ifdef ENABLE_WALLET
         if (0 == mastercore_handler_tx(tx, GetHeight(), tx_idx++, pindexNew )) ++countMP;
+#endif
     }
-
+#ifdef ENABLE_WALLET
     (void) mastercore_handler_block_end(GetHeight(), pindexNew, countMP);
-
+#endif
     return true;
 }
 
