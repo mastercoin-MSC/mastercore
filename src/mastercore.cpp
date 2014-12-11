@@ -4261,7 +4261,6 @@ int rc = PKT_ERROR_STO -1000;
           tokens += getMPbalance(address, property, BALANCE);
           tokens += getMPbalance(address, property, SELLOFFER_RESERVE);
           tokens += getMPbalance(address, property, METADEX_RESERVE);
-          tokens += getMPbalance(address, property, ACCEPT_RESERVE);
 
           if (tokens)
           {
