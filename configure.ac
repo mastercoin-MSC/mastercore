@@ -109,6 +109,11 @@ AC_ARG_ENABLE([glibc-back-compat],
 
 AC_ARG_WITH([protoc-bindir],[AS_HELP_STRING([--with-protoc-bindir=BIN_DIR],[specify protoc bin path])], [protoc_bin_path=$withval], [])
 
+AC_ARG_ENABLE([mastercore-development],
+  [AS_HELP_STRING([--enable-mastercore-development],
+  [enable Master Core developer mode - it should not be used outside of test environments and likely results in unexpected behavior (default is no)])],
+  [enable_mastercore_devmode=$enableval],
+  [enable_mastercore_devmode=no])
 
 AC_CONFIG_SRCDIR([src])
 AC_CONFIG_HEADERS([src/bitcoin-config.h])
@@ -586,6 +591,15 @@ else
   AC_MSG_RESULT(no)
 fi
 
+dnl enable developer mode
+AC_MSG_CHECKING([if Master Core developer mode should be enabled])
+if test x$enable_mastercore_devmode != xno; then
+  AC_MSG_RESULT(yes)
+  AC_DEFINE_UNQUOTED([MASTERCORE_DEVMODE],[1],[Define to 1 to enable Master Core developer mode])
+else
+  AC_MSG_RESULT(no)
+fi
+
 dnl enable upnp support
 AC_MSG_CHECKING([whether to build with support for UPnP])
 if test x$have_miniupnpc = xno; then
@@ -674,6 +688,7 @@ AM_CONDITIONAL([USE_LCOV],[test x$use_lcov == xyes])
 AM_CONDITIONAL([USE_COMPARISON_TOOL],[test x$use_comparison_tool != xno])
 AM_CONDITIONAL([USE_COMPARISON_TOOL_REORG_TESTS],[test x$use_comparison_tool_reorg_test != xno])
 AM_CONDITIONAL([GLIBC_BACK_COMPAT],[test x$use_glibc_compat = xyes])
+AM_CONDITIONAL([MASTERCORE_DEVMODE],[test x$enable_mastercore_devmode == xyes])
 
 AC_DEFINE(CLIENT_VERSION_MAJOR, _CLIENT_VERSION_MAJOR, [Major version])
 AC_DEFINE(CLIENT_VERSION_MINOR, _CLIENT_VERSION_MINOR, [Minor version])

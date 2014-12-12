@@ -94,6 +94,7 @@ void MetaDexObjectsToJSON(std::vector<CMPMetaDEx>& vMetaDexObjs, Array& response
     }
 }
 
+#if MASTERCORE_DEVMODE
 // display the tally map & the offer/accept list(s)
 Value mscrpc(const Array& params, bool fHelp)
 {
@@ -196,6 +197,7 @@ int extra2 = 0, extra3 = 0;
 
   return GetHeight();
 }
+#endif
 
 // display an MP balance via RPC
 Value getbalance_MP(const Array& params, bool fHelp)
@@ -931,7 +933,7 @@ int check_prop_valid(int64_t tmpPropId, string error, string exist_error ) {
   return tmpPropId;
 }
 
-#ifndef DISABLE_METADEX
+#ifndef MASTERCORE_DEVMODE
 Value trade_MP(const Array& params, bool fHelp)
 {
     if (fHelp || params.size() < 6)

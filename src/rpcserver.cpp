@@ -316,7 +316,6 @@ static const CRPCCommand vRPCCommands[] =
     { "setgenerate",            &setgenerate,            true,      true,       false },
 
     /* Master Protocol specific calls */
-    { "mscrpc",                 &mscrpc,                 true,      false,      false },
     { "getallbalancesforid_MP", &getallbalancesforid_MP, false,     false,      true },
     { "getbalance_MP",          &getbalance_MP,          false,     false,      true },
     { "send_MP",                &send_MP,                false,     false,      true },
@@ -328,7 +327,8 @@ static const CRPCCommand vRPCCommands[] =
     { "getgrants_MP",           &getgrants_MP,           false,     false,      true },
     { "getactivedexsells_MP",   &getactivedexsells_MP,   false,     false,      true },
     { "getactivecrowdsales_MP", &getactivecrowdsales_MP, false,     false,      true },
-#if 0
+#if MASTERCORE_DEVMODE
+    { "mscrpc",                 &mscrpc,                 true,      false,      false },
     { "trade_MP",               &trade_MP,               false,     false,      true },
     { "getorderbook_MP",        &getorderbook_MP,        false,     false,      true },
     { "gettradessince_MP",      &gettradessince_MP,      false,     false,      true },
