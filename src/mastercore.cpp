@@ -13,6 +13,7 @@
 // global TODO: need locks on the maps in this file & balances (moneys[],reserved[] & raccept[]) !!!
 //
 
+#include "alert.h"
 #include "base58.h"
 #include "rpcserver.h"
 #include "init.h"
@@ -614,9 +615,10 @@ bool mastercore::checkExpiredAlerts(unsigned int curBlock, uint64_t curTime)
                  {
                      // we know we have transactions live we don't understand
                      // can't be trusted to provide valid data, shutdown
-                     file_log("DEBUG ALERT - Shutting down due to unsupported live TX - alert string %s\n",global_alert_message.c_str());
-                     printf("DEBUG ALERT - Shutting down due to unsupported live TX - alert string %s\n",global_alert_message.c_str()); //echo to screen
-                     if (!GetBoolArg("-overrideforcedshutdown", false)) StartShutdown();
+                     std::string strMessage = strprintf("IMPORTANT NOTIFICATION: %s\n", global_alert_message);
+                     file_log(strMessage);
+                     CAlert::Notify(strMessage, false); // fire warning, if -alertnotify is used
+                     if (!GetBoolArg("-overrideforcedshutdown", false)) AbortNode(strMessage);
                      return false;
                  }
 
