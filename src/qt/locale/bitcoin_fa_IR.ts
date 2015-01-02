@@ -1,7 +1,4 @@
-<TS language="fa_IR" version="2.1">
-<context>
-    <name>AboutDialog</name>
-    </context>
+<TS language="fa_IR" version="2.0">
 <context>
     <name>AddressBookPage</name>
     <message>
@@ -38,7 +35,7 @@
     </message>
     <message>
         <source>Comma separated file (*.csv)</source>
-        <translation>سی.اس.وی. (فایل جداگانه دستوری)</translation>
+        <translation>Comma separated file (*.csv) فایل جداگانه دستوری</translation>
     </message>
     </context>
 <context>
@@ -69,10 +66,6 @@
     <message>
         <source>Repeat new passphrase</source>
         <translation>رمز/پَس فرِیز را دوباره وارد کنید</translation>
-    </message>
-    <message>
-        <source>Enter the new passphrase to the wallet.&lt;br/&gt;Please use a passphrase of &lt;b&gt;10 or more random characters&lt;/b&gt;, or &lt;b&gt;eight or more words&lt;/b&gt;.</source>
-        <translation>رمز/پَس فرِیز جدید را در wallet وارد کنید. برای انتخاب رمز/پَس فرِیز از 10 کاراکتر تصادفی یا بیشتر و یا هشت کلمه یا بیشتر استفاده کنید. </translation>
     </message>
     <message>
         <source>Encrypt wallet</source>
@@ -174,10 +167,6 @@
         <translation>از "درخواست نامه"/ application خارج شو</translation>
     </message>
     <message>
-        <source>Show information about Bitcoin</source>
-        <translation>اطلاعات در مورد Bitcoin را نشان بده</translation>
-    </message>
-    <message>
         <source>About &amp;Qt</source>
         <translation>درباره و QT</translation>
     </message>
@@ -246,14 +235,6 @@
         <translation>نوار ابزار</translation>
     </message>
     <message>
-        <source>[testnet]</source>
-        <translation>[testnet]</translation>
-    </message>
-    <message>
-        <source>Bitcoin client</source>
-        <translation>مشتری bitcoin</translation>
-    </message>
-    <message>
         <source>Error</source>
         <translation>خطا</translation>
     </message>
@@ -290,7 +271,7 @@ Address: %4
         <source>Wallet is &lt;b&gt;encrypted&lt;/b&gt; and currently &lt;b&gt;locked&lt;/b&gt;</source>
         <translation>wallet رمزگذاری شد و در حال حاضر قفل است</translation>
     </message>
-    </context>
+</context>
 <context>
     <name>ClientModel</name>
     <message>
@@ -307,10 +288,6 @@ Address: %4
     <message>
         <source>Amount</source>
         <translation>میزان</translation>
-    </message>
-    <message>
-        <source>Address</source>
-        <translation>حساب</translation>
     </message>
     <message>
         <source>Date</source>
@@ -398,10 +375,6 @@ Address: %4
 <context>
     <name>Intro</name>
     <message>
-        <source>Bitcoin</source>
-        <translation>bitcoin</translation>
-    </message>
-    <message>
         <source>Error</source>
         <translation>خطا</translation>
     </message>
@@ -414,10 +387,6 @@ Address: %4
     <message>
         <source>Options</source>
         <translation>انتخاب/آپشن</translation>
-    </message>
-    <message>
-        <source>&amp;Display addresses in transaction list</source>
-        <translation>و نمایش آدرسها در فهرست تراکنش</translation>
     </message>
     <message>
         <source>&amp;OK</source>
@@ -443,14 +412,6 @@ Address: %4
         <translation>اطلاعات نمایش داده شده ممکن است روزآمد نباشد. wallet شما به صورت خودکار بعد از برقراری اتصال با شبکه bitcoin به روز می شود اما این فرایند هنوز تکمیل نشده است.</translation>
     </message>
     <message>
-        <source>Wallet</source>
-        <translation>کیف پول</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Recent transactions&lt;/b&gt;</source>
-        <translation>تراکنشهای اخیر</translation>
-    </message>
-    <message>
         <source>out of sync</source>
         <translation>خارج از روزآمد سازی</translation>
     </message>
@@ -459,16 +420,15 @@ Address: %4
     <name>PaymentServer</name>
     </context>
 <context>
+    <name>PeerTableModel</name>
+    </context>
+<context>
     <name>QObject</name>
     <message>
-        <source>Bitcoin</source>
-        <translation>bitcoin</translation>
+        <source>Amount</source>
+        <translation>میزان</translation>
     </message>
-    <message>
-        <source>Enter a Bitcoin address (e.g. 1NS17iag9jJgTHD1VXjvLCEnZuQ3rJDE9L)</source>
-        <translation>یک آدرس bitcoin وارد کنید (مثال 1NS17iag9jJgTHD1VXjvLCEnZuQ3rJDE9L)</translation>
-    </message>
-</context>
+    </context>
 <context>
     <name>QRImageWidget</name>
     </context>
@@ -660,10 +620,6 @@ Address: %4
         <translation>و امضای پیام </translation>
     </message>
     <message>
-        <source>The address to sign the message with (e.g. 1NS17iag9jJgTHD1VXjvLCEnZuQ3rJDE9L)</source>
-        <translation>یک آدرس bitcoin وارد کنید (مثال 1NS17iag9jJgTHD1VXjvLCEnZuQ3rJDE9L)</translation>
-    </message>
-    <message>
         <source>Alt+A</source>
         <translation>Alt و A</translation>
     </message>
@@ -674,14 +630,6 @@ Address: %4
     <message>
         <source>Alt+P</source>
         <translation>Alt و P</translation>
-    </message>
-    <message>
-        <source>The address the message was signed with (e.g. 1NS17iag9jJgTHD1VXjvLCEnZuQ3rJDE9L)</source>
-        <translation>یک آدرس bitcoin وارد کنید (مثال 1NS17iag9jJgTHD1VXjvLCEnZuQ3rJDE9L)</translation>
-    </message>
-    <message>
-        <source>Enter a Bitcoin address (e.g. 1NS17iag9jJgTHD1VXjvLCEnZuQ3rJDE9L)</source>
-        <translation>یک آدرس bitcoin وارد کنید (مثال 1NS17iag9jJgTHD1VXjvLCEnZuQ3rJDE9L)</translation>
     </message>
     </context>
 <context>
@@ -760,11 +708,7 @@ Address: %4
     </message>
     <message>
         <source>Address</source>
-        <translation>آدرس</translation>
-    </message>
-    <message>
-        <source>Amount</source>
-        <translation>میزان وجه</translation>
+        <translation>حساب</translation>
     </message>
     <message>
         <source>Open until %1</source>
@@ -784,7 +728,7 @@ Address: %4
     </message>
     <message>
         <source>Received with</source>
-        <translation>قبول با </translation>
+        <translation>دریافت با</translation>
     </message>
     <message>
         <source>Received from</source>
@@ -915,7 +859,7 @@ Address: %4
     </message>
     <message>
         <source>Type</source>
-        <translation>نوع</translation>
+        <translation>گونه</translation>
     </message>
     <message>
         <source>Label</source>
@@ -923,11 +867,7 @@ Address: %4
     </message>
     <message>
         <source>Address</source>
-        <translation>آدرس</translation>
-    </message>
-    <message>
-        <source>Amount</source>
-        <translation>میزان</translation>
+        <translation>حساب</translation>
     </message>
     <message>
         <source>ID</source>
@@ -942,6 +882,9 @@ Address: %4
         <translation>به</translation>
     </message>
 </context>
+<context>
+    <name>UnitDisplayStatusBarControl</name>
+    </context>
 <context>
     <name>WalletFrame</name>
     </context>
@@ -975,52 +918,12 @@ Address: %4
 <context>
     <name>bitcoin-core</name>
     <message>
-        <source>Usage:</source>
-        <translation>میزان استفاده:</translation>
-    </message>
-    <message>
-        <source>List commands</source>
-        <translation>فهرست دستورها</translation>
-    </message>
-    <message>
-        <source>Get help for a command</source>
-        <translation>درخواست کمک برای یک دستور</translation>
-    </message>
-    <message>
         <source>Options:</source>
         <translation>انتخابها:</translation>
     </message>
     <message>
-        <source>Specify configuration file (default: bitcoin.conf)</source>
-        <translation>فایل پیکربندیِ را مشخص کنید (پیش فرض: bitcoin.conf)</translation>
-    </message>
-    <message>
-        <source>Specify pid file (default: bitcoind.pid)</source>
-        <translation>فایل pid  را مشخص کنید (پیش فرض: bitcoind.pid)</translation>
-    </message>
-    <message>
         <source>Specify data directory</source>
         <translation>دایرکتوری داده را مشخص کن</translation>
-    </message>
-    <message>
-        <source>Listen for connections on &lt;port&gt; (default: 8333 or testnet: 18333)</source>
-        <translation>ارتباطات را در &lt;PORT&gt; بشنوید (پیش فرض: 8333 or testnet: 18333)</translation>
-    </message>
-    <message>
-        <source>Maintain at most &lt;n&gt; connections to peers (default: 125)</source>
-        <translation>نگهداری &lt;N&gt; ارتباطات برای قرینه سازی  (پیش فرض:125)</translation>
-    </message>
-    <message>
-        <source>Threshold for disconnecting misbehaving peers (default: 100)</source>
-        <translation>آستانه قطع برای قرینه سازی اشتباه (پیش فرض:100)</translation>
-    </message>
-    <message>
-        <source>Number of seconds to keep misbehaving peers from reconnecting (default: 86400)</source>
-        <translation>تعداد ثانیه ها برای اتصال دوباره قرینه های اشتباه (پیش فرض:86400)</translation>
-    </message>
-    <message>
-        <source>Listen for JSON-RPC connections on &lt;port&gt; (default: 8332 or testnet: 18332)</source>
-        <translation>ارتباطاتِ JSON-RPC  را در &lt;port&gt;  گوش کنید (پیش فرض:8332)</translation>
     </message>
     <message>
         <source>Accept command line and JSON-RPC commands</source>
@@ -1039,28 +942,12 @@ Address: %4
         <translation>ارسال اطلاعات پیگیری/خطایابی به کنسول به جای ارسال به فایل debug.log</translation>
     </message>
     <message>
-        <source>Specify connection timeout in milliseconds (default: 5000)</source>
-        <translation>تعیین مدت زمان وقفه (time out) به هزارم ثانیه</translation>
-    </message>
-    <message>
         <source>Username for JSON-RPC connections</source>
         <translation>شناسه کاربری برای ارتباطاتِ JSON-RPC</translation>
     </message>
     <message>
-        <source>version</source>
-        <translation>نسخه</translation>
-    </message>
-    <message>
         <source>Password for JSON-RPC connections</source>
         <translation>رمز برای ارتباطاتِ JSON-RPC</translation>
-    </message>
-    <message>
-        <source>Allow JSON-RPC connections from specified IP address</source>
-        <translation>ارتباطاتِ JSON-RPC  را از آدرس آی.پی. مشخصی برقرار کنید.</translation>
-    </message>
-    <message>
-        <source>Send commands to node running on &lt;ip&gt; (default: 127.0.0.1)</source>
-        <translation>دستورات را به گره اجرا شده در&lt;ip&gt; ارسال کنید (پیش فرض:127.0.0.1)</translation>
     </message>
     <message>
         <source>Execute command when the best block changes (%s in cmd is replaced by block hash)</source>
@@ -1071,24 +958,12 @@ Address: %4
         <translation>wallet را به جدیدترین نسخه روزآمد کنید</translation>
     </message>
     <message>
-        <source>Set key pool size to &lt;n&gt; (default: 100)</source>
-        <translation>حجم key pool  را به اندازه &lt;n&gt; تنظیم کنید (پیش فرض:100)</translation>
-    </message>
-    <message>
         <source>Rescan the block chain for missing wallet transactions</source>
         <translation>زنجیره بلاک را برای تراکنش جا افتاده در WALLET دوباره اسکن کنید</translation>
     </message>
     <message>
         <source>Use OpenSSL (https) for JSON-RPC connections</source>
         <translation>برای ارتباطاتِ JSON-RPC  از OpenSSL (https) استفاده کنید</translation>
-    </message>
-    <message>
-        <source>Server certificate file (default: server.cert)</source>
-        <translation>فایل certificate  سرور (پیش فرض server.cert)</translation>
-    </message>
-    <message>
-        <source>Server private key (default: server.pem)</source>
-        <translation>رمز اختصاصی سرور  (پیش فرض: server.pem)</translation>
     </message>
     <message>
         <source>This help message</source>
@@ -1101,14 +976,6 @@ Address: %4
     <message>
         <source>Error loading wallet.dat: Wallet corrupted</source>
         <translation>خطا در هنگام لود شدن wallet.dat: Wallet corrupted</translation>
-    </message>
-    <message>
-        <source>Error loading wallet.dat: Wallet requires newer version of Bitcoin</source>
-        <translation>خطا در هنگام لود شدن wallet.dat.  به نسخه جدید Bitocin برای wallet نیاز است.</translation>
-    </message>
-    <message>
-        <source>Wallet needed to be rewritten: restart Bitcoin to complete</source>
-        <translation>wallet نیاز به بازنویسی دارد. Bitcoin را برای تکمیل عملیات دوباره اجرا کنید.</translation>
     </message>
     <message>
         <source>Error loading wallet.dat</source>
@@ -1161,13 +1028,6 @@ Address: %4
     <message>
         <source>Error</source>
         <translation>خطا</translation>
-    </message>
-    <message>
-        <source>You must set rpcpassword=&lt;password&gt; in the configuration file:
-%s
-If the file does not exist, create it with owner-readable-only file permissions.</source>
-        <translation>شما باید یک رمز rpcpassword=&lt;password&gt; را در فایل تنظیمات ایجاد کنید⏎ %s ⏎ اگر فایل ایجاد نشده است، آن را با یک فایل "فقط متنی" ایجاد کنید.
-</translation>
     </message>
 </context>
 </TS>

@@ -1,11 +1,4 @@
-<TS language="hi_IN" version="2.1">
-<context>
-    <name>AboutDialog</name>
-    <message>
-        <source>Copyright</source>
-        <translation>कापीराइट</translation>
-    </message>
-    </context>
+<TS language="hi_IN" version="2.0">
 <context>
     <name>AddressBookPage</name>
     <message>
@@ -69,10 +62,6 @@
     <message>
         <source>Repeat new passphrase</source>
         <translation>दोबारा नया पहचान शब्द/अक्षर डालिए !</translation>
-    </message>
-    <message>
-        <source>Enter the new passphrase to the wallet.&lt;br/&gt;Please use a passphrase of &lt;b&gt;10 or more random characters&lt;/b&gt;, or &lt;b&gt;eight or more words&lt;/b&gt;.</source>
-        <translation>नया पहचान शब्द/अक्षर वॉलेट मे डालिए ! &lt;br/&gt; कृपा करके पहचान शब्द में &lt;br&gt; 10 से ज़्यादा अक्षॉरों का इस्तेमाल करे &lt;/b&gt;,या &lt;b&gt;आठ या उससे से ज़्यादा शब्दो का इस्तेमाल करे&lt;/b&gt; !</translation>
     </message>
     <message>
         <source>Encrypt wallet</source>
@@ -167,10 +156,6 @@
         <translation>अप्लिकेशन से बाहर निकलना !</translation>
     </message>
     <message>
-        <source>Show information about Bitcoin</source>
-        <translation>बीटकोइन के बारे में जानकारी !</translation>
-    </message>
-    <message>
         <source>&amp;Options...</source>
         <translation>&amp;विकल्प</translation>
     </message>
@@ -205,10 +190,6 @@
     <message>
         <source>Tabs toolbar</source>
         <translation>टैबस टूलबार</translation>
-    </message>
-    <message>
-        <source>[testnet]</source>
-        <translation>[टेस्टनेट]</translation>
     </message>
     <message numerus="yes">
         <source>%n active connection(s) to Bitcoin network</source>
@@ -273,7 +254,7 @@ Address: %4
         <source>Wallet is &lt;b&gt;encrypted&lt;/b&gt; and currently &lt;b&gt;locked&lt;/b&gt;</source>
         <translation>वॉलेट एन्क्रिप्टेड है तथा अभी लॉक्ड है</translation>
     </message>
-    </context>
+</context>
 <context>
     <name>ClientModel</name>
     </context>
@@ -286,10 +267,6 @@ Address: %4
     <message>
         <source>Amount</source>
         <translation>राशि</translation>
-    </message>
-    <message>
-        <source>Address</source>
-        <translation>पता</translation>
     </message>
     <message>
         <source>Date</source>
@@ -376,10 +353,6 @@ Address: %4
 <context>
     <name>Intro</name>
     <message>
-        <source>Bitcoin</source>
-        <translation>बीटकोइन</translation>
-    </message>
-    <message>
         <source>Error</source>
         <translation>भूल</translation>
     </message>
@@ -408,29 +381,25 @@ Address: %4
         <source>Form</source>
         <translation>फार्म</translation>
     </message>
-    <message>
-        <source>Wallet</source>
-        <translation>वॉलेट</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Recent transactions&lt;/b&gt;</source>
-        <translation>&lt;b&gt;हाल का लेन-देन&lt;/b&gt;</translation>
-    </message>
     </context>
 <context>
     <name>PaymentServer</name>
     </context>
 <context>
+    <name>PeerTableModel</name>
+    </context>
+<context>
     <name>QObject</name>
     <message>
-        <source>Bitcoin</source>
-        <translation>बीटकोइन</translation>
+        <source>Amount</source>
+        <translation>राशि</translation>
     </message>
     <message>
-        <source>Enter a Bitcoin address (e.g. 1NS17iag9jJgTHD1VXjvLCEnZuQ3rJDE9L)</source>
-        <translation>Bitcoin एड्रेस लिखें (उदाहरण: 1NS17iag9jJgTHD1VXjvLCEnZuQ3rJDE9L)</translation>
+        <source>N/A</source>
+        <translation>लागू नही
+</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>QRImageWidget</name>
     </context>
@@ -586,10 +555,6 @@ Address: %4
         <source>Signature</source>
         <translation>हस्ताक्षर</translation>
     </message>
-    <message>
-        <source>Enter a Bitcoin address (e.g. 1NS17iag9jJgTHD1VXjvLCEnZuQ3rJDE9L)</source>
-        <translation>Bitcoin एड्रेस लिखें (उदाहरण: 1NS17iag9jJgTHD1VXjvLCEnZuQ3rJDE9L)</translation>
-    </message>
     </context>
 <context>
     <name>SplashScreen</name>
@@ -668,10 +633,6 @@ Address: %4
     <message>
         <source>Address</source>
         <translation>पता</translation>
-    </message>
-    <message>
-        <source>Amount</source>
-        <translation>राशि</translation>
     </message>
     <message>
         <source>Open until %1</source>
@@ -833,10 +794,6 @@ Address: %4
         <translation>पता</translation>
     </message>
     <message>
-        <source>Amount</source>
-        <translation>राशि</translation>
-    </message>
-    <message>
         <source>ID</source>
         <translation>ID</translation>
     </message>
@@ -849,6 +806,9 @@ Address: %4
         <translation>तक</translation>
     </message>
 </context>
+<context>
+    <name>UnitDisplayStatusBarControl</name>
+    </context>
 <context>
     <name>WalletFrame</name>
     </context>
@@ -881,28 +841,8 @@ Address: %4
 <context>
     <name>bitcoin-core</name>
     <message>
-        <source>Usage:</source>
-        <translation>खपत :</translation>
-    </message>
-    <message>
-        <source>List commands</source>
-        <translation>commands की लिस्ट बनाएं</translation>
-    </message>
-    <message>
-        <source>Get help for a command</source>
-        <translation>किसी command के लिए मदद लें</translation>
-    </message>
-    <message>
         <source>Options:</source>
         <translation>विकल्प:</translation>
-    </message>
-    <message>
-        <source>Specify configuration file (default: bitcoin.conf)</source>
-        <translation>configuraion की फाइल का विवरण दें (default: bitcoin.conf)</translation>
-    </message>
-    <message>
-        <source>Specify pid file (default: bitcoind.pid)</source>
-        <translation>pid फाइल का विवरण दें (default: bitcoin.pid)</translation>
     </message>
     <message>
         <source>Specify data directory</source>
@@ -933,10 +873,6 @@ Address: %4
         <translation>चेतावनी</translation>
     </message>
     <message>
-        <source>version</source>
-        <translation>संस्करण</translation>
-    </message>
-    <message>
         <source>Loading addresses...</source>
         <translation>पता पुस्तक आ रही है...</translation>
     </message>
@@ -964,5 +900,5 @@ Address: %4
         <source>Error</source>
         <translation>भूल</translation>
     </message>
-    </context>
+</context>
 </TS>

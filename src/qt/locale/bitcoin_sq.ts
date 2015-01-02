@@ -1,7 +1,4 @@
-<TS language="sq" version="2.1">
-<context>
-    <name>AboutDialog</name>
-    </context>
+<TS language="sq" version="2.0">
 <context>
     <name>AddressBookPage</name>
     <message>
@@ -53,10 +50,6 @@
     <message>
         <source>Repeat new passphrase</source>
         <translation>Përsërisni frazkalimin e ri</translation>
-    </message>
-    <message>
-        <source>Enter the new passphrase to the wallet.&lt;br/&gt;Please use a passphrase of &lt;b&gt;10 or more random characters&lt;/b&gt;, or &lt;b&gt;eight or more words&lt;/b&gt;.</source>
-        <translation>Futni frazkalimin e ri në portofol.&lt;br/&gt;Ju lutemi përdorni një frazkalim prej&lt;b&gt;10 ose më shumë shkronjash të rastësishme&lt;b/&gt;, ose tetë apo më shumë fjalë&lt;/b&gt;.</translation>
     </message>
     <message>
         <source>Encrypt wallet</source>
@@ -146,10 +139,6 @@
         <translation>Mbyllni aplikacionin</translation>
     </message>
     <message>
-        <source>Show information about Bitcoin</source>
-        <translation>Trego informacionin rreth Botkoin-it</translation>
-    </message>
-    <message>
         <source>&amp;Options...</source>
         <translation>&amp;Opsione</translation>
     </message>
@@ -172,14 +161,6 @@
     <message>
         <source>Tabs toolbar</source>
         <translation>Shiriti i mjeteve</translation>
-    </message>
-    <message>
-        <source>[testnet]</source>
-        <translation>[testo rrjetin]</translation>
-    </message>
-    <message numerus="yes">
-        <source>%n active connection(s) to Bitcoin network</source>
-        <translation><numerusform>%n lidhje aktive me rrjetin e Bitkoin</numerusform><numerusform>%n lidhje aktive me rrjetin e Bitkoin</numerusform></translation>
     </message>
     <message>
         <source>Up to date</source>
@@ -205,7 +186,7 @@
         <source>Wallet is &lt;b&gt;encrypted&lt;/b&gt; and currently &lt;b&gt;locked&lt;/b&gt;</source>
         <translation>Portofoli po &lt;b&gt; enkriptohet&lt;/b&gt; dhe është &lt;b&gt; i kyçur&lt;/b&gt;</translation>
     </message>
-    </context>
+</context>
 <context>
     <name>ClientModel</name>
     </context>
@@ -214,10 +195,6 @@
     <message>
         <source>Amount</source>
         <translation>Sasia</translation>
-    </message>
-    <message>
-        <source>Address</source>
-        <translation>Adresë</translation>
     </message>
     <message>
         <source>Date</source>
@@ -296,21 +273,20 @@
         <source>Form</source>
         <translation>Formilarë</translation>
     </message>
-    <message>
-        <source>&lt;b&gt;Recent transactions&lt;/b&gt;</source>
-        <translation>&lt;b&gt;Transaksionet e fundit&lt;/b&gt;</translation>
-    </message>
     </context>
 <context>
     <name>PaymentServer</name>
     </context>
 <context>
+    <name>PeerTableModel</name>
+    </context>
+<context>
     <name>QObject</name>
     <message>
-        <source>Enter a Bitcoin address (e.g. 1NS17iag9jJgTHD1VXjvLCEnZuQ3rJDE9L)</source>
-        <translation>Futni një adresë Bitkoini (p.sh. 1NS17iag9jJgTHD1VXjvLCEnZuQ3rJDE9L)</translation>
+        <source>Amount</source>
+        <translation>Sasia</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>QRImageWidget</name>
     </context>
@@ -437,10 +413,6 @@
         <source>Alt+P</source>
         <translation>Alt+P</translation>
     </message>
-    <message>
-        <source>Enter a Bitcoin address (e.g. 1NS17iag9jJgTHD1VXjvLCEnZuQ3rJDE9L)</source>
-        <translation>Futni një adresë Bitkoini (p.sh. 1NS17iag9jJgTHD1VXjvLCEnZuQ3rJDE9L)</translation>
-    </message>
     </context>
 <context>
     <name>SplashScreen</name>
@@ -507,10 +479,6 @@
     <message>
         <source>Address</source>
         <translation>Adresë</translation>
-    </message>
-    <message>
-        <source>Amount</source>
-        <translation>Sasia</translation>
     </message>
     <message>
         <source>Open until %1</source>
@@ -583,10 +551,9 @@
         <source>Address</source>
         <translation>Adresë</translation>
     </message>
-    <message>
-        <source>Amount</source>
-        <translation>Sasia</translation>
-    </message>
+    </context>
+<context>
+    <name>UnitDisplayStatusBarControl</name>
     </context>
 <context>
     <name>WalletFrame</name>

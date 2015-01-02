@@ -1,27 +1,4 @@
-<TS language="es_MX" version="2.1">
-<context>
-    <name>AboutDialog</name>
-    <message>
-        <source>About Bitcoin Core</source>
-        <translation>Acerca de Bitcoin Core</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Bitcoin Core&lt;/b&gt; version</source>
-        <translation>&lt;b&gt;Bitcoin Core&lt;/b&gt; versión</translation>
-    </message>
-    <message>
-        <source>Copyright</source>
-        <translation>Copyright</translation>
-    </message>
-    <message>
-        <source>The Bitcoin Core developers</source>
-        <translation>Los desarrolladores de Bitcoin Core</translation>
-    </message>
-    <message>
-        <source>(%1-bit)</source>
-        <translation>(%1-bit)</translation>
-    </message>
-</context>
+<TS language="es_MX" version="2.0">
 <context>
     <name>AddressBookPage</name>
     <message>
@@ -114,13 +91,9 @@
     </message>
     <message>
         <source>Exporting Failed</source>
-        <translation>Exportación fallida</translation>
+        <translation>Fallo en la exportación</translation>
     </message>
-    <message>
-        <source>There was an error trying to save the address list to %1.</source>
-        <translation>Ocurrio un error al intentar guardar la lista de direcciones en %1</translation>
-    </message>
-</context>
+    </context>
 <context>
     <name>AddressTableModel</name>
     <message>
@@ -151,12 +124,8 @@
         <translation>Repita la nueva contraseña</translation>
     </message>
     <message>
-        <source>Enter the new passphrase to the wallet.&lt;br/&gt;Please use a passphrase of &lt;b&gt;10 or more random characters&lt;/b&gt;, or &lt;b&gt;eight or more words&lt;/b&gt;.</source>
-        <translation>Ingrese la nueva contraseña a la cartera&lt;br/&gt;Por favor use una contraseña de&lt;b&gt;10 o más caracteres aleatorios&lt;/b&gt; o &lt;b&gt;ocho o más palabras&lt;/b&gt;.</translation>
-    </message>
-    <message>
         <source>Encrypt wallet</source>
-        <translation>Encriptar cartera.</translation>
+        <translation>Cartera encriptada.</translation>
     </message>
     <message>
         <source>This operation needs your wallet passphrase to unlock the wallet.</source>
@@ -172,7 +141,7 @@
     </message>
     <message>
         <source>Decrypt wallet</source>
-        <translation>Desencriptar cartera</translation>
+        <translation>Desencriptar la cartera</translation>
     </message>
     <message>
         <source>Change passphrase</source>
@@ -208,7 +177,7 @@
     </message>
     <message>
         <source>Wallet encryption failed</source>
-        <translation>Encriptación de la cartera fallida</translation>
+        <translation>La encriptación de la cartera falló</translation>
     </message>
     <message>
         <source>Wallet encryption failed due to an internal error. Your wallet was not encrypted.</source>
@@ -220,11 +189,11 @@
     </message>
     <message>
         <source>Wallet unlock failed</source>
-        <translation>El desbloqueo de la cartera falló</translation>
+        <translation>El desbloqueo de la cartera Fallo</translation>
     </message>
     <message>
         <source>The passphrase entered for the wallet decryption was incorrect.</source>
-        <translation>La contraseña ingresada para la desencriptación de la cartera es incorrecto</translation>
+        <translation>La contraseña ingresada para la des encriptación de la cartera es incorrecto</translation>
     </message>
     <message>
         <source>Wallet decryption failed</source>
@@ -272,10 +241,6 @@
     <message>
         <source>Quit application</source>
         <translation>Salir de la aplicación</translation>
-    </message>
-    <message>
-        <source>Show information about Bitcoin</source>
-        <translation>Mostrar información acerca de Bitcoin</translation>
     </message>
     <message>
         <source>About &amp;Qt</source>
@@ -405,7 +370,7 @@
         <source>Wallet is &lt;b&gt;encrypted&lt;/b&gt; and currently &lt;b&gt;locked&lt;/b&gt;</source>
         <translation>La cartera esta &lt;b&gt;encriptada&lt;/b&gt; y &lt;b&gt;bloqueada&lt;/b&gt; actualmente </translation>
     </message>
-    </context>
+</context>
 <context>
     <name>ClientModel</name>
     </context>
@@ -430,10 +395,6 @@
     <message>
         <source>Amount</source>
         <translation>Monto</translation>
-    </message>
-    <message>
-        <source>Address</source>
-        <translation>Domicilio</translation>
     </message>
     <message>
         <source>Date</source>
@@ -533,16 +494,20 @@
 <context>
     <name>HelpMessageDialog</name>
     <message>
-        <source>Bitcoin Core - Command-line options</source>
-        <translation>Opciones de lineas de comando del nucleo de Bitcoin</translation>
-    </message>
-    <message>
         <source>Bitcoin Core</source>
         <translation>nucleo Bitcoin</translation>
     </message>
     <message>
         <source>version</source>
         <translation>Versión</translation>
+    </message>
+    <message>
+        <source>(%1-bit)</source>
+        <translation>(%1-bit)</translation>
+    </message>
+    <message>
+        <source>About Bitcoin Core</source>
+        <translation>Acerca de Bitcoin Core</translation>
     </message>
     <message>
         <source>Usage:</source>
@@ -575,6 +540,10 @@
 </context>
 <context>
     <name>Intro</name>
+    <message>
+        <source>Bitcoin Core</source>
+        <translation>nucleo Bitcoin</translation>
+    </message>
     </context>
 <context>
     <name>OpenURIDialog</name>
@@ -596,29 +565,20 @@
         <source>Form</source>
         <translation>Formulario</translation>
     </message>
-    <message>
-        <source>&lt;b&gt;Recent transactions&lt;/b&gt;</source>
-        <translation>&lt;b&gt;Transacciones recientes&lt;/b&gt;</translation>
-    </message>
     </context>
 <context>
     <name>PaymentServer</name>
-    <message>
-        <source>Net manager warning</source>
-        <translation>advertencia del administrador de red.</translation>
-    </message>
-    <message>
-        <source>Your active proxy doesn't support SOCKS5, which is required for payment requests via proxy.</source>
-        <translation>Tu active proxy no soporta SOCKS5, el cual es requerido para solicitud de pago via proxy. </translation>
-    </message>
+    </context>
+<context>
+    <name>PeerTableModel</name>
     </context>
 <context>
     <name>QObject</name>
     <message>
-        <source>Enter a Bitcoin address (e.g. 1NS17iag9jJgTHD1VXjvLCEnZuQ3rJDE9L)</source>
-        <translation>Ingrese una direccion Bitcoin (ejem. 1NS17iag9jJgTHD1VXjvLCEnZuQ3rJDE9L)</translation>
+        <source>Amount</source>
+        <translation>Monto</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>QRImageWidget</name>
     </context>
@@ -865,10 +825,6 @@
         <source>Alt+P</source>
         <translation>Alt+P</translation>
     </message>
-    <message>
-        <source>Enter a Bitcoin address (e.g. 1NS17iag9jJgTHD1VXjvLCEnZuQ3rJDE9L)</source>
-        <translation>Ingrese una direccion Bitcoin (ejem. 1NS17iag9jJgTHD1VXjvLCEnZuQ3rJDE9L)</translation>
-    </message>
     </context>
 <context>
     <name>SplashScreen</name>
@@ -943,10 +899,6 @@
     <message>
         <source>Address</source>
         <translation>Domicilio</translation>
-    </message>
-    <message>
-        <source>Amount</source>
-        <translation>Monto</translation>
     </message>
     <message>
         <source>Open until %1</source>
@@ -1112,10 +1064,6 @@
         <translation>Domicilio</translation>
     </message>
     <message>
-        <source>Amount</source>
-        <translation>Monto</translation>
-    </message>
-    <message>
         <source>ID</source>
         <translation>ID</translation>
     </message>
@@ -1124,6 +1072,9 @@
         <translation>Para</translation>
     </message>
 </context>
+<context>
+    <name>UnitDisplayStatusBarControl</name>
+    </context>
 <context>
     <name>WalletFrame</name>
     <message>
@@ -1156,24 +1107,12 @@
 <context>
     <name>bitcoin-core</name>
     <message>
-        <source>Usage:</source>
-        <translation>Uso:</translation>
-    </message>
-    <message>
-        <source>List commands</source>
-        <translation>Lista de comandos</translation>
-    </message>
-    <message>
         <source>&lt;category&gt; can be:</source>
         <translation>&lt;categoria&gt; puede ser:</translation>
     </message>
     <message>
         <source>Wallet options:</source>
         <translation>Opciones de cartera:</translation>
-    </message>
-    <message>
-        <source>version</source>
-        <translation>Versión</translation>
     </message>
     <message>
         <source>Loading addresses...</source>

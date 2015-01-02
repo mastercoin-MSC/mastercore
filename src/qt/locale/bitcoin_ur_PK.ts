@@ -1,7 +1,4 @@
-<TS language="ur_PK" version="2.1">
-<context>
-    <name>AboutDialog</name>
-    </context>
+<TS language="ur_PK" version="2.0">
 <context>
     <name>AddressBookPage</name>
     <message>
@@ -11,6 +8,34 @@
     <message>
         <source>Create a new address</source>
         <translation>نیا ایڈریس بنائیں</translation>
+    </message>
+    <message>
+        <source>&amp;New</source>
+        <translation>نیا</translation>
+    </message>
+    <message>
+        <source>&amp;Copy</source>
+        <translation>نقل</translation>
+    </message>
+    <message>
+        <source>C&amp;lose</source>
+        <translation>بند</translation>
+    </message>
+    <message>
+        <source>&amp;Copy Address</source>
+        <translation>کاپی پتہ</translation>
+    </message>
+    <message>
+        <source>&amp;Export</source>
+        <translation>برآمد</translation>
+    </message>
+    <message>
+        <source>&amp;Delete</source>
+        <translation>مٹا</translation>
+    </message>
+    <message>
+        <source>C&amp;hoose</source>
+        <translation>چننا</translation>
     </message>
     </context>
 <context>
@@ -43,6 +68,10 @@
         <translation>نیا پاس فریز دہرائیں</translation>
     </message>
     <message>
+        <source>Encrypt wallet</source>
+        <translation>بٹوے کی رمزنگاری</translation>
+    </message>
+    <message>
         <source>Unlock wallet</source>
         <translation>بٹوا ان لاک</translation>
     </message>
@@ -70,10 +99,6 @@
     <message>
         <source>Amount</source>
         <translation>رقم</translation>
-    </message>
-    <message>
-        <source>Address</source>
-        <translation> پتہ</translation>
     </message>
     <message>
         <source>Date</source>
@@ -113,7 +138,14 @@
     <name>PaymentServer</name>
     </context>
 <context>
+    <name>PeerTableModel</name>
+    </context>
+<context>
     <name>QObject</name>
+    <message>
+        <source>Amount</source>
+        <translation>رقم</translation>
+    </message>
     </context>
 <context>
     <name>QRImageWidget</name>
@@ -213,10 +245,6 @@
         <translation> پتہ</translation>
     </message>
     <message>
-        <source>Amount</source>
-        <translation>رقم</translation>
-    </message>
-    <message>
         <source>Sent to</source>
         <translation>کو بھیجا</translation>
     </message>
@@ -275,10 +303,9 @@
         <source>Address</source>
         <translation> پتہ</translation>
     </message>
-    <message>
-        <source>Amount</source>
-        <translation>رقم</translation>
-    </message>
+    </context>
+<context>
+    <name>UnitDisplayStatusBarControl</name>
     </context>
 <context>
     <name>WalletFrame</name>
@@ -288,6 +315,10 @@
     </context>
 <context>
     <name>WalletView</name>
+    <message>
+        <source>&amp;Export</source>
+        <translation>برآمد</translation>
+    </message>
     </context>
 <context>
     <name>bitcoin-core</name>
@@ -307,5 +338,5 @@
         <source>Error</source>
         <translation>نقص</translation>
     </message>
-    </context>
+</context>
 </TS>

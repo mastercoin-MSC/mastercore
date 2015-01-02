@@ -1,137 +1,122 @@
-Master Core (Beta) integration/staging tree
-=================================================
+Bitcoin Core integration/staging tree
+=====================================
 
-What is the Master Protocol
-----------------------------
-The Master Protocol is a communications protocol that uses the Bitcoin block chain to enable features such as smart contracts, user currencies and decentralized peer-to-peer exchanges. A common analogy that is used to describe the relation of the Master Protocol to Bitcoin is that of HTTP to TCP/IP: HTTP, like the Master Protocol, is the application layer to the more fundamental transport and internet layer of TCP/IP, like Bitcoin.
+[![Build Status](https://travis-ci.org/bitcoin/bitcoin.svg?branch=master)](https://travis-ci.org/bitcoin/bitcoin)
 
-http://www.mastercoin.org
+https://www.bitcoin.org
 
-What is Master Core
+Copyright (c) 2009-2014 Bitcoin Core Developers
+
+What is Bitcoin?
+----------------
+
+Bitcoin is an experimental new digital currency that enables instant payments to
+anyone, anywhere in the world. Bitcoin uses peer-to-peer technology to operate
+with no central authority: managing transactions and issuing money are carried
+out collectively by the network. Bitcoin Core is the name of open source
+software which enables the use of this currency.
+
+For more information, as well as an immediately useable, binary version of
+the Bitcoin Core software, see https://www.bitcoin.org/en/download.
+
+License
+-------
+
+Bitcoin Core is released under the terms of the MIT license. See [COPYING](COPYING) for more
+information or see http://opensource.org/licenses/MIT.
+
+Development process
+-------------------
+
+Developers work in their own trees, then submit pull requests when they think
+their feature or bug fix is ready.
+
+If it is a simple/trivial/non-controversial change, then one of the Bitcoin
+development team members simply pulls it.
+
+If it is a *more complicated or potentially controversial* change, then the patch
+submitter will be asked to start a discussion (if they haven't already) on the
+[mailing list](http://sourceforge.net/mailarchive/forum.php?forum_name=bitcoin-development).
+
+The patch will be accepted if there is broad consensus that it is a good thing.
+Developers should expect to rework and resubmit patches if the code doesn't
+match the project's coding conventions (see [doc/coding.md](doc/coding.md)) or are
+controversial.
+
+The `master` branch is regularly built and tested, but is not guaranteed to be
+completely stable. [Tags](https://github.com/bitcoin/bitcoin/tags) are created
+regularly to indicate new official, stable release versions of Bitcoin.
+
+Testing
+-------
+
+Testing and code review is the bottleneck for development; we get more pull
+requests than we can review and test on short notice. Please be patient and help out by testing
+other people's pull requests, and remember this is a security-critical project where any mistake might cost people
+lots of money.
+
+### Automated Testing
+
+Developers are strongly encouraged to write unit tests for new code, and to
+submit new unit tests for old code. Unit tests can be compiled and run (assuming they weren't disabled in configure) with: `make check`
+
+Every pull request is built for both Windows and Linux on a dedicated server,
+and unit and sanity tests are automatically run. The binaries produced may be
+used for manual QA testing — a link to them will appear in a comment on the
+pull request posted by [BitcoinPullTester](https://github.com/BitcoinPullTester). See https://github.com/TheBlueMatt/test-scripts
+for the build/test scripts.
+
+### Manual Quality Assurance (QA) Testing
+
+Large changes should have a test plan, and should be tested by somebody other
+than the developer who wrote the code.
+See https://github.com/bitcoin/QA/ for how to create a test plan.
+
+Translations
+------------
+
+Changes to translations as well as new translations can be submitted to
+[Bitcoin Core's Transifex page](https://www.transifex.com/projects/p/bitcoin/).
+
+Translations are periodically pulled from Transifex and merged into the git repository. See the
+[translation process](doc/translation_process.md) for details on how this works.
+
+**Important**: We do not accept translation changes as GitHub pull requests because the next
+pull from Transifex would automatically overwrite them again.
+
+Translators should also subscribe to the [mailing list](https://groups.google.com/forum/#!forum/bitcoin-translators).
+
+Development tips and tricks
 ---------------------------
 
-Master Core is a fast, portable Master Protocol implementation that is based off the Bitcoin Core codebase (currently 0.9.3). This implementation requires no external dependencies extraneous to Bitcoin Core, and is native to the Bitcoin network just like other Bitcoin nodes. It currently supports a wallet mode and it will be seamlessly available on 3 platforms: Windows, Linux and Mac OS. Master Protocol extensions are exposed via a JSON-RPC interface. Development has been consolidated on the Master Core product, and once officially released it will become the reference client for the Master Protocol.
+**compiling for debugging**
 
-Disclaimer, warning
---------------
+Run configure with the --enable-debug option, then make. Or run configure with
+CXXFLAGS="-g -ggdb -O0" or whatever debug flags you need.
 
-This software is EXPERIMENTAL software for **TESTNET TRANSACTIONS** only. *USE ON MAINNET AT YOUR OWN RISK.*
+**debug.log**
 
-The protocol and transaction processing rules for Mastercoin are still under active development and are subject to change in future. 
+If the code is behaving strangely, take a look in the debug.log file in the data directory;
+error and debugging messages are written there.
 
-Master Core should be considered an alpha-level product, and you use it at your own risk.  Neither the Mastercoin Foundation nor the Master Core developers assumes any responsibility for funds misplaced, mishandled, lost, or misallocated.
+The -debug=... command-line option controls debugging; running with just -debug will turn
+on all categories (and give you a very large debug.log file).
 
-Further, please note that this particular installation of Master Core should be viewed as experimental.  Your wallet data may be lost, deleted, or corrupted, with or without warning due to bugs or glitches. Please take caution.
+The Qt code routes qDebug() output to debug.log under category "qt": run with -debug=qt
+to see it.
 
-This software is provided open-source at no cost.  You are responsible for knowing the law in your country and determining if your use of this software contravenes any local laws.
+**testnet and regtest modes**
 
-*You all know, BUT: DO NOT use wallet(s) with significant amount of any currency while working!*
+Run with the -testnet option to run with "play bitcoins" on the test network, if you
+are testing multi-machine code that needs to operate across the internet.
 
-Testnet
--------------------
+If you are testing something that can run on one machine, run with the -regtest option.
+In regression test mode, blocks can be created on-demand; see qa/rpc-tests/ for tests
+that run in -regtest mode.
 
-1. To run Master Core in testnet mode, run Master Core with the following option in place: ``` -testnet ```.
-2. To receive MSC (and TMSC) on testnet please send TBTC to moneyqMan7uh8FqdCA2BV5yZ8qVrc9ikLP. For each 1 TBTC you will receive 100 MSC and 100 TMSC.
+**DEBUG_LOCKORDER**
 
-All functions in this mode will be TESTNET-ONLY (eg. send_MP).
-
-
-Dependencies
-------------
-Boost >= 1.53
-
-Installation
-------------
-
-*NOTE: This will only build on Ubuntu Linux for now.*
-
-You will need appropriate libraries to run Master Core on Unix, 
-please see [doc/build-unix.md](doc/build-unix.md) for the full listing.
-
-You will need to install git & pkg-config:
-
-```
-sudo apt-get install git
-sudo apt-get install pkg-config
-```
-
-Clone the Master Core repository:
-
-```
- git clone https://github.com/mastercoin-MSC/mastercore.git
- cd mastercore/
-```
-
-Then, run
-Then, run:
-
-```
-./autogen.sh
-./configure
-make
-```
-Once complete:
-
-```
-cd src/
-```
-and start Master Core using ```./mastercored```. The inital parse step for a first time run
-will take approximately 10-15 minutes, during this time your client will scan the blockchain for
-Master Protocol transactions. You can view the output of the parsing at any time by viewing the log
-located in your datadir, by default: ```~/.bitcoin/mastercore.log```.
-
-If a message is returned asking you to reindex, pass the ```-reindex``` flag to mastercored. The reindexing process can take serveral hours.
-
-Note: to issue RPC commands to Master Core you may add the '-server=1' CLI flag or add an entry to the bitcoin.conf file (located in '~/.bitcoin/' by default).
-
-In bitcoin.conf:
-```
-server=1
-```
-
-After this step completes, check that the installation went smoothly by issuing the following
-command ```./mastercore-cli getinfo``` which should return the 'mastercoreversion' as well as some
-additional information related to the Bitcoin network.
-
-The documentation for the RPC interface and command-line is located in [doc/apidocumentation.md] (doc/apidocumentation.md).
-
-Current feature set:
---------------------
-
-* Broadcasting of simple send (tx0), and send to owners (tx3) [doc] (doc/apidocumentation.md#broadcasting-a-simple-send-transaction)
-
-* Obtaining a Master Protocol balance [doc] (doc/apidocumentation.md#obtaining-a-master-protocol-balance)
-
-* Obtaining all balances (including smart property) for an address [doc] (doc/apidocumentation.md#obtaining-all-master-protocol-balances-for-an-address)
-
-* Obtaining all balances associated with a specific smart property [doc] (doc/apidocumentation.md#obtaining-all-master-protocol-balances-for-a-property-id)
-
-* Retrieving information about any Master Protocol transaction [doc] (doc/apidocumentation.md#retrieving-a-master-protocol-transaction)
-
-* Listing historical transactions of addresses in the wallet [doc] (doc/apidocumentation.md#listing-historical-transactions)                            
-
-* Retreiving detailed information about a smart property [doc] (doc/apidocumentation.md#retrieving-information-about-a-master-protocol-property)
-
-* Retreiving active and expired crowdsale information [doc] (doc/apidocumentation.md#retrieving-information-for-a-master-protocol-crowdsale)
-
-* Sending a specific BTC amount to a receiver with referenceamount in send_MP
-
-* Creating and broadcasting transactions based on raw Master Protocol data with sendrawtx_MP
-
-Pending additions:
--------------------
-
-* Fully functional UI
-
-* Meta-DEx support
-
-* DEx support (making offer, making accept, making payment)
-
-* Crowdsales (issuing smart properties, fundraisers, changing currency, closing fundraisers)
-
-* gettransaction_MP output should include matched sell offer transaction reference
-
-Support:
-------------------
-
-* Email <mastercore@mastercoin.org> or open a [GitHub issue] (https://github.com/mastercoin-MSC/mastercore/issues) to file a bug submission.
+Bitcoin Core is a multithreaded application, and deadlocks or other multithreading bugs
+can be very difficult to track down. Compiling with -DDEBUG_LOCKORDER (configure
+CXXFLAGS="-DDEBUG_LOCKORDER -g") inserts run-time checks to keep track of which locks
+are held, and adds warnings to the debug.log file if inconsistencies are detected.

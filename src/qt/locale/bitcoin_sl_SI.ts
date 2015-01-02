@@ -1,15 +1,4 @@
-<TS language="sl_SI" version="2.1">
-<context>
-    <name>AboutDialog</name>
-    <message>
-        <source>About Bitcoin Core</source>
-        <translation>O jedru Bitcoina</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Bitcoin Core&lt;/b&gt; version</source>
-        <translation>&lt;b&gt;Jedro Bitcoina&lt;/b&gt; različica</translation>
-    </message>
-    </context>
+<TS language="sl_SI" version="2.0">
 <context>
     <name>AddressBookPage</name>
     <message>
@@ -70,19 +59,19 @@
     </message>
     <message>
         <source>Sending addresses</source>
-        <translation>Pošiljati naslove</translation>
+        <translation>Naslovi za pošiljanje</translation>
     </message>
     <message>
         <source>Receiving addresses</source>
-        <translation>Prejemati naslovi</translation>
+        <translation>Naslovi za prejemanje</translation>
     </message>
     <message>
         <source>These are your Bitcoin addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
-        <translation>To so Bitcoin naslovi za pošiljanje plačilnih čekov. Vedno preveri količino in naslov za prejemanje pred pošiljanjem kovancev.</translation>
+        <translation>To so tvoji Bitcoin naslovi za pošiljanje plačil. Vedno preveri znesek in prejemnikov naslov pred pošiljanjem kovancev.</translation>
     </message>
     <message>
         <source>These are your Bitcoin addresses for receiving payments. It is recommended to use a new receiving address for each transaction.</source>
-        <translation>To so vaši Bitcoin naslovi za prejemanje plačil. Priporočljivo je uporabljati nov prejemni naslov za vsako izmed transakcij.</translation>
+        <translation>To so tvoji Bitcoin naslovi za prejemanje plačil. Priporočljivo je uporabljati nov prejemni naslov za vsako izmed transakcij.</translation>
     </message>
     <message>
         <source>Copy &amp;Label</source>
@@ -104,11 +93,7 @@
         <source>Exporting Failed</source>
         <translation>Neuspešen izvoz</translation>
     </message>
-    <message>
-        <source>There was an error trying to save the address list to %1.</source>
-        <translation>Prišlo je do napake pri shranjevanju seznama naslovov na %1.</translation>
-    </message>
-</context>
+    </context>
 <context>
     <name>AddressTableModel</name>
     <message>
@@ -143,10 +128,6 @@
         <translation>Ponovite novo geslo</translation>
     </message>
     <message>
-        <source>Enter the new passphrase to the wallet.&lt;br/&gt;Please use a passphrase of &lt;b&gt;10 or more random characters&lt;/b&gt;, or &lt;b&gt;eight or more words&lt;/b&gt;.</source>
-        <translation>Vnesite novo geslo za vstop v denarnico.&lt;br/&gt;Prosimo, da geslo sestavite iz &lt;b&gt; 10 ali več naključnih znakov&lt;/b&gt; oz. &lt;b&gt;osem ali več besed&lt;/b&gt;.</translation>
-    </message>
-    <message>
         <source>Encrypt wallet</source>
         <translation>Šifriraj denarnico</translation>
     </message>
@@ -177,6 +158,10 @@
     <message>
         <source>Confirm wallet encryption</source>
         <translation>Potrdi šifriranje denarnice</translation>
+    </message>
+    <message>
+        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR BITCOINS&lt;/b&gt;!</source>
+        <translation>Opozorilo: V primeru izgube gesla kriptirane denarnice, boš &lt;b&gt;IZGUBIL VSE SVOJE BITCOINE&lt;/b&gt;!</translation>
     </message>
     <message>
         <source>Are you sure you wish to encrypt your wallet?</source>
@@ -234,6 +219,10 @@
         <translation>&amp;Pregled</translation>
     </message>
     <message>
+        <source>Node</source>
+        <translation>Vozlišče</translation>
+    </message>
+    <message>
         <source>Show general overview of wallet</source>
         <translation>Pokaži splošen pregled denarnice</translation>
     </message>
@@ -252,10 +241,6 @@
     <message>
         <source>Quit application</source>
         <translation>Izhod iz aplikacije</translation>
-    </message>
-    <message>
-        <source>Show information about Bitcoin</source>
-        <translation>Pokaži informacije o Bitcoinu</translation>
     </message>
     <message>
         <source>About &amp;Qt</source>
@@ -292,6 +277,10 @@
     <message>
         <source>Open &amp;URI...</source>
         <translation>Odpri &amp;URI...</translation>
+    </message>
+    <message>
+        <source>Bitcoin Core client</source>
+        <translation>Odjemalec Bitcoin Core</translation>
     </message>
     <message>
         <source>Importing blocks from disk...</source>
@@ -342,6 +331,10 @@
         <translation>&amp;Sprejmi</translation>
     </message>
     <message>
+        <source>Show information about Bitcoin Core</source>
+        <translation>Pokaži informacije o Bitcoin Core</translation>
+    </message>
+    <message>
         <source>&amp;Show / Hide</source>
         <translation>&amp;Prikaži / Skrij</translation>
     </message>
@@ -374,10 +367,6 @@
         <translation>Orodna vrstica zavihkov</translation>
     </message>
     <message>
-        <source>[testnet]</source>
-        <translation>[testnet]</translation>
-    </message>
-    <message>
         <source>Bitcoin Core</source>
         <translation>Jedro Bitcoina</translation>
     </message>
@@ -397,10 +386,6 @@
         <source>Open a bitcoin: URI or payment request</source>
         <translation>Odpri Bitcoin: URI ali zahteva o plačilu</translation>
     </message>
-    <message>
-        <source>Bitcoin client</source>
-        <translation>Bitcoin odjemalec</translation>
-    </message>
     <message numerus="yes">
         <source>%n active connection(s) to Bitcoin network</source>
         <translation><numerusform>%n aktivna povezava v bitcoin omrežje</numerusform><numerusform>%n aktivni povezavi v bitcoin omrežje</numerusform><numerusform>%n aktivnih povezav v bitcoin omrežje</numerusform><numerusform>%n aktivnih povezav v bitcoin omrežje</numerusform></translation>
@@ -416,6 +401,10 @@
     <message numerus="yes">
         <source>%n week(s)</source>
         <translation><numerusform>%n teden</numerusform><numerusform>%n tedna</numerusform><numerusform>%n tedni</numerusform><numerusform>%n tednov</numerusform></translation>
+    </message>
+    <message>
+        <source>%1 and %2</source>
+        <translation>%1 in %2</translation>
     </message>
     <message numerus="yes">
         <source>%n year(s)</source>
@@ -477,7 +466,7 @@ Naslov: %4
         <source>Wallet is &lt;b&gt;encrypted&lt;/b&gt; and currently &lt;b&gt;locked&lt;/b&gt;</source>
         <translation>Denarnica je &lt;b&gt;šifrirana&lt;/b&gt; in trenutno &lt;b&gt;zaklenjena&lt;/b&gt;</translation>
     </message>
-    </context>
+</context>
 <context>
     <name>ClientModel</name>
     <message>
@@ -508,16 +497,28 @@ Naslov: %4
         <translation>Provizija:</translation>
     </message>
     <message>
+        <source>Dust:</source>
+        <translation>Prah:</translation>
+    </message>
+    <message>
         <source>Change:</source>
         <translation>Sprememba:</translation>
     </message>
     <message>
-        <source>Amount</source>
-        <translation>Količina</translation>
+        <source>(un)select all</source>
+        <translation>(ne)izberi vse</translation>
     </message>
     <message>
-        <source>Address</source>
-        <translation>Naslov</translation>
+        <source>Tree mode</source>
+        <translation>Drevo</translation>
+    </message>
+    <message>
+        <source>List mode</source>
+        <translation>Seznam</translation>
+    </message>
+    <message>
+        <source>Amount</source>
+        <translation>Količina</translation>
     </message>
     <message>
         <source>Date</source>
@@ -552,6 +553,14 @@ Naslov: %4
         <translation>Kopiraj ID transakcije</translation>
     </message>
     <message>
+        <source>Lock unspent</source>
+        <translation>Zakleni neporabljeno</translation>
+    </message>
+    <message>
+        <source>Unlock unspent</source>
+        <translation>Odkleni neporabljeno</translation>
+    </message>
+    <message>
         <source>Copy quantity</source>
         <translation>Kopiraj količino</translation>
     </message>
@@ -566,6 +575,14 @@ Naslov: %4
     <message>
         <source>Copy priority</source>
         <translation>Kopiraj prednostno mesto</translation>
+    </message>
+    <message>
+        <source>Copy dust</source>
+        <translation>Kopiraj prah</translation>
+    </message>
+    <message>
+        <source>Copy change</source>
+        <translation>Kopiraj drobiž</translation>
     </message>
     <message>
         <source>highest</source>
@@ -608,8 +625,12 @@ Naslov: %4
         <translation>(%1 zaklenjeno)</translation>
     </message>
     <message>
-        <source>Dust</source>
-        <translation>Prah</translation>
+        <source>none</source>
+        <translation>Nič</translation>
+    </message>
+    <message>
+        <source>Can vary +/- %1 satoshi(s) per input.</source>
+        <translation>Se lahko razlikuje +/- %1 satošijev na vnos.</translation>
     </message>
     <message>
         <source>yes</source>
@@ -624,10 +645,30 @@ Naslov: %4
         <translation>V primeru, da je velikost transakcije večja od 1000 bitov, se ta oznaka se obarva rdeče.</translation>
     </message>
     <message>
+        <source>Can vary +/- 1 byte per input.</source>
+        <translation>Se lahko razlikuje +/- 1 byte na vnos.</translation>
+    </message>
+    <message>
+        <source>Transactions with higher priority are more likely to get included into a block.</source>
+        <translation>Transakcije z višjo prioriteto imajo boljše možnosti za vključitev v blok.</translation>
+    </message>
+    <message>
+        <source>This label turns red, if the priority is smaller than "medium".</source>
+        <translation>Oznaka se obarva rdeče, kadar je prioriteta manjša od "srednje".</translation>
+    </message>
+    <message>
         <source>(no label)</source>
         <translation>(ni oznake)</translation>
     </message>
-    </context>
+    <message>
+        <source>change from %1 (%2)</source>
+        <translation>drobiž od %1 (%2)</translation>
+    </message>
+    <message>
+        <source>(change)</source>
+        <translation>(drobiž)</translation>
+    </message>
+</context>
 <context>
     <name>EditAddressDialog</name>
     <message>
@@ -641,6 +682,10 @@ Naslov: %4
     <message>
         <source>The label associated with this address list entry</source>
         <translation>Oznaka je povezana s tem vnosom seznama naslovov</translation>
+    </message>
+    <message>
+        <source>The address associated with this address list entry. This can only be modified for sending addresses.</source>
+        <translation>Naslov povezan s tem vnosom seznama naslovov. Sprememba je mogoča le za naslove namenjene pošiljanju.</translation>
     </message>
     <message>
         <source>&amp;Address</source>
@@ -678,10 +723,26 @@ Naslov: %4
 <context>
     <name>FreespaceChecker</name>
     <message>
+        <source>A new data directory will be created.</source>
+        <translation>Ustvarjena bo nova mapa za shranjevanje podatkov.</translation>
+    </message>
+    <message>
         <source>name</source>
         <translation>ime</translation>
     </message>
-    </context>
+    <message>
+        <source>Directory already exists. Add %1 if you intend to create a new directory here.</source>
+        <translation>Mapa že obstaja. Dodaj %1, če tu želiš ustvariti novo mapo.</translation>
+    </message>
+    <message>
+        <source>Path already exists, and is not a directory.</source>
+        <translation>Pot že obstaja, vendar ni mapa.</translation>
+    </message>
+    <message>
+        <source>Cannot create data directory here.</source>
+        <translation>Na tem mestu ne moreš ustvariti nove mape.</translation>
+    </message>
+</context>
 <context>
     <name>HelpMessageDialog</name>
     <message>
@@ -691,6 +752,18 @@ Naslov: %4
     <message>
         <source>version</source>
         <translation>različica</translation>
+    </message>
+    <message>
+        <source>(%1-bit)</source>
+        <translation>(%1-bit)</translation>
+    </message>
+    <message>
+        <source>About Bitcoin Core</source>
+        <translation>O jedru Bitcoina</translation>
+    </message>
+    <message>
+        <source>Command-line options</source>
+        <translation>Možnosti ukazne vrstice</translation>
     </message>
     <message>
         <source>Usage:</source>
@@ -712,7 +785,19 @@ Naslov: %4
         <source>Start minimized</source>
         <translation>Zaženi pomanjšano</translation>
     </message>
-    </context>
+    <message>
+        <source>Set SSL root certificates for payment request (default: -system-)</source>
+        <translation>Nastavi korenske SSL certifikate za plačilni zahtevek (privzeto: -system-)</translation>
+    </message>
+    <message>
+        <source>Show splash screen on startup (default: 1)</source>
+        <translation>Ob zagonu prikaži uvodni zaslon (privzeto: 1)</translation>
+    </message>
+    <message>
+        <source>Choose data directory on startup (default: 0)</source>
+        <translation>Ob zagonu izberi mapo za shranjevanje podatkov (privzeto: 0)</translation>
+    </message>
+</context>
 <context>
     <name>Intro</name>
     <message>
@@ -724,16 +809,32 @@ Naslov: %4
         <translation>Dobrodošli v jedru Bitcoina</translation>
     </message>
     <message>
-        <source>Bitcoin</source>
-        <translation>Bitcoin</translation>
+        <source>As this is the first time the program is launched, you can choose where Bitcoin Core will store its data.</source>
+        <translation>Program poganjaš prvič. Izberi kje bo Bitcoin Core shranjeval svoje podatke.</translation>
+    </message>
+    <message>
+        <source>Bitcoin Core will download and store a copy of the Bitcoin block chain. At least %1GB of data will be stored in this directory, and it will grow over time. The wallet will also be stored in this directory.</source>
+        <translation>Bitcoin Core bo prenesel in shranil kopijo Bitcoin verige blokov. V izbrano mapo bo shranjenih vsaj %1 GB podatkov, ta količina pa bo sčasoma še naraščala. Denarnica bo prav tako shranjena v to mapo.</translation>
+    </message>
+    <message>
+        <source>Use the default data directory</source>
+        <translation>Uporabi privzeto mapo za shranjevanje podatkov.</translation>
+    </message>
+    <message>
+        <source>Use a custom data directory:</source>
+        <translation>Uporabi to mapo za shranjevanje podatkov:</translation>
+    </message>
+    <message>
+        <source>Bitcoin Core</source>
+        <translation>Jedro Bitcoina</translation>
+    </message>
+    <message>
+        <source>Error: Specified data directory "%1" cannot be created.</source>
+        <translation>Napaka: Ne morem ustvariti mape "%1".</translation>
     </message>
     <message>
         <source>Error</source>
         <translation>Napaka</translation>
-    </message>
-    <message>
-        <source>GB of free space available</source>
-        <translation>GB prostora na voljo</translation>
     </message>
     </context>
 <context>
@@ -750,7 +851,15 @@ Naslov: %4
         <source>URI:</source>
         <translation>URI:</translation>
     </message>
-    </context>
+    <message>
+        <source>Select payment request file</source>
+        <translation>Izberi datoteko plačilnega zahtevka</translation>
+    </message>
+    <message>
+        <source>Select payment request file to open</source>
+        <translation>Izberi datoteko plačilnega zahtevka</translation>
+    </message>
+</context>
 <context>
     <name>OptionsDialog</name>
     <message>
@@ -762,10 +871,6 @@ Naslov: %4
         <translation>&amp;Glavno</translation>
     </message>
     <message>
-        <source>Pay transaction &amp;fee</source>
-        <translation>Nakazilo plačila &amp; provizija</translation>
-    </message>
-    <message>
         <source>Automatically start Bitcoin after logging in to the system.</source>
         <translation>Po prijavi v sistem samodejno zaženite Bitcoin.</translation>
     </message>
@@ -774,8 +879,28 @@ Naslov: %4
         <translation>&amp;Zaženi Bitcoin ob prijavi v sistem</translation>
     </message>
     <message>
+        <source>Size of &amp;database cache</source>
+        <translation>Velikost lokalne zbirke &amp;podatkovne baze</translation>
+    </message>
+    <message>
         <source>MB</source>
         <translation>megabite</translation>
+    </message>
+    <message>
+        <source>Accept connections from outside</source>
+        <translation>Sprejmi povezave od zunaj</translation>
+    </message>
+    <message>
+        <source>Allow incoming connections</source>
+        <translation>Dovoli prihajajoče povezave</translation>
+    </message>
+    <message>
+        <source>IP address of the proxy (e.g. IPv4: 127.0.0.1 / IPv6: ::1)</source>
+        <translation>IP naslov proxy strežnika (npr. IPv4: 127.0.0.1 ali IPv6: ::1)</translation>
+    </message>
+    <message>
+        <source>&amp;Reset Options</source>
+        <translation>&amp;Opcije resetiranja</translation>
     </message>
     <message>
         <source>&amp;Network</source>
@@ -784,6 +909,14 @@ Naslov: %4
     <message>
         <source>W&amp;allet</source>
         <translation>&amp;Denarnica</translation>
+    </message>
+    <message>
+        <source>Expert</source>
+        <translation>Poznavalec</translation>
+    </message>
+    <message>
+        <source>Enable coin &amp;control features</source>
+        <translation>Omogoči Coin &amp; Control funkcijo</translation>
     </message>
     <message>
         <source>Automatically open the Bitcoin client port on the router. This only works when your router supports UPnP and it is enabled.</source>
@@ -804,14 +937,6 @@ Naslov: %4
     <message>
         <source>Port of the proxy (e.g. 9050)</source>
         <translation>Vrata strežnika (npr.: 9050)</translation>
-    </message>
-    <message>
-        <source>SOCKS &amp;Version:</source>
-        <translation>SOCKS &amp;različica:</translation>
-    </message>
-    <message>
-        <source>SOCKS version of the proxy (e.g. 5)</source>
-        <translation>SOCKS različica posredniškega strežnika (npr.: 5)</translation>
     </message>
     <message>
         <source>&amp;Window</source>
@@ -861,6 +986,10 @@ Naslov: %4
         <source>default</source>
         <translation>privzeto</translation>
     </message>
+    <message>
+        <source>none</source>
+        <translation>Nič</translation>
+    </message>
     </context>
 <context>
     <name>OverviewPage</name>
@@ -873,8 +1002,8 @@ Naslov: %4
         <translation>Prikazanim podatkom je lahko potekel rok. Vaša denarnica bo po vzpostavitvi povezave samodejno sinhronizirana z Bitcoin omrežjem, ampak ta proces še ni bil zaključen.</translation>
     </message>
     <message>
-        <source>Wallet</source>
-        <translation>Denarnica</translation>
+        <source>Watch-only:</source>
+        <translation>Samo gledanje</translation>
     </message>
     <message>
         <source>Available:</source>
@@ -897,10 +1026,6 @@ Naslov: %4
         <translation>Vaše trenutno skupno stanje</translation>
     </message>
     <message>
-        <source>&lt;b&gt;Recent transactions&lt;/b&gt;</source>
-        <translation>&lt;b&gt;Nedavne transakcije&lt;/&gt;</translation>
-    </message>
-    <message>
         <source>out of sync</source>
         <translation>iz sinhronizacije</translation>
     </message>
@@ -910,6 +1035,10 @@ Naslov: %4
     <message>
         <source>URI handling</source>
         <translation>Rokovanje z URI</translation>
+    </message>
+    <message>
+        <source>Invalid payment address %1</source>
+        <translation>Neveljaven naslov plačila %1</translation>
     </message>
     <message>
         <source>Payment request error</source>
@@ -933,24 +1062,31 @@ Naslov: %4
     </message>
 </context>
 <context>
-    <name>QObject</name>
+    <name>PeerTableModel</name>
     <message>
-        <source>Bitcoin</source>
-        <translation>Bitcoin</translation>
-    </message>
-    <message>
-        <source>Error: Specified data directory "%1" does not exist.</source>
-        <translation>Napaka: Želena nahajališče datoteke "%1" ne obstaja.</translation>
-    </message>
-    <message>
-        <source>Error: Invalid combination of -regtest and -testnet.</source>
-        <translation>Napaka: Neveljavna kombinacija -regtest and -testnet</translation>
-    </message>
-    <message>
-        <source>Enter a Bitcoin address (e.g. 1NS17iag9jJgTHD1VXjvLCEnZuQ3rJDE9L)</source>
-        <translation>Vnesite bitcoin naslov (npr.: 1NS17iag9jJgTHD1VXjvLCEnZuQ3rJDE9L)</translation>
+        <source>Ping Time</source>
+        <translation>Odzivni čas</translation>
     </message>
 </context>
+<context>
+    <name>QObject</name>
+    <message>
+        <source>Amount</source>
+        <translation>Količina</translation>
+    </message>
+    <message>
+        <source>%1 h</source>
+        <translation>%1 ur</translation>
+    </message>
+    <message>
+        <source>%1 m</source>
+        <translation>%1 minut</translation>
+    </message>
+    <message>
+        <source>N/A</source>
+        <translation>Neznano</translation>
+    </message>
+    </context>
 <context>
     <name>QRImageWidget</name>
     <message>
@@ -993,6 +1129,10 @@ Naslov: %4
         <translation>OpenSSL različica v rabi</translation>
     </message>
     <message>
+        <source>Using BerkeleyDB version</source>
+        <translation>BerkeleyDB različica v rabi</translation>
+    </message>
+    <message>
         <source>Startup time</source>
         <translation>Čas zagona</translation>
     </message>
@@ -1013,8 +1153,24 @@ Naslov: %4
         <translation>Trenutno število blokov</translation>
     </message>
     <message>
-        <source>Estimated total blocks</source>
-        <translation>Ocenjeno skupno število blokov</translation>
+        <source>Received</source>
+        <translation>Prejeto</translation>
+    </message>
+    <message>
+        <source>Sent</source>
+        <translation>Poslano</translation>
+    </message>
+    <message>
+        <source>Version</source>
+        <translation>Različica</translation>
+    </message>
+    <message>
+        <source>Services</source>
+        <translation>Storitve</translation>
+    </message>
+    <message>
+        <source>Ping Time</source>
+        <translation>Odzivni čas</translation>
     </message>
     <message>
         <source>Last block time</source>
@@ -1081,16 +1237,16 @@ Naslov: %4
         <translation>%1 gigabitov</translation>
     </message>
     <message>
-        <source>%1 m</source>
-        <translation>%1 minut</translation>
+        <source>never</source>
+        <translation>nikoli</translation>
     </message>
     <message>
-        <source>%1 h</source>
-        <translation>%1 ur</translation>
+        <source>Unknown</source>
+        <translation>Neznano</translation>
     </message>
     <message>
-        <source>%1 h %2 m</source>
-        <translation>%1 ur %2 minut</translation>
+        <source>Fetching...</source>
+        <translation>Pridobivam...</translation>
     </message>
 </context>
 <context>
@@ -1167,6 +1323,10 @@ Naslov: %4
         <translation>Informacija o plačilu</translation>
     </message>
     <message>
+        <source>URI</source>
+        <translation>URI</translation>
+    </message>
+    <message>
         <source>Address</source>
         <translation>Naslov</translation>
     </message>
@@ -1186,7 +1346,11 @@ Naslov: %4
         <source>Resulting URI too long, try to reduce the text for label / message.</source>
         <translation>URI predolg, skušajte zmanjšati besedilo oznake/sporočila.</translation>
     </message>
-    </context>
+    <message>
+        <source>Error encoding URI into QR Code.</source>
+        <translation>Napaka pri kodiranju URIja v QR kodo.</translation>
+    </message>
+</context>
 <context>
     <name>RecentRequestsTableModel</name>
     <message>
@@ -1269,6 +1433,10 @@ Naslov: %4
         <translation>Dodaj &amp;prejemnika</translation>
     </message>
     <message>
+        <source>Dust:</source>
+        <translation>Prah:</translation>
+    </message>
+    <message>
         <source>Clear &amp;All</source>
         <translation>Počisti &amp;vse</translation>
     </message>
@@ -1309,6 +1477,10 @@ Naslov: %4
         <translation>Kopiraj prednostno mesto</translation>
     </message>
     <message>
+        <source>Copy change</source>
+        <translation>Kopiraj drobiž</translation>
+    </message>
+    <message>
         <source>or</source>
         <translation>ali</translation>
     </message>
@@ -1333,20 +1505,16 @@ Naslov: %4
         <translation>(ni oznake)</translation>
     </message>
     <message>
+        <source>Copy dust</source>
+        <translation>Kopiraj prah</translation>
+    </message>
+    <message>
         <source>Are you sure you want to send?</source>
         <translation>Ali ste prepričani, da želite poslati?</translation>
     </message>
     <message>
         <source>added as transaction fee</source>
         <translation>dodano kot provizija transakcije</translation>
-    </message>
-    <message>
-        <source>Payment request expired</source>
-        <translation>Zahteva plačila je potekla</translation>
-    </message>
-    <message>
-        <source>Invalid payment address %1</source>
-        <translation>Neveljaven naslov plačila %1</translation>
     </message>
 </context>
 <context>
@@ -1444,10 +1612,6 @@ Naslov: %4
     <message>
         <source>Verify &amp;Message</source>
         <translation>Preveri &amp;Sporočilo</translation>
-    </message>
-    <message>
-        <source>Enter a Bitcoin address (e.g. 1NS17iag9jJgTHD1VXjvLCEnZuQ3rJDE9L)</source>
-        <translation>Vnesite bitcoin naslov (npr.: 1NS17iag9jJgTHD1VXjvLCEnZuQ3rJDE9L)</translation>
     </message>
     <message>
         <source>Click "Sign Message" to generate signature</source>
@@ -1645,10 +1809,6 @@ Naslov: %4
         <translation>Naslov</translation>
     </message>
     <message>
-        <source>Amount</source>
-        <translation>Količina</translation>
-    </message>
-    <message>
         <source>Open until %1</source>
         <translation>Odpri enoto %1</translation>
     </message>
@@ -1832,10 +1992,6 @@ Naslov: %4
         <translation>Naslov</translation>
     </message>
     <message>
-        <source>Amount</source>
-        <translation>Količina</translation>
-    </message>
-    <message>
         <source>ID</source>
         <translation>ID</translation>
     </message>
@@ -1848,6 +2004,9 @@ Naslov: %4
         <translation>za</translation>
     </message>
 </context>
+<context>
+    <name>UnitDisplayStatusBarControl</name>
+    </context>
 <context>
     <name>WalletFrame</name>
     </context>
@@ -1896,40 +2055,12 @@ Naslov: %4
 <context>
     <name>bitcoin-core</name>
     <message>
-        <source>Usage:</source>
-        <translation>Uporaba:</translation>
-    </message>
-    <message>
-        <source>List commands</source>
-        <translation>Prikaži ukaze</translation>
-    </message>
-    <message>
-        <source>Get help for a command</source>
-        <translation>Prikaži pomoč za ukaz</translation>
-    </message>
-    <message>
         <source>Options:</source>
         <translation>Možnosti:</translation>
     </message>
     <message>
-        <source>Specify configuration file (default: bitcoin.conf)</source>
-        <translation>Določi datoteko z nastavitvami (privzeta: bitcoin.conf)</translation>
-    </message>
-    <message>
-        <source>Specify pid file (default: bitcoind.pid)</source>
-        <translation>Določi pid datoteko (privzeta: bitcoin.pid)</translation>
-    </message>
-    <message>
         <source>Specify data directory</source>
         <translation>Določi podatkovni imenik</translation>
-    </message>
-    <message>
-        <source>Listen for connections on &lt;port&gt; (default: 8333 or testnet: 18333)</source>
-        <translation>Sprejmi povezave na &lt;port&gt; (privzeta vrata: 8333 ali testnet: 18333)</translation>
-    </message>
-    <message>
-        <source>Maintain at most &lt;n&gt; connections to peers (default: 125)</source>
-        <translation>Obdrži maksimalno število &lt;n&gt; povezav (privzeto: 125)</translation>
     </message>
     <message>
         <source>Connect to a node to retrieve peer addresses, and disconnect</source>
@@ -1938,14 +2069,6 @@ Naslov: %4
     <message>
         <source>Specify your own public address</source>
         <translation>Določite vaš lasten javni naslov</translation>
-    </message>
-    <message>
-        <source>Threshold for disconnecting misbehaving peers (default: 100)</source>
-        <translation>Prag za prekinitev povezav s slabimi odjemalci (privzeto: 1000)</translation>
-    </message>
-    <message>
-        <source>Number of seconds to keep misbehaving peers from reconnecting (default: 86400)</source>
-        <translation>Število sekund za težavo pri vzpostavitvi povezave med uporabniki (privzeto: 86400)</translation>
     </message>
     <message>
         <source>Accept command line and JSON-RPC commands</source>
@@ -1980,8 +2103,12 @@ Naslov: %4
         <translation>Opozorilo: napaka pri branju wallet.dat! Vsi ključi so bili pravilno prebrani, podatki o transakciji ali imenik vnešenih naslovov so morda izgubljeni ali nepravilni.</translation>
     </message>
     <message>
+        <source>(default: 1)</source>
+        <translation>(privzeto: 1)</translation>
+    </message>
+    <message>
         <source>&lt;category&gt; can be:</source>
-        <translation>&lt;kategorija&gt; je lahko:</translation>
+        <translation>&lt;category&gt; je lahko:</translation>
     </message>
     <message>
         <source>Block creation options:</source>
@@ -1996,32 +2123,12 @@ Naslov: %4
         <translation>Opozorilo: Denarnica je zaklenjena, ni mogoče opraviti transkacijo! </translation>
     </message>
     <message>
-        <source>Error: system error: </source>
-        <translation>Napaka: sistemska napaka:</translation>
-    </message>
-    <message>
-        <source>Failed to write file info</source>
-        <translation>Zapisovanje informacij o datoteki neuspešno</translation>
-    </message>
-    <message>
-        <source>Failed to write to coin database</source>
-        <translation>Neuspešno zapisovanje na bazi podatkov kovancev</translation>
-    </message>
-    <message>
-        <source>Generate coins (default: 0)</source>
-        <translation>Ustvari kovance (privzeto: 0)</translation>
-    </message>
-    <message>
-        <source>Wait for RPC server to start</source>
-        <translation>Počakajte na zagon RPC strežnika</translation>
+        <source>Importing...</source>
+        <translation>Uvažam...</translation>
     </message>
     <message>
         <source>Information</source>
         <translation>Informacije</translation>
-    </message>
-    <message>
-        <source>SSL options: (see the Bitcoin Wiki for SSL setup instructions)</source>
-        <translation>SSL možnosti: (glejte Bitcoin Wiki za navodla, kako nastaviti SSL)</translation>
     </message>
     <message>
         <source>Send trace/debug info to console instead of debug.log file</source>
@@ -2030,10 +2137,6 @@ Naslov: %4
     <message>
         <source>Signing transaction failed</source>
         <translation>Podpisovanje transakcije spodletelo</translation>
-    </message>
-    <message>
-        <source>System error: </source>
-        <translation>Sistemska napaka:</translation>
     </message>
     <message>
         <source>Transaction amount too small</source>
@@ -2060,24 +2163,12 @@ Naslov: %4
         <translation>Opozorilo: ta različica je zastarela, potrebna je nadgradnja!</translation>
     </message>
     <message>
-        <source>version</source>
-        <translation>različica</translation>
-    </message>
-    <message>
         <source>wallet.dat corrupt, salvage failed</source>
         <translation>wallet.dat poškodovana, neuspešna obnova</translation>
     </message>
     <message>
         <source>Password for JSON-RPC connections</source>
         <translation>Geslo za JSON-RPC povezave</translation>
-    </message>
-    <message>
-        <source>Allow JSON-RPC connections from specified IP address</source>
-        <translation>Dovoli JSON-RPC povezave z določenega IP naslova</translation>
-    </message>
-    <message>
-        <source>Send commands to node running on &lt;ip&gt; (default: 127.0.0.1)</source>
-        <translation>Pošlji ukaze vozlišču na &lt;ip&gt; (privzet: 127.0.0.1)</translation>
     </message>
     <message>
         <source>Execute command when the best block changes (%s in cmd is replaced by block hash)</source>
@@ -2088,10 +2179,6 @@ Naslov: %4
         <translation>Posodobi denarnico v najnovejši zapis</translation>
     </message>
     <message>
-        <source>Set key pool size to &lt;n&gt; (default: 100)</source>
-        <translation>Nastavi velikost ključa bazena na &lt;n&gt; (privzeto: 100)</translation>
-    </message>
-    <message>
         <source>Rescan the block chain for missing wallet transactions</source>
         <translation>Ponovno preglej verigo blokov za manjkajoče transakcije denarnice</translation>
     </message>
@@ -2100,20 +2187,8 @@ Naslov: %4
         <translation>Uporabi OpenSSL (https) za JSON-RPC povezave</translation>
     </message>
     <message>
-        <source>Server certificate file (default: server.cert)</source>
-        <translation>Datoteka potrdila strežnika (privzeta: server.cert)</translation>
-    </message>
-    <message>
-        <source>Server private key (default: server.pem)</source>
-        <translation>Zasebni ključ strežnika (privzet: server.pem)</translation>
-    </message>
-    <message>
         <source>This help message</source>
         <translation>To sporočilo pomoči</translation>
-    </message>
-    <message>
-        <source>Unable to bind to %s on this computer (bind returned error %d, %s)</source>
-        <translation>Nemogoče je povezati s/z %s na tem računalniku (povezava je vrnila napaka %d, %s)</translation>
     </message>
     <message>
         <source>Allow DNS lookups for -addnode, -seednode and -connect</source>
@@ -2128,14 +2203,6 @@ Naslov: %4
         <translation>Napaka pri nalaganju wallet.dat: denarnica pokvarjena</translation>
     </message>
     <message>
-        <source>Error loading wallet.dat: Wallet requires newer version of Bitcoin</source>
-        <translation>Napaka pri nalaganju wallet.dat: denarnica zahteva novejšo različico Bitcoina</translation>
-    </message>
-    <message>
-        <source>Wallet needed to be rewritten: restart Bitcoin to complete</source>
-        <translation>Denarnica mora biti prepisana: ponovno zaženite Bitcoin za doknčanje</translation>
-    </message>
-    <message>
         <source>Error loading wallet.dat</source>
         <translation>Napaka pri nalaganju wallet.dat</translation>
     </message>
@@ -2146,10 +2213,6 @@ Naslov: %4
     <message>
         <source>Unknown network specified in -onlynet: '%s'</source>
         <translation>Neznano omrežje določeno v -onlynet: '%s'.</translation>
-    </message>
-    <message>
-        <source>Unknown -socks proxy version requested: %i</source>
-        <translation>Neznano -socks zahtevan zastopnik različice: %i</translation>
     </message>
     <message>
         <source>Cannot resolve -bind address: '%s'</source>
@@ -2206,14 +2269,6 @@ Naslov: %4
     <message>
         <source>Error</source>
         <translation>Napaka</translation>
-    </message>
-    <message>
-        <source>You must set rpcpassword=&lt;password&gt; in the configuration file:
-%s
-If the file does not exist, create it with owner-readable-only file permissions.</source>
-        <translation>Potrebno je nastaviti rpcpassword=&lt;password&gt; v nastavitveni datoteki:
-%s
-Če datoteka ne obstaja jo ustvarite z dovoljenjem, da jo lahko bere samo uporabnik.</translation>
     </message>
 </context>
 </TS>

@@ -1,41 +1,4 @@
-<TS language="ko_KR" version="2.1">
-<context>
-    <name>AboutDialog</name>
-    <message>
-        <source>About Bitcoin Core</source>
-        <translation>비트코인 코어 소개</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Bitcoin Core&lt;/b&gt; version</source>
-        <translation>&lt;b&gt;비트코인 코어&lt;/b&gt; 버젼</translation>
-    </message>
-    <message>
-        <source>
-This is experimental software.
-
-Distributed under the MIT/X11 software license, see the accompanying file COPYING or http://www.opensource.org/licenses/mit-license.php.
-
-This product includes software developed by the OpenSSL Project for use in the OpenSSL Toolkit (http://www.openssl.org/) and cryptographic software written by Eric Young (eay@cryptsoft.com) and UPnP software written by Thomas Bernard.</source>
-        <translation>
-이 프로그램은 시험용입니다.
-
-MIT/X11 프로그램 라이선스에 따라 배포합니다. COPYING 또는 http://www.opensource.org/licenses/mit-license.php를 참조하십시오.
-
-이 프로그램에는 OpenSSL 툴킷(http://www.openssl.org) 사용 목적으로 개발한 OpenSSL 프로젝트를 포함하고 있으며, 암호화 프로그램은 Eric Young(eay@cryptsoft.com)이, UPnP 프로그램은 Thomas Bernard가 작성했습니다.</translation>
-    </message>
-    <message>
-        <source>Copyright</source>
-        <translation>Copyright</translation>
-    </message>
-    <message>
-        <source>The Bitcoin Core developers</source>
-        <translation>비트코인코어 개발자들</translation>
-    </message>
-    <message>
-        <source>(%1-bit)</source>
-        <translation>(%1-비트)</translation>
-    </message>
-</context>
+<TS language="ko_KR" version="2.0">
 <context>
     <name>AddressBookPage</name>
     <message>
@@ -165,10 +128,6 @@ MIT/X11 프로그램 라이선스에 따라 배포합니다. COPYING 또는 http
         <translation>새 암호 반복</translation>
     </message>
     <message>
-        <source>Enter the new passphrase to the wallet.&lt;br/&gt;Please use a passphrase of &lt;b&gt;10 or more random characters&lt;/b&gt;, or &lt;b&gt;eight or more words&lt;/b&gt;.</source>
-        <translation>새로운 암호를 입력합니다. 8개 혹은 그 이상의 단어를 입력하거나 10 자보다 많은 불규칙한 문자를 암호에 사용하세요.</translation>
-    </message>
-    <message>
         <source>Encrypt wallet</source>
         <translation>지갑 암호화</translation>
     </message>
@@ -292,10 +251,6 @@ MIT/X11 프로그램 라이선스에 따라 배포합니다. COPYING 또는 http
         <translation>적용 중단</translation>
     </message>
     <message>
-        <source>Show information about Bitcoin</source>
-        <translation>비트코인에 대한 정보를 보여줍니다.</translation>
-    </message>
-    <message>
         <source>About &amp;Qt</source>
         <translation>Qt 정보(&amp;Q)</translation>
     </message>
@@ -330,6 +285,10 @@ MIT/X11 프로그램 라이선스에 따라 배포합니다. COPYING 또는 http
     <message>
         <source>Open &amp;URI...</source>
         <translation>URI&amp;열기...</translation>
+    </message>
+    <message>
+        <source>Bitcoin Core client</source>
+        <translation>비트코인 코어 클라이언트</translation>
     </message>
     <message>
         <source>Importing blocks from disk...</source>
@@ -384,6 +343,10 @@ MIT/X11 프로그램 라이선스에 따라 배포합니다. COPYING 또는 http
         <translation>받기(&amp;R)</translation>
     </message>
     <message>
+        <source>Show information about Bitcoin Core</source>
+        <translation>비트코인 코어에 관한 정보입니다.</translation>
+    </message>
+    <message>
         <source>&amp;Show / Hide</source>
         <translation>보이기/숨기기(&amp;S)</translation>
     </message>
@@ -420,10 +383,6 @@ MIT/X11 프로그램 라이선스에 따라 배포합니다. COPYING 또는 http
         <translation>툴바 색인표</translation>
     </message>
     <message>
-        <source>[testnet]</source>
-        <translation>[테스트넷]</translation>
-    </message>
-    <message>
         <source>Bitcoin Core</source>
         <translation>비트코인 코어</translation>
     </message>
@@ -456,32 +415,24 @@ MIT/X11 프로그램 라이선스에 따라 배포합니다. COPYING 또는 http
         <translation>사용할 수 있는 비트코인 명령어 옵션 목록을 가져오기 위해 Bitcoin-Qt 도움말 메시지를 표시합니다.</translation>
     </message>
     <message>
-        <source>Bitcoin client</source>
-        <translation>비트코인 클라이언트</translation>
-    </message>
-    <message numerus="yes">
-        <source>%n active connection(s) to Bitcoin network</source>
-        <translation><numerusform>비트코인 네트워크와 %n 개의 활성연결</numerusform></translation>
-    </message>
-    <message>
         <source>No block source available...</source>
         <translation>사용 가능한 블록이 없습니다...</translation>
     </message>
-    <message>
-        <source>Processed %1 of %2 (estimated) blocks of transaction history.</source>
-        <translation>송금 기록 %1/%2개 블록 (추산) 처리됨.</translation>
+    <message numerus="yes">
+        <source>%n hour(s)</source>
+        <translation><numerusform>%n시간</numerusform></translation>
     </message>
-    <message>
-        <source>Processed %1 blocks of transaction history.</source>
-        <translation>%1 블록의 거래 기록들이 처리됨.</translation>
+    <message numerus="yes">
+        <source>%n day(s)</source>
+        <translation><numerusform>%n일</numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <source>%n week(s)</source>
+        <translation><numerusform>%n주</numerusform></translation>
     </message>
     <message>
         <source>%1 and %2</source>
         <translation>%1 그리고 %2</translation>
-    </message>
-    <message numerus="yes">
-        <source>%n year(s)</source>
-        <translation><numerusform>%n 년</numerusform></translation>
     </message>
     <message>
         <source>%1 behind</source>
@@ -543,10 +494,6 @@ Address: %4
         <source>Wallet is &lt;b&gt;encrypted&lt;/b&gt; and currently &lt;b&gt;locked&lt;/b&gt;</source>
         <translation>지갑이 암호화 되었고 현재 잠겨져 있습니다</translation>
     </message>
-    <message>
-        <source>A fatal error occurred. Bitcoin can no longer continue safely and will quit.</source>
-        <translation>치명적인 오류가 있습니다. 비트코인을 더이상 안전하게 진행할 수 없어 곧 종료합니다.</translation>
-    </message>
 </context>
 <context>
     <name>ClientModel</name>
@@ -557,10 +504,6 @@ Address: %4
 </context>
 <context>
     <name>CoinControlDialog</name>
-    <message>
-        <source>Coin Control Address Selection</source>
-        <translation>코인 컨트롤 주소 선택</translation>
-    </message>
     <message>
         <source>Quantity:</source>
         <translation>수량:</translation>
@@ -582,12 +525,16 @@ Address: %4
         <translation>수수료:</translation>
     </message>
     <message>
-        <source>Low Output:</source>
-        <translation>소액 출금 여부:</translation>
+        <source>Dust:</source>
+        <translation>더스트:</translation>
     </message>
     <message>
         <source>After Fee:</source>
         <translation>수수료 이후:</translation>
+    </message>
+    <message>
+        <source>Change:</source>
+        <translation>체인지:</translation>
     </message>
     <message>
         <source>(un)select all</source>
@@ -604,10 +551,6 @@ Address: %4
     <message>
         <source>Amount</source>
         <translation>거래량</translation>
-    </message>
-    <message>
-        <source>Address</source>
-        <translation>주소</translation>
     </message>
     <message>
         <source>Date</source>
@@ -631,11 +574,11 @@ Address: %4
     </message>
     <message>
         <source>Copy label</source>
-        <translation>라벨 복사하기</translation>
+        <translation>표 복사하기</translation>
     </message>
     <message>
         <source>Copy amount</source>
-        <translation>거래액 복사</translation>
+        <translation>거래량 복사</translation>
     </message>
     <message>
         <source>Copy transaction ID</source>
@@ -663,7 +606,7 @@ Address: %4
     </message>
     <message>
         <source>Copy bytes</source>
-        <translation>bytes를 복사</translation>
+        <translation>bytes 복사</translation>
     </message>
     <message>
         <source>Copy priority</source>
@@ -738,16 +681,8 @@ Address: %4
         <translation>우선권이 중간보다 작으면 제목이 빨간색으로 변합니다. </translation>
     </message>
     <message>
-        <source>This means a fee of at least %1 is required.</source>
-        <translation>최소 %1의 거래 수수료가 필요하다는 뜻입니다. </translation>
-    </message>
-    <message>
-        <source>Amounts below 0.546 times the minimum relay fee are shown as dust.</source>
-        <translation>노드 릴레이를 위한 최저 수수료의 0.546배보다 낮은 거래는 먼지 거래로 표현됩니다.</translation>
-    </message>
-    <message>
         <source>(no label)</source>
-        <translation>(표 없슴)</translation>
+        <translation>(표 없음)</translation>
     </message>
     <message>
         <source>change from %1 (%2)</source>
@@ -831,16 +766,24 @@ Address: %4
 <context>
     <name>HelpMessageDialog</name>
     <message>
-        <source>Bitcoin Core - Command-line options</source>
-        <translation>비트코인 코어 - 명령어-라인 옵션</translation>
-    </message>
-    <message>
         <source>Bitcoin Core</source>
-        <translation>비트코인코어</translation>
+        <translation>비트코인 코어</translation>
     </message>
     <message>
         <source>version</source>
         <translation>버전</translation>
+    </message>
+    <message>
+        <source>(%1-bit)</source>
+        <translation>(%1-비트)</translation>
+    </message>
+    <message>
+        <source>About Bitcoin Core</source>
+        <translation>비트코인 코어 소개</translation>
+    </message>
+    <message>
+        <source>Command-line options</source>
+        <translation>명령줄 옵션</translation>
     </message>
     <message>
         <source>Usage:</source>
@@ -902,26 +845,14 @@ Address: %4
         <translation>커스텀 데이터 폴더 사용:</translation>
     </message>
     <message>
-        <source>Bitcoin</source>
-        <translation>비트코인</translation>
-    </message>
-    <message>
-        <source>Error: Specified data directory "%1" can not be created.</source>
-        <translation>오류 : 별도 정의한 폴더명 "%1" 생성에 실패했습니다. </translation>
+        <source>Bitcoin Core</source>
+        <translation>비트코인 코어</translation>
     </message>
     <message>
         <source>Error</source>
         <translation>오류</translation>
     </message>
-    <message>
-        <source>GB of free space available</source>
-        <translation>GB가 사용가능</translation>
-    </message>
-    <message>
-        <source>(of %1GB needed)</source>
-        <translation>(%1GB가 필요)</translation>
-    </message>
-</context>
+    </context>
 <context>
     <name>OpenURIDialog</name>
     <message>
@@ -956,14 +887,6 @@ Address: %4
         <translation>메인(&amp;M)</translation>
     </message>
     <message>
-        <source>Optional transaction fee per kB that helps make sure your transactions are processed quickly. Most transactions are 1 kB.</source>
-        <translation>당신의 거래가 더욱 빠르게 처리될 수 있도록 선택적으로 kBd당 거래 수수료를 지정합니다. 참고로 대부분의 거래들은 1kB입니다.</translation>
-    </message>
-    <message>
-        <source>Pay transaction &amp;fee</source>
-        <translation>송금 수수료(&amp;F)</translation>
-    </message>
-    <message>
         <source>Automatically start Bitcoin after logging in to the system.</source>
         <translation>시스템 로그인후에 비트코인을 자동으로 시작합니다.</translation>
     </message>
@@ -984,12 +907,12 @@ Address: %4
         <translation>스크립트 인증 쓰레드의 개수</translation>
     </message>
     <message>
-        <source>Connect to the Bitcoin network through a SOCKS proxy.</source>
-        <translation>SOCKS 프록시를 통해 비트코인 네트워크 연결</translation>
+        <source>Accept connections from outside</source>
+        <translation>외부로부터의 연결을 승인합니다.</translation>
     </message>
     <message>
-        <source>&amp;Connect through SOCKS proxy (default proxy):</source>
-        <translation>SOCKS 프록시를 거쳐 연결합니다 (기본값 프록시):</translation>
+        <source>Allow incoming connections</source>
+        <translation>연결 요청을 허용합니다.</translation>
     </message>
     <message>
         <source>IP address of the proxy (e.g. IPv4: 127.0.0.1 / IPv6: ::1)</source>
@@ -1052,14 +975,6 @@ Address: %4
         <translation>프록시의 포트번호입니다(예: 9050)</translation>
     </message>
     <message>
-        <source>SOCKS &amp;Version:</source>
-        <translation>SOCKS 버전(&amp;V):</translation>
-    </message>
-    <message>
-        <source>SOCKS version of the proxy (e.g. 5)</source>
-        <translation>프록시의 SOCKS 버전입니다(예: 5)</translation>
-    </message>
-    <message>
         <source>&amp;Window</source>
         <translation>창(&amp;W)</translation>
     </message>
@@ -1098,14 +1013,6 @@ Address: %4
     <message>
         <source>Choose the default subdivision unit to show in the interface and when sending coins.</source>
         <translation>인터페이스에 표시하고 코인을 보낼때 사용할 기본 최소화 단위를 선택하십시오.</translation>
-    </message>
-    <message>
-        <source>Whether to show Bitcoin addresses in the transaction list or not.</source>
-        <translation>송금 목록에 비트코인 주소를 표시할지의 여부입니다.</translation>
-    </message>
-    <message>
-        <source>&amp;Display addresses in transaction list</source>
-        <translation>송금 목록에 주소 표시(&amp;D)</translation>
     </message>
     <message>
         <source>Whether to show coin control features or not.</source>
@@ -1159,8 +1066,8 @@ Address: %4
         <translation>표시한 정보가 오래된 것 같습니다. 비트코인 네트워크에 연결하고 난 다음에 지갑을 자동으로 동기화 하지만, 아직 과정이 끝나지는 않았습니다.</translation>
     </message>
     <message>
-        <source>Wallet</source>
-        <translation>지갑</translation>
+        <source>Watch-only:</source>
+        <translation>모니터링 지갑:</translation>
     </message>
     <message>
         <source>Available:</source>
@@ -1195,8 +1102,8 @@ Address: %4
         <translation>당신의 현재 총액</translation>
     </message>
     <message>
-        <source>&lt;b&gt;Recent transactions&lt;/b&gt;</source>
-        <translation>&lt;b&gt;최근 거래내역&lt;/b&gt;</translation>
+        <source>Your current balance in watch-only addresses</source>
+        <translation>모니터링 지갑의 현재 잔액</translation>
     </message>
     <message>
         <source>out of sync</source>
@@ -1210,8 +1117,8 @@ Address: %4
         <translation>URI 조작중</translation>
     </message>
     <message>
-        <source>URI can not be parsed! This can be caused by an invalid Bitcoin address or malformed URI parameters.</source>
-        <translation>URI의 파싱에 문제가 발생했습니다. 잘못된 비트코인 주소나 URI 파라미터 구성에 오류가 존재할 수 있습니다.</translation>
+        <source>Invalid payment address %1</source>
+        <translation>잘못된 지불 주소입니다 %1</translation>
     </message>
     <message>
         <source>Requested payment amount of %1 is too small (considered dust).</source>
@@ -1226,24 +1133,12 @@ Address: %4
         <translation>비트코인을 시작할 수 없습니다: 지급제어기를 클릭하시오</translation>
     </message>
     <message>
-        <source>Net manager warning</source>
-        <translation>네트워크 관리인 경고</translation>
-    </message>
-    <message>
-        <source>Your active proxy doesn't support SOCKS5, which is required for payment requests via proxy.</source>
-        <translation>현재의 프록시가 SOCKS5를 지원하지 않아 지불 요청을 수행할 수 없습니다. </translation>
-    </message>
-    <message>
         <source>Payment request fetch URL is invalid: %1</source>
         <translation>대금 청구서의 URL이 올바르지 않습니다: %1</translation>
     </message>
     <message>
         <source>Payment request file handling</source>
         <translation>지불이 파일 처리를 요청합니다</translation>
-    </message>
-    <message>
-        <source>Payment request file can not be read or processed! This can be caused by an invalid payment request file.</source>
-        <translation>지불 요청 파일이 읽혀지지 않거나 처리되지 않습니다! 이것은 지불요청 파일이 인식되지 않는 현상이 발생됩니다.</translation>
     </message>
     <message>
         <source>Unverified payment requests to custom payment scripts are unsupported.</source>
@@ -1256,10 +1151,6 @@ Address: %4
     <message>
         <source>Error communicating with %1: %2</source>
         <translation>%1과 소통하는데 애러: %2</translation>
-    </message>
-    <message>
-        <source>Payment request can not be parsed or processed!</source>
-        <translation>지불 요청이 처리나 분석이 되지 않습니다</translation>
     </message>
     <message>
         <source>Bad response from server %1</source>
@@ -1275,28 +1166,19 @@ Address: %4
     </message>
 </context>
 <context>
+    <name>PeerTableModel</name>
+    </context>
+<context>
     <name>QObject</name>
     <message>
-        <source>Bitcoin</source>
-        <translation>비트코인</translation>
+        <source>Amount</source>
+        <translation>거래량</translation>
     </message>
     <message>
-        <source>Error: Specified data directory "%1" does not exist.</source>
-        <translation>애러: 지정한 데이터 폴더 "%1"은 존재하지 않습니다.</translation>
+        <source>N/A</source>
+        <translation>없음</translation>
     </message>
-    <message>
-        <source>Error: Invalid combination of -regtest and -testnet.</source>
-        <translation>오류: 잘못된 -regtest 와 -testnet의 조합입니다.</translation>
-    </message>
-    <message>
-        <source>Bitcoin Core didn't yet exit safely...</source>
-        <translation>비트코인 코어가 아직 안전하게 종료되지 않았습니다.</translation>
-    </message>
-    <message>
-        <source>Enter a Bitcoin address (e.g. 1NS17iag9jJgTHD1VXjvLCEnZuQ3rJDE9L)</source>
-        <translation>비트코인 주소를 입력하기 (예 1NS17iag9jJgTHD1VXjvLCEnZuQ3rJDE9L)</translation>
-    </message>
-</context>
+    </context>
 <context>
     <name>QRImageWidget</name>
     <message>
@@ -1332,7 +1214,7 @@ Address: %4
     </message>
     <message>
         <source>&amp;Information</source>
-        <translation>정보&amp;</translation>
+        <translation>정보</translation>
     </message>
     <message>
         <source>Debug window</source>
@@ -1369,10 +1251,6 @@ Address: %4
     <message>
         <source>Current number of blocks</source>
         <translation>현재 블럭 수</translation>
-    </message>
-    <message>
-        <source>Estimated total blocks</source>
-        <translation>예상 전체 블럭</translation>
     </message>
     <message>
         <source>Last block time</source>
@@ -1585,7 +1463,7 @@ Address: %4
     </message>
     <message>
         <source>(no label)</source>
-        <translation>(표 없슴)</translation>
+        <translation>(표 없음)</translation>
     </message>
     <message>
         <source>(no message)</source>
@@ -1624,7 +1502,7 @@ Address: %4
     </message>
     <message>
         <source>Bytes:</source>
-        <translation>Bytes:</translation>
+        <translation>바이트:</translation>
     </message>
     <message>
         <source>Amount:</source>
@@ -1632,19 +1510,19 @@ Address: %4
     </message>
     <message>
         <source>Priority:</source>
-        <translation>우선도:</translation>
+        <translation>우선순위:</translation>
     </message>
     <message>
         <source>Fee:</source>
         <translation>수수료:</translation>
     </message>
     <message>
-        <source>Low Output:</source>
-        <translation>소액 출금 여부:</translation>
-    </message>
-    <message>
         <source>After Fee:</source>
         <translation>수수료 이후:</translation>
+    </message>
+    <message>
+        <source>Change:</source>
+        <translation>체인지:</translation>
     </message>
     <message>
         <source>Custom change address</source>
@@ -1661,6 +1539,10 @@ Address: %4
     <message>
         <source>Clear all fields of the form.</source>
         <translation>양식의 모든 필드를 지웁니다</translation>
+    </message>
+    <message>
+        <source>Dust:</source>
+        <translation>더스트:</translation>
     </message>
     <message>
         <source>Clear &amp;All</source>
@@ -1692,7 +1574,7 @@ Address: %4
     </message>
     <message>
         <source>Copy amount</source>
-        <translation>거래액 복사</translation>
+        <translation>거래량 복사</translation>
     </message>
     <message>
         <source>Copy fee</source>
@@ -1752,7 +1634,7 @@ Address: %4
     </message>
     <message>
         <source>(no label)</source>
-        <translation>(표 없슴)</translation>
+        <translation>(표 없음)</translation>
     </message>
     <message>
         <source>Warning: Unknown change address</source>
@@ -1766,14 +1648,6 @@ Address: %4
         <source>added as transaction fee</source>
         <translation>거래 수수료로 추가됨</translation>
     </message>
-    <message>
-        <source>Payment request expired</source>
-        <translation>지불 요청 만료</translation>
-    </message>
-    <message>
-        <source>Invalid payment address %1</source>
-        <translation>잘못된 지불 주소입니다 %1</translation>
-    </message>
 </context>
 <context>
     <name>SendCoinsEntry</name>
@@ -1784,10 +1658,6 @@ Address: %4
     <message>
         <source>Pay &amp;To:</source>
         <translation>지급&amp;수신:</translation>
-    </message>
-    <message>
-        <source>The address to send the payment to (e.g. 1NS17iag9jJgTHD1VXjvLCEnZuQ3rJDE9L)</source>
-        <translation>비트코인을 송금할 지갑 주소 입력하기 (예 : 1NS17iag9jJgTHD1VXjvLCEnZuQ3rJDE9L)</translation>
     </message>
     <message>
         <source>Enter a label for this address to add it to your address book</source>
@@ -1834,6 +1704,10 @@ Address: %4
         <translation>사용된 주소 목록에 새 주소를 추가하기 위해 제목을 입력합니다. </translation>
     </message>
     <message>
+        <source>A message that was attached to the bitcoin: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Bitcoin network.</source>
+        <translation>비트코인에 첨부된 메시지: 참고용으로 거래와 함께 저장될 URI. 메모: 이 메시지는 비트코인 네트워크로 전송되지 않습니다.</translation>
+    </message>
+    <message>
         <source>This is an unverified payment request.</source>
         <translation>지급요청 미확인입니다</translation>
     </message>
@@ -1870,10 +1744,6 @@ Address: %4
     <message>
         <source>You can sign messages with your addresses to prove you own them. Be careful not to sign anything vague, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</source>
         <translation>여러분 자신을 증명하기 위해 주소를 첨가하고 섬여할 수 있습니다. 피싱 공격으로 말미암아 여러분의 서명을 통해 속아 넘어가게 할 수 있으므로, 서명하지 않은 어떤 모호한 요소든 주의하십시오. 동의하는 완전 무결한 조항에만 서명하십시오.</translation>
-    </message>
-    <message>
-        <source>The address to sign the message with (e.g. 1NS17iag9jJgTHD1VXjvLCEnZuQ3rJDE9L)</source>
-        <translation>메시지를 서명할 주소 (예: 1NS17iag9jJgTHD1VXjvLCEnZuQ3rJDE9L)</translation>
     </message>
     <message>
         <source>Choose previously used address</source>
@@ -1928,10 +1798,6 @@ Address: %4
         <translation>메시지를 검증하기 위해 아래 칸에 각각 지갑 주소와 메시지, 전자서명을 입력하세요. (메시지 원본의 띄어쓰기, 들여쓰기, 행 나눔 등이 정확하게 입력되어야 하므로 원본을 복사해서 입력하세요) 이 기능은 메시지 검증이 주 목적이며, 네트워크 침입자에 의해 변조되지 않도록 전자서명 해독에 불필요한 시간을 소모하지 마세요. </translation>
     </message>
     <message>
-        <source>The address the message was signed with (e.g. 1NS17iag9jJgTHD1VXjvLCEnZuQ3rJDE9L)</source>
-        <translation>서명한 메시지의 주소입니다 (e.g. 1NS17iag9jJgTHD1VXjvLCEnZuQ3rJDE9L)</translation>
-    </message>
-    <message>
         <source>Verify the message to ensure it was signed with the specified Bitcoin address</source>
         <translation>정확한 비트코인주소가 입력됬는지 메시지를 확인하시오</translation>
     </message>
@@ -1942,10 +1808,6 @@ Address: %4
     <message>
         <source>Reset all verify message fields</source>
         <translation>모든 검증 메시지 필드 재설정</translation>
-    </message>
-    <message>
-        <source>Enter a Bitcoin address (e.g. 1NS17iag9jJgTHD1VXjvLCEnZuQ3rJDE9L)</source>
-        <translation>비트코인 주소를 입력하기 (예 1NS17iag9jJgTHD1VXjvLCEnZuQ3rJDE9L)</translation>
     </message>
     <message>
         <source>Click "Sign Message" to generate signature</source>
@@ -2004,7 +1866,7 @@ Address: %4
     <name>SplashScreen</name>
     <message>
         <source>Bitcoin Core</source>
-        <translation>비트코인코어</translation>
+        <translation>비트코인 코어</translation>
     </message>
     <message>
         <source>The Bitcoin Core developers</source>
@@ -2048,10 +1910,6 @@ Address: %4
         <source>Status</source>
         <translation>상태</translation>
     </message>
-    <message numerus="yes">
-        <source>, broadcast through %n node(s)</source>
-        <translation><numerusform>%n 노드를 거쳐 전파합니다.</numerusform></translation>
-    </message>
     <message>
         <source>Date</source>
         <translation>날짜</translation>
@@ -2084,10 +1942,6 @@ Address: %4
         <source>Credit</source>
         <translation>예금</translation>
     </message>
-    <message numerus="yes">
-        <source>matures in %n more block(s)</source>
-        <translation><numerusform>%n개 블럭 후에 코인 숙성이 완료됩니다.</numerusform></translation>
-    </message>
     <message>
         <source>not accepted</source>
         <translation>허용되지 않는다</translation>
@@ -2114,7 +1968,7 @@ Address: %4
     </message>
     <message>
         <source>Transaction ID</source>
-        <translation>송금 ID</translation>
+        <translation>아이디</translation>
     </message>
     <message>
         <source>Merchant</source>
@@ -2152,10 +2006,6 @@ Address: %4
         <source>, has not been successfully broadcast yet</source>
         <translation>. 아직 성공적으로 통보하지 않음</translation>
     </message>
-    <message numerus="yes">
-        <source>Open for %n more block(s)</source>
-        <translation><numerusform>%n 개의 추가 블럭을 읽습니다.</numerusform></translation>
-    </message>
     <message>
         <source>unknown</source>
         <translation>알수없음</translation>
@@ -2180,23 +2030,15 @@ Address: %4
     </message>
     <message>
         <source>Type</source>
-        <translation>형식</translation>
+        <translation>종류</translation>
     </message>
     <message>
         <source>Address</source>
         <translation>주소</translation>
     </message>
     <message>
-        <source>Amount</source>
-        <translation>수량</translation>
-    </message>
-    <message>
         <source>Immature (%1 confirmations, will be available after %2)</source>
         <translation>충분히 숙성되지 않은 상태 (%1 승인, %2 후에 사용 가능합니다)</translation>
-    </message>
-    <message numerus="yes">
-        <source>Open for %n more block(s)</source>
-        <translation><numerusform>%n 개의 추가 블럭을 읽습니다.</numerusform></translation>
     </message>
     <message>
         <source>Open until %1</source>
@@ -2232,7 +2074,7 @@ Address: %4
     </message>
     <message>
         <source>Received with</source>
-        <translation>다음과 함께 받음 : </translation>
+        <translation>보낸 주소</translation>
     </message>
     <message>
         <source>Received from</source>
@@ -2240,7 +2082,7 @@ Address: %4
     </message>
     <message>
         <source>Sent to</source>
-        <translation>다음에게 보냄 :</translation>
+        <translation>받는 주소</translation>
     </message>
     <message>
         <source>Payment to yourself</source>
@@ -2248,7 +2090,7 @@ Address: %4
     </message>
     <message>
         <source>Mined</source>
-        <translation>채굴됨</translation>
+        <translation>채굴</translation>
     </message>
     <message>
         <source>(n/a)</source>
@@ -2343,11 +2185,11 @@ Address: %4
     </message>
     <message>
         <source>Copy amount</source>
-        <translation>거래액 복사</translation>
+        <translation>거래량 복사</translation>
     </message>
     <message>
         <source>Copy transaction ID</source>
-        <translation>송금 ID 복사</translation>
+        <translation>거래 아이디 복사</translation>
     </message>
     <message>
         <source>Edit label</source>
@@ -2402,10 +2244,6 @@ Address: %4
         <translation>주소</translation>
     </message>
     <message>
-        <source>Amount</source>
-        <translation>거래량</translation>
-    </message>
-    <message>
         <source>ID</source>
         <translation>아이디</translation>
     </message>
@@ -2418,6 +2256,9 @@ Address: %4
         <translation>상대방</translation>
     </message>
 </context>
+<context>
+    <name>UnitDisplayStatusBarControl</name>
+    </context>
 <context>
     <name>WalletFrame</name>
     <message>
@@ -2470,40 +2311,12 @@ Address: %4
 <context>
     <name>bitcoin-core</name>
     <message>
-        <source>Usage:</source>
-        <translation>사용법:</translation>
-    </message>
-    <message>
-        <source>List commands</source>
-        <translation>커맨드 목록</translation>
-    </message>
-    <message>
-        <source>Get help for a command</source>
-        <translation>커맨드 도움말</translation>
-    </message>
-    <message>
         <source>Options:</source>
         <translation>옵션:</translation>
     </message>
     <message>
-        <source>Specify configuration file (default: bitcoin.conf)</source>
-        <translation>설정파일 지정 (기본값: bitcoin.conf)</translation>
-    </message>
-    <message>
-        <source>Specify pid file (default: bitcoind.pid)</source>
-        <translation>pid 파일 지정 (기본값: bitcoind.pid)</translation>
-    </message>
-    <message>
         <source>Specify data directory</source>
         <translation>데이터 폴더 지정</translation>
-    </message>
-    <message>
-        <source>Listen for connections on &lt;port&gt; (default: 8333 or testnet: 18333)</source>
-        <translation>&lt;port&gt;로 연결을 허용한다 (기본값: 8333 또는 테스트넷: 18333)</translation>
-    </message>
-    <message>
-        <source>Maintain at most &lt;n&gt; connections to peers (default: 125)</source>
-        <translation>가장 잘 연결되는 사용자를 유지합니다(기본값: 125)</translation>
     </message>
     <message>
         <source>Connect to a node to retrieve peer addresses, and disconnect</source>
@@ -2514,28 +2327,8 @@ Address: %4
         <translation>공인 주소를 지정하십시오</translation>
     </message>
     <message>
-        <source>Threshold for disconnecting misbehaving peers (default: 100)</source>
-        <translation>이상행동 네트워크 참여자의 연결을 차단시키기 위한 한계치 (기본값: 100)</translation>
-    </message>
-    <message>
-        <source>Number of seconds to keep misbehaving peers from reconnecting (default: 86400)</source>
-        <translation>이상행동을 하는 네트워크 참여자들을 다시 연결시키는데 걸리는 시간 (기본값: 86400초)</translation>
-    </message>
-    <message>
-        <source>An error occurred while setting up the RPC port %u for listening on IPv4: %s</source>
-        <translation>IPv4 감청을 위한 RPC 포트 %u번을 설정중 오류가 발생했습니다: %s</translation>
-    </message>
-    <message>
-        <source>Listen for JSON-RPC connections on &lt;port&gt; (default: 8332 or testnet: 18332)</source>
-        <translation>포트 &lt;port&gt;을 통해 JSON-RPC 연결 (기본값: 8332 또는 testnet: 18332)</translation>
-    </message>
-    <message>
         <source>Accept command line and JSON-RPC commands</source>
         <translation>명령줄과 JSON-RPC 명령 수락</translation>
-    </message>
-    <message>
-        <source>Bitcoin Core RPC client version</source>
-        <translation>비트코인 코어 RPC 클라이언트 버전</translation>
     </message>
     <message>
         <source>Run in the background as a daemon and accept commands</source>
@@ -2550,20 +2343,8 @@ Address: %4
         <translation>외부 접속을 승인합니다</translation>
     </message>
     <message>
-        <source>Acceptable ciphers (default: TLSv1.2+HIGH:TLSv1+HIGH:!SSLv2:!aNULL:!eNULL:!3DES:@STRENGTH)</source>
-        <translation>암호 허용(기본값: TLSv1.2+HIGH:TLSv1+HIGH:!SSLv2:!aNULL:!eNULL:!3DES:@STRENGTH)</translation>
-    </message>
-    <message>
-        <source>An error occurred while setting up the RPC port %u for listening on IPv6, falling back to IPv4: %s</source>
-        <translation>IPv6 연결을 위해 RPC port %u 설정 중 오류가 발생했습니다. IPv4: %s 환경으로 돌아갑니다.</translation>
-    </message>
-    <message>
         <source>Bind to given address and always listen on it. Use [host]:port notation for IPv6</source>
         <translation>선택된 주소로 고정하며 항상 리슨(Listen)합니다. IPv6 프로토콜인 경우  [host]:port 방식의 명령어 표기법을 사용합니다.</translation>
-    </message>
-    <message>
-        <source>Enter regression test mode, which uses a special chain in which blocks can be solved instantly. This is intended for regression testing tools and app development.</source>
-        <translation>회귀(regression) 테스트 모드를 입력합니다. 이 모드는 어떤 블럭이 즉시 해결될 수 있도록 특정한 블럭체인을 사용하는 것이며 회귀 테스트 도구와 앱 개발의 목적으로 의도된 것입니다.</translation>
     </message>
     <message>
         <source>Error: The transaction was rejected! This might happen if some of the coins in your wallet were already spent, such as if you used a copy of wallet.dat and coins were spent in the copy but not marked as spent here.</source>
@@ -2580,24 +2361,12 @@ Address: %4
         <translation>지갑 거래가 바뀌면 명령을 실행합니다.(%s 안의 명령어가 TxID로 바뀝니다)</translation>
     </message>
     <message>
-        <source>Fees smaller than this are considered zero fee (for transaction creation) (default:</source>
-        <translation>해당 금액보다 적은 수수료는 수수료 면제로 간주됩니다. (거래 생성의 목적)(기본값:</translation>
-    </message>
-    <message>
         <source>This is a pre-release test build - use at your own risk - do not use for mining or merchant applications</source>
         <translation>이 빌드 버전은 정식 출시 전 테스트의 목적이며, 예기치 않은 위험과 오류가 발생할 수 있습니다. 채굴과 상점용 소프트웨어로 사용하는 것을 권하지 않습니다.</translation>
     </message>
     <message>
-        <source>Use separate SOCKS5 proxy to reach peers via Tor hidden services (default: -proxy)</source>
-        <translation>Tor 서비스를 이용하여 네트워크에 참여하기 위해서 SOCKS5 프록시를 따로 사용함 (기본값: -proxy)</translation>
-    </message>
-    <message>
         <source>Warning: -paytxfee is set very high! This is the transaction fee you will pay if you send a transaction.</source>
         <translation>경고: -paytxfee값이 너무 큽니다! 이 값은 송금할때 지불할 송금 수수료입니다.</translation>
-    </message>
-    <message>
-        <source>Warning: Please check that your computer's date and time are correct! If your clock is wrong Bitcoin will not work properly.</source>
-        <translation>경고: 컴퓨터의 날짜와 시간이 올바른지 확인하십시오! 시간이 잘못되면 비트코인은 제대로 동작하지 않습니다.</translation>
     </message>
     <message>
         <source>Warning: The network does not appear to fully agree! Some miners appear to be experiencing issues.</source>
@@ -2620,36 +2389,16 @@ Address: %4
         <translation>(기본값: 1)</translation>
     </message>
     <message>
-        <source>(default: wallet.dat)</source>
-        <translation>(기본값: wallet.dat)</translation>
-    </message>
-    <message>
         <source>Attempt to recover private keys from a corrupt wallet.dat</source>
         <translation>손상된 wallet.dat에서 개인키 복원을 시도합니다</translation>
-    </message>
-    <message>
-        <source>Bitcoin Core Daemon</source>
-        <translation>비트코인 코어 데몬</translation>
     </message>
     <message>
         <source>Block creation options:</source>
         <translation>블록 생성 옵션:</translation>
     </message>
     <message>
-        <source>Clear list of wallet transactions (diagnostic tool; implies -rescan)</source>
-        <translation>거래내역 삭제(진단도구; 재스캔 포함)</translation>
-    </message>
-    <message>
         <source>Connect only to the specified node(s)</source>
         <translation>지정된 노드에만 연결하기</translation>
-    </message>
-    <message>
-        <source>Connect through SOCKS proxy</source>
-        <translation>SOCKS 프록시를 통해 연결</translation>
-    </message>
-    <message>
-        <source>Connect to JSON-RPC on &lt;port&gt; (default: 8332 or testnet: 18332)</source>
-        <translation>JSON-RPC에 연결 &lt;포트&gt;(기본값:8332 또는 테스트넷: 18332)</translation>
     </message>
     <message>
         <source>Connection options:</source>
@@ -2662,10 +2411,6 @@ Address: %4
     <message>
         <source>Debugging/Testing options:</source>
         <translation>디버그 및 테스트 설정</translation>
-    </message>
-    <message>
-        <source>Disable safemode, override a real safe mode event (default: 0)</source>
-        <translation>안전 모드를 비활성화하고 안전 모드의 이벤트가 발생하더라도 무시합니다. (기본값: 0, 비활성화)</translation>
     </message>
     <message>
         <source>Discover own IP address (default: 1 when listening and no -externalip)</source>
@@ -2700,76 +2445,12 @@ Address: %4
         <translation>오류: 지갑이 잠금상태여서 거래를 생성할 수 없습니다!</translation>
     </message>
     <message>
-        <source>Error: system error: </source>
-        <translation>오류: 시스템 오류:</translation>
-    </message>
-    <message>
         <source>Failed to listen on any port. Use -listen=0 if you want this.</source>
         <translation>어떤 포트도 반응하지 않습니다. 사용자 반응=0 만약 원한다면</translation>
     </message>
     <message>
-        <source>Failed to read block info</source>
-        <translation>블록 정보를 읽는데 실패했습니다</translation>
-    </message>
-    <message>
-        <source>Failed to read block</source>
-        <translation>블록을 읽는데 실패했습니다</translation>
-    </message>
-    <message>
-        <source>Failed to sync block index</source>
-        <translation>블록 인덱스를 동기화하는데 실패했습니다</translation>
-    </message>
-    <message>
-        <source>Failed to write block index</source>
-        <translation>블록 인덱스를 기록하는데 실패했습니다</translation>
-    </message>
-    <message>
-        <source>Failed to write block info</source>
-        <translation>블록 정보를 기록하는데 실패했습니다</translation>
-    </message>
-    <message>
-        <source>Failed to write block</source>
-        <translation>블록을 기록하는데 실패했습니다</translation>
-    </message>
-    <message>
-        <source>Failed to write file info</source>
-        <translation>파일 정보를 기록하는데 실패했습니다</translation>
-    </message>
-    <message>
-        <source>Failed to write to coin database</source>
-        <translation>코인 데이터베이스에 기록하는데 실패했습니다</translation>
-    </message>
-    <message>
-        <source>Failed to write transaction index</source>
-        <translation>송금 인덱스에 기록하는데 실패했습니다</translation>
-    </message>
-    <message>
-        <source>Failed to write undo data</source>
-        <translation>데이터 실행 취소를 기록하는데 실패했습니다</translation>
-    </message>
-    <message>
-        <source>Fee per kB to add to transactions you send</source>
-        <translation>송금 거래시 추가되는 KB 당 수수료입니다. </translation>
-    </message>
-    <message>
-        <source>Fees smaller than this are considered zero fee (for relaying) (default:</source>
-        <translation>해당 금액보다 적은 수수료는 수수료 면제로 간주됩니다. (릴레이 목적)(기본값:</translation>
-    </message>
-    <message>
-        <source>Find peers using DNS lookup (default: 1 unless -connect)</source>
-        <translation>DNS 찾기를 이용하여 사용자를 찾으시오(기본값: 1 연결 되면)</translation>
-    </message>
-    <message>
-        <source>Force safe mode (default: 0)</source>
-        <translation>안전 모드로 강제 진입하는 기능입니다.(기본값: 0) </translation>
-    </message>
-    <message>
-        <source>Generate coins (default: 0)</source>
-        <translation>코인 생성(기본값: 0)</translation>
-    </message>
-    <message>
-        <source>How many blocks to check at startup (default: 288, 0 = all)</source>
-        <translation>시작할때 검사할 블록 갯수입니다(기본값: 288, 0 = 모두)</translation>
+        <source>If &lt;category&gt; is not supplied, output all debugging information.</source>
+        <translation>&lt;카테고리&gt;가 제공되지 않을 경우, 모든 디버깅 정보를 출력</translation>
     </message>
     <message>
         <source>Importing...</source>
@@ -2788,16 +2469,8 @@ Address: %4
         <translation>사용 가능한 파일 디스크립터-File Descriptor-가 부족합니다. </translation>
     </message>
     <message>
-        <source>RPC client options:</source>
-        <translation>RPC 클라이언트 옵션</translation>
-    </message>
-    <message>
         <source>Rebuild block chain index from current blk000??.dat files</source>
         <translation>현재의 blk000??.dat 파일들로부터 블록체인 색인을 재구성합니다.</translation>
-    </message>
-    <message>
-        <source>Select SOCKS version for -proxy (4 or 5, default: 5)</source>
-        <translation>-proxy를 위한 SOCKS 버전을 선택하세요 (4 또는 5, 기본: 5)</translation>
     </message>
     <message>
         <source>Set database cache size in megabytes (%d to %d, default: %d)</source>
@@ -2808,16 +2481,8 @@ Address: %4
         <translation>최대 블락 크기를 Bytes로 지정하세요 (기본: %d)</translation>
     </message>
     <message>
-        <source>Set the number of threads to service RPC calls (default: 4)</source>
-        <translation>원격 프로시져 호출 서비스를 위한 쓰레드 개수를 설정합니다 (기본값 : 4)</translation>
-    </message>
-    <message>
         <source>Specify wallet file (within data directory)</source>
         <translation>데이터 폴더 안에 지갑 파일을 선택하세요.</translation>
-    </message>
-    <message>
-        <source>Usage (deprecated, use bitcoin-cli):</source>
-        <translation>사용법 (오래되었습니다. bitcoin-cli를 사용하십시오):</translation>
     </message>
     <message>
         <source>Verifying blocks...</source>
@@ -2828,16 +2493,12 @@ Address: %4
         <translation>지갑 검증중...</translation>
     </message>
     <message>
-        <source>Wait for RPC server to start</source>
-        <translation>RPC서버가 시작되길 기다리십시요</translation>
+        <source>Wallet %s resides outside data directory %s</source>
+        <translation>지갑 %s는 데이터 디렉토리 %s 밖에 위치합니다.</translation>
     </message>
     <message>
         <source>Wallet options:</source>
         <translation>지갑 옵션:</translation>
-    </message>
-    <message>
-        <source>Warning: Deprecated argument -debugnet ignored, use -debug=net</source>
-        <translation>경고: -debugnet 옵션은 더이상 지원하지 않습니다. -debug=net의 형태로 사용하세요.</translation>
     </message>
     <message>
         <source>You need to rebuild the database using -reindex to change -txindex</source>
@@ -2848,12 +2509,12 @@ Address: %4
         <translation>외부 blk000??.dat 파일에서 블록을 가져옵니다.</translation>
     </message>
     <message>
-        <source>Execute command when a relevant alert is received or we see a really long fork (%s in cmd is replaced by message)</source>
-        <translation>이 사항과 관련있는 경고가 발생하거나 아주 긴 포크가 발생했을 때 명령어를 실행해 주세요. (cmd 명령어 목록에서 %s는 메시지로 대체됩니다) </translation>
+        <source>Cannot obtain a lock on data directory %s. Bitcoin Core is probably already running.</source>
+        <translation>데이터 디렉토리 %s에 락을 걸 수 없었습니다. 비트코인 코어가 이미 실행 중인 것으로 보입니다.</translation>
     </message>
     <message>
-        <source>Output debugging information (default: 0, supplying &lt;category&gt; is optional)</source>
-        <translation>출력 오류 정보(기본값:0, 임의의 공급 카테고리)</translation>
+        <source>Execute command when a relevant alert is received or we see a really long fork (%s in cmd is replaced by message)</source>
+        <translation>이 사항과 관련있는 경고가 발생하거나 아주 긴 포크가 발생했을 때 명령어를 실행해 주세요. (cmd 명령어 목록에서 %s는 메시지로 대체됩니다) </translation>
     </message>
     <message>
         <source>Set maximum size of high-priority/low-fee transactions in bytes (default: %d)</source>
@@ -2872,40 +2533,8 @@ Address: %4
         <translation>최저 거래 수수료가 부족합니다. -mintxfee=&lt;amount&gt;: '%s'</translation>
     </message>
     <message>
-        <source>Limit size of signature cache to &lt;n&gt; entries (default: 50000)</source>
-        <translation>&lt;n&gt;번 째 순서에서 전자서명 캐쉬의 용량을 제한합니다. (기본값: 50000) </translation>
-    </message>
-    <message>
-        <source>Log transaction priority and fee per kB when mining blocks (default: 0)</source>
-        <translation>블럭을 채굴할 때 kB당 거래 우선 순위와 수수료를 로그에 남깁니다. (기본값: 0, 비활성화)</translation>
-    </message>
-    <message>
-        <source>Maintain a full transaction index (default: 0)</source>
-        <translation>전체 거래 지수를 유지합니다(기본값: 0)</translation>
-    </message>
-    <message>
-        <source>Maximum per-connection receive buffer, &lt;n&gt;*1000 bytes (default: 5000)</source>
-        <translation>최대 연결마다 1000bytes 버퍼를 받는다. (기본값: 5000)</translation>
-    </message>
-    <message>
-        <source>Maximum per-connection send buffer, &lt;n&gt;*1000 bytes (default: 1000)</source>
-        <translation>최대 연결 마다 1000bytes 버퍼를 보낸다.(기본값: 1000) </translation>
-    </message>
-    <message>
-        <source>Only accept block chain matching built-in checkpoints (default: 1)</source>
-        <translation>내부 중단점에 일치하는 블록 체인만 수용(기본값: 1)</translation>
-    </message>
-    <message>
-        <source>Only connect to nodes in network &lt;net&gt; (IPv4, IPv6 or Tor)</source>
-        <translation>노드가 있는 네트워크에만 접속 합니다(IPv4, IPv6 또는 Tor)</translation>
-    </message>
-    <message>
         <source>Print block on startup, if found in block index</source>
         <translation>블럭 색인을 발견하면 구동 시 블럭을 출력합니다.</translation>
-    </message>
-    <message>
-        <source>Print block tree on startup (default: 0)</source>
-        <translation>구동 시 블럭 트리를 출력합니다. (기본값: 0, 비활성화)</translation>
     </message>
     <message>
         <source>RPC SSL options: (see the Bitcoin Wiki for SSL setup instructions)</source>
@@ -2920,32 +2549,12 @@ Address: %4
         <translation>모든 네트워크 메시지 마다 무작위로 1이 떨어진다</translation>
     </message>
     <message>
-        <source>SSL options: (see the Bitcoin Wiki for SSL setup instructions)</source>
-        <translation>SSL 옵션: (SSL 설정 절차를 보혀면 비트코인 위키를 참조하십시오)</translation>
-    </message>
-    <message>
-        <source>Send command to Bitcoin Core</source>
-        <translation>비트코인 코어로 명령 보내기</translation>
-    </message>
-    <message>
         <source>Send trace/debug info to console instead of debug.log file</source>
         <translation>추적오류 정보를 degug.log 자료로 보내는 대신 콘솔로 보내기</translation>
     </message>
     <message>
-        <source>Set minimum block size in bytes (default: 0)</source>
-        <translation>바이트 단위의 최소 블록 크기 설정(기본값: 0)</translation>
-    </message>
-    <message>
-        <source>Sets the DB_PRIVATE flag in the wallet db environment (default: 1)</source>
-        <translation>전자지갑 데이터베이스 환경에 DB_PRIVATE 플래그를 설정합니다. (기본값: 1, 활성화)</translation>
-    </message>
-    <message>
         <source>Show all debugging options (usage: --help -help-debug)</source>
         <translation>모든 디버그 설정 보기(설정: --help -help-debug)</translation>
-    </message>
-    <message>
-        <source>Show benchmark information (default: 0)</source>
-        <translation>벤치마크 정보 보기(기본값: 0)</translation>
     </message>
     <message>
         <source>Shrink debug.log file on client startup (default: 1 when no -debug)</source>
@@ -2954,18 +2563,6 @@ Address: %4
     <message>
         <source>Signing transaction failed</source>
         <translation>거래를 서명하는것을 실패하였습니다.</translation>
-    </message>
-    <message>
-        <source>Specify connection timeout in milliseconds (default: 5000)</source>
-        <translation>밀리초 단위로 연결 제한시간을 설정하십시오(기본값: 5000)</translation>
-    </message>
-    <message>
-        <source>Start Bitcoin Core Daemon</source>
-        <translation>비트코인 코어의 데몬 프로그램을 실행합니다.</translation>
-    </message>
-    <message>
-        <source>System error: </source>
-        <translation>시스템 오류:</translation>
     </message>
     <message>
         <source>Transaction amount too small</source>
@@ -2978,10 +2575,6 @@ Address: %4
     <message>
         <source>Transaction too large</source>
         <translation>너무 큰 거래</translation>
-    </message>
-    <message>
-        <source>Use UPnP to map the listening port (default: 0)</source>
-        <translation>UPnP사용하여 지도에서 포트 반응기다리는 중  (기본값: 0)</translation>
     </message>
     <message>
         <source>Use UPnP to map the listening port (default: 1 when listening)</source>
@@ -3008,24 +2601,12 @@ Address: %4
         <translation>구동 중</translation>
     </message>
     <message>
-        <source>version</source>
-        <translation>버전</translation>
-    </message>
-    <message>
         <source>wallet.dat corrupt, salvage failed</source>
         <translation>wallet.dat 파일이 손상되었고 복구가 실패하였습니다.</translation>
     </message>
     <message>
         <source>Password for JSON-RPC connections</source>
         <translation>JSON-RPC 연결에 사용할 암호</translation>
-    </message>
-    <message>
-        <source>Allow JSON-RPC connections from specified IP address</source>
-        <translation>지정한 IP 주소의 JSON-RPC 연결 허용</translation>
-    </message>
-    <message>
-        <source>Send commands to node running on &lt;ip&gt; (default: 127.0.0.1)</source>
-        <translation>실행 중인 노드로 명령 전송 &lt;ip&gt; (기본값: 127.0.0.1)</translation>
     </message>
     <message>
         <source>Execute command when the best block changes (%s in cmd is replaced by block hash)</source>
@@ -3036,10 +2617,6 @@ Address: %4
         <translation>지갑을 최근 형식으로 개선하시오</translation>
     </message>
     <message>
-        <source>Set key pool size to &lt;n&gt; (default: 100)</source>
-        <translation>키 풀 크기 설정 &lt;n&gt;(기본값: 100)</translation>
-    </message>
-    <message>
         <source>Rescan the block chain for missing wallet transactions</source>
         <translation>누락된 지갑 송금에 대한 블록 체인 다시 검색</translation>
     </message>
@@ -3048,20 +2625,8 @@ Address: %4
         <translation>JSON-RPC 연결에 OpenSSL(https) 사용</translation>
     </message>
     <message>
-        <source>Server certificate file (default: server.cert)</source>
-        <translation>서버 인증 파일 (기본값: server.cert)</translation>
-    </message>
-    <message>
-        <source>Server private key (default: server.pem)</source>
-        <translation>서버 개인 키(기본값: server.pem)</translation>
-    </message>
-    <message>
         <source>This help message</source>
         <translation>도움말 메시지입니다</translation>
-    </message>
-    <message>
-        <source>Unable to bind to %s on this computer (bind returned error %d, %s)</source>
-        <translation>이 컴퓨터의 %s에 바인딩할 수 없습니다 (바인딩 과정에 %d 오류 발생, %s)</translation>
     </message>
     <message>
         <source>Allow DNS lookups for -addnode, -seednode and -connect</source>
@@ -3076,14 +2641,6 @@ Address: %4
         <translation>wallet.dat 불러오기 에러: 지갑 오류</translation>
     </message>
     <message>
-        <source>Error loading wallet.dat: Wallet requires newer version of Bitcoin</source>
-        <translation>wallet.dat 불러오기 에러:  지갑은 새버전의 비트코인이 필요합니다.</translation>
-    </message>
-    <message>
-        <source>Wallet needed to be rewritten: restart Bitcoin to complete</source>
-        <translation>지갑을 새로 써야 합니다.:  완성하기 위하여 비트코인을 다시 시작하십시오.</translation>
-    </message>
-    <message>
         <source>Error loading wallet.dat</source>
         <translation>wallet.dat 불러오기 에러</translation>
     </message>
@@ -3094,10 +2651,6 @@ Address: %4
     <message>
         <source>Unknown network specified in -onlynet: '%s'</source>
         <translation>-onlynet에 지정한 네트워크를 알 수 없습니다: '%s'</translation>
-    </message>
-    <message>
-        <source>Unknown -socks proxy version requested: %i</source>
-        <translation>요청한 -socks 프록히 버전을 알 수 없습니다: %i</translation>
     </message>
     <message>
         <source>Cannot resolve -bind address: '%s'</source>
@@ -3154,14 +2707,6 @@ Address: %4
     <message>
         <source>Error</source>
         <translation>오류</translation>
-    </message>
-    <message>
-        <source>You must set rpcpassword=&lt;password&gt; in the configuration file:
-%s
-If the file does not exist, create it with owner-readable-only file permissions.</source>
-        <translation>설정 파일에 rpcpassword=&lt;암호&gt;를 설정해야 합니다:
-%s
-파일이 없으면 소유자 읽기 전용 파일 권한으로 만들어야 합니다.</translation>
     </message>
 </context>
 </TS>

@@ -1,10 +1,12 @@
 // RPC calls
 
+#include "clientversion.h"
+#include "init.h"
 #include "rpcserver.h"
 #include "util.h"
-#include "init.h"
+#include "utilstrencodings.h"
 #include "wallet.h"
-#include "clientversion.h"
+
 
 #include <stdint.h>
 #include <string.h>
@@ -2172,7 +2174,7 @@ Value gettrade_MP(const Array& params, bool fHelp)
             for(int refNumber = 1; refNumber <= numberOfCancels; refNumber++)
             {
                 Object cancelTx;
-                string strValue = p_txlistdb->getKeyValue(hash.ToString() + "-C" + to_string(refNumber));
+                string strValue = p_txlistdb->getKeyValue(hash.ToString() + "-C" + itostr(refNumber));
                 if (!strValue.empty())
                 {
                     std::vector<std::string> vstr;

@@ -1,20 +1,33 @@
-<TS language="sr" version="2.1">
-<context>
-    <name>AboutDialog</name>
-    </context>
+<TS language="sr" version="2.0">
 <context>
     <name>AddressBookPage</name>
     <message>
         <source>Double-click to edit address or label</source>
-        <translation>Кликните два пута да промените адресу и/или етикету</translation>
+        <translation>Kliknite dva puta da izmenite adresu ili etiketu</translation>
     </message>
     <message>
         <source>Create a new address</source>
-        <translation>Прави нову адресу</translation>
+        <translation>Napravite novu adresu</translation>
+    </message>
+    <message>
+        <source>&amp;New</source>
+        <translation>Novo</translation>
     </message>
     <message>
         <source>Copy the currently selected address to the system clipboard</source>
-        <translation>Копира изабрану адресу на системски клипборд</translation>
+        <translation>Kopirajte trenutno izabranu adresu</translation>
+    </message>
+    <message>
+        <source>&amp;Copy</source>
+        <translation>Kopirajte</translation>
+    </message>
+    <message>
+        <source>&amp;Copy Address</source>
+        <translation>Kopirajte adresu</translation>
+    </message>
+    <message>
+        <source>Delete the currently selected address from the list</source>
+        <translation>Izbrisite trenutno izabranu adresu sa liste</translation>
     </message>
     <message>
         <source>&amp;Delete</source>
@@ -53,10 +66,6 @@
     <message>
         <source>Repeat new passphrase</source>
         <translation>Поновите нову лозинку</translation>
-    </message>
-    <message>
-        <source>Enter the new passphrase to the wallet.&lt;br/&gt;Please use a passphrase of &lt;b&gt;10 or more random characters&lt;/b&gt;, or &lt;b&gt;eight or more words&lt;/b&gt;.</source>
-        <translation>Унесите нову лозинку за приступ новчанику.&lt;br/&gt;Молимо Вас да лозинка буде &lt;b&gt;10 или више насумице одабраних знакова&lt;/b&gt;, или &lt;b&gt;осам или више речи&lt;/b&gt;.</translation>
     </message>
     <message>
         <source>Encrypt wallet</source>
@@ -166,10 +175,6 @@
         <translation>Напустите програм</translation>
     </message>
     <message>
-        <source>Show information about Bitcoin</source>
-        <translation>Прегледајте информације о Bitcoin-у</translation>
-    </message>
-    <message>
         <source>About &amp;Qt</source>
         <translation>О &amp;Qt-у</translation>
     </message>
@@ -230,14 +235,6 @@
         <translation>Трака са картицама</translation>
     </message>
     <message>
-        <source>[testnet]</source>
-        <translation>[testnet]</translation>
-    </message>
-    <message numerus="yes">
-        <source>%n active connection(s) to Bitcoin network</source>
-        <translation><numerusform>%n активна веза са Bitcoin мрежом</numerusform><numerusform>%n активне везе са Bitcoin мрежом</numerusform><numerusform>%n активних веза са Bitcoin мрежом</numerusform></translation>
-    </message>
-    <message>
         <source>Up to date</source>
         <translation>Ажурно</translation>
     </message>
@@ -269,7 +266,7 @@ Address: %4
         <source>Wallet is &lt;b&gt;encrypted&lt;/b&gt; and currently &lt;b&gt;locked&lt;/b&gt;</source>
         <translation>Новчаник јс &lt;b&gt;шифрован&lt;/b&gt; и тренутно &lt;b&gt;закључан&lt;/b&gt;</translation>
     </message>
-    </context>
+</context>
 <context>
     <name>ClientModel</name>
     </context>
@@ -282,10 +279,6 @@ Address: %4
     <message>
         <source>Amount</source>
         <translation>iznos</translation>
-    </message>
-    <message>
-        <source>Address</source>
-        <translation>Адреса</translation>
     </message>
     <message>
         <source>Date</source>
@@ -345,6 +338,10 @@ Address: %4
         <translation>верзија</translation>
     </message>
     <message>
+        <source>About Bitcoin Core</source>
+        <translation>O Bitcoin Coru</translation>
+    </message>
+    <message>
         <source>Usage:</source>
         <translation>Korišćenje:</translation>
     </message>
@@ -376,25 +373,20 @@ Address: %4
         <source>Form</source>
         <translation>Форма</translation>
     </message>
-    <message>
-        <source>Wallet</source>
-        <translation>новчаник</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Recent transactions&lt;/b&gt;</source>
-        <translation>&lt;b&gt;Недавне трансакције&lt;/b&gt;</translation>
-    </message>
     </context>
 <context>
     <name>PaymentServer</name>
     </context>
 <context>
+    <name>PeerTableModel</name>
+    </context>
+<context>
     <name>QObject</name>
     <message>
-        <source>Enter a Bitcoin address (e.g. 1NS17iag9jJgTHD1VXjvLCEnZuQ3rJDE9L)</source>
-        <translation>Unesite Bitcoin adresu (n.pr. 1NS17iag9jJgTHD1VXjvLCEnZuQ3rJDE9L)</translation>
+        <source>Amount</source>
+        <translation>iznos</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>QRImageWidget</name>
     </context>
@@ -503,15 +495,11 @@ Address: %4
     <name>SignVerifyMessageDialog</name>
     <message>
         <source>Alt+A</source>
-        <translation>Alt+A</translation>
+        <translation>Alt+</translation>
     </message>
     <message>
         <source>Alt+P</source>
         <translation>Alt+П</translation>
-    </message>
-    <message>
-        <source>Enter a Bitcoin address (e.g. 1NS17iag9jJgTHD1VXjvLCEnZuQ3rJDE9L)</source>
-        <translation>Unesite Bitcoin adresu (n.pr. 1NS17iag9jJgTHD1VXjvLCEnZuQ3rJDE9L)</translation>
     </message>
     </context>
 <context>
@@ -528,7 +516,7 @@ Address: %4
     <name>TransactionDesc</name>
     <message>
         <source>Open until %1</source>
-        <translation>Otvorite do %1</translation>
+        <translation>Otvoreno do %1</translation>
     </message>
     <message>
         <source>%1/unconfirmed</source>
@@ -583,10 +571,6 @@ Address: %4
     <message>
         <source>Address</source>
         <translation>Адреса</translation>
-    </message>
-    <message>
-        <source>Amount</source>
-        <translation>iznos</translation>
     </message>
     <message>
         <source>Open until %1</source>
@@ -748,10 +732,6 @@ Address: %4
         <translation>Адреса</translation>
     </message>
     <message>
-        <source>Amount</source>
-        <translation>iznos</translation>
-    </message>
-    <message>
         <source>Range:</source>
         <translation>Opseg:</translation>
     </message>
@@ -760,6 +740,9 @@ Address: %4
         <translation>do</translation>
     </message>
 </context>
+<context>
+    <name>UnitDisplayStatusBarControl</name>
+    </context>
 <context>
     <name>WalletFrame</name>
     </context>
@@ -780,41 +763,12 @@ Address: %4
 <context>
     <name>bitcoin-core</name>
     <message>
-        <source>Usage:</source>
-        <translation>Korišćenje:</translation>
-    </message>
-    <message>
-        <source>List commands</source>
-        <translation>Listaj komande</translation>
-    </message>
-    <message>
-        <source>Get help for a command</source>
-        <translation>Zatraži pomoć za komande</translation>
-    </message>
-    <message>
         <source>Options:</source>
         <translation>Opcije</translation>
     </message>
     <message>
-        <source>Specify configuration file (default: bitcoin.conf)</source>
-        <translation>Potvrdi željeni konfiguracioni fajl (podrazumevani:bitcoin.conf)</translation>
-    </message>
-    <message>
-        <source>Specify pid file (default: bitcoind.pid)</source>
-        <translation>Konkretizuj pid fajl (podrazumevani: bitcoind.pid)</translation>
-    </message>
-    <message>
         <source>Specify data directory</source>
         <translation>Gde je konkretni data direktorijum </translation>
-    </message>
-    <message>
-        <source>Listen for connections on &lt;port&gt; (default: 8333 or testnet: 18333)</source>
-        <translation>Slušaj konekcije na &lt;port&gt; (default: 8333 or testnet: 18333)</translation>
-    </message>
-    <message>
-        <source>Maintain at most &lt;n&gt; connections to peers (default: 125)</source>
-        <translation>Održavaj najviše &lt;n&gt; konekcija  po priključku (default: 125)
-</translation>
     </message>
     <message>
         <source>Accept command line and JSON-RPC commands</source>
@@ -833,24 +787,8 @@ Address: %4
         <translation>Korisničko ime za JSON-RPC konekcije</translation>
     </message>
     <message>
-        <source>version</source>
-        <translation>верзија</translation>
-    </message>
-    <message>
         <source>Password for JSON-RPC connections</source>
         <translation>Lozinka za JSON-RPC konekcije</translation>
-    </message>
-    <message>
-        <source>Allow JSON-RPC connections from specified IP address</source>
-        <translation>Dozvoli JSON-RPC konekcije sa posebne IP adrese</translation>
-    </message>
-    <message>
-        <source>Send commands to node running on &lt;ip&gt; (default: 127.0.0.1)</source>
-        <translation>Pošalji komande to nodu koji radi na &lt;ip&gt; (default: 127.0.0.1)</translation>
-    </message>
-    <message>
-        <source>Set key pool size to &lt;n&gt; (default: 100)</source>
-        <translation>Odredi veličinu zaštićenih ključeva na &lt;n&gt; (default: 100)</translation>
     </message>
     <message>
         <source>Rescan the block chain for missing wallet transactions</source>
@@ -859,10 +797,6 @@ Address: %4
     <message>
         <source>Use OpenSSL (https) for JSON-RPC connections</source>
         <translation>Koristi OpenSSL (https) za  JSON-RPC konekcije</translation>
-    </message>
-    <message>
-        <source>Server private key (default: server.pem)</source>
-        <translation>privatni ključ za Server (podrazumevan: server.pem)</translation>
     </message>
     <message>
         <source>This help message</source>
@@ -875,10 +809,6 @@ Address: %4
     <message>
         <source>Error loading wallet.dat: Wallet corrupted</source>
         <translation>Грешка током учитавања wallet.dat: Новчаник је покварен      </translation>
-    </message>
-    <message>
-        <source>Error loading wallet.dat: Wallet requires newer version of Bitcoin</source>
-        <translation>Грешка током учитавања wallet.dat: Новчанику је неопходна нова верзија Bitcoin-a.</translation>
     </message>
     <message>
         <source>Error loading wallet.dat</source>

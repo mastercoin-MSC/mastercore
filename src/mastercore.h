@@ -3,13 +3,28 @@
 //
 // for now (?) class declarations go here -- work in progress; probably will get pulled out into a separate file, note: some declarations are still in the .cpp file
 
-#ifndef _MASTERCOIN
-#define _MASTERCOIN 1
+#ifndef MASTERCOIN_MASTERCORE_H
+#define MASTERCOIN_MASTERCORE_H
 
-#include "netbase.h"
-#include "protocol.h"
-
+#include "sync.h"
 #include "tinyformat.h"
+#include "util.h"   // LogAcceptCategory
+
+#include <stdint.h>
+#include <stdio.h>
+#include <map>
+#include <string>
+#include <vector>
+
+class uint256;
+#include <boost/filesystem/path.hpp>
+#include "leveldb/db.h"
+#include "leveldb/options.h"
+#include "leveldb/status.h"
+#include "json/json_spirit_value.h"
+
+
+
 
 #define DISABLE_METADEX
 
@@ -177,8 +192,8 @@ TINYFORMAT_FOREACH_ARGNUM(MP_MAKE_ERROR_AND_LOG_FUNC)
 // forward declarations
 std::string FormatDivisibleMP(int64_t n, bool fSign = false);
 std::string FormatMP(unsigned int, int64_t n, bool fSign = false);
-uint256 send_MP(const string &FromAddress, const string &ToAddress, const string &RedeemAddress, unsigned int PropertyID, uint64_t Amount);
-int64_t feeCheck(const string &address);
+uint256 send_MP(const std::string &FromAddress, const std::string &ToAddress, const std::string &RedeemAddress, unsigned int PropertyID, uint64_t Amount);
+int64_t feeCheck(const std::string &address);
 
 const std::string ExodusAddress();
 
@@ -339,12 +354,12 @@ public:
       sdb = NULL;
     }
 
-    void getRecipients(const uint256 txid, string filterAddress, Array *recipientArray, uint64_t *total, uint64_t *stoFee);
-    std::string getMySTOReceipts(string filterAddress);
+    void getRecipients(const uint256 txid, std::string filterAddress, json_spirit::Array *recipientArray, uint64_t *total, uint64_t *stoFee);
+    std::string getMySTOReceipts(std::string filterAddress);
     int deleteAboveBlock(int blockNum);
     void printStats();
     void printAll();
-    bool exists(string address);
+    bool exists(std::string address);
     void recordSTOReceive(std::string, const uint256&, int, unsigned int, uint64_t);
 };
 
@@ -382,12 +397,12 @@ public:
       tdb = NULL;
     }
 
-    void recordTrade(const uint256 txid1, const uint256 txid2, string address1, string address2, unsigned int prop1, unsigned int prop2, uint64_t amount1, uint64_t amount2, int blockNum);
+    void recordTrade(const uint256 txid1, const uint256 txid2, std::string address1, std::string address2, unsigned int prop1, unsigned int prop2, uint64_t amount1, uint64_t amount2, int blockNum);
     int deleteAboveBlock(int blockNum);
     bool exists(const uint256 &txid);
     void printStats();
     void printAll();
-    bool getMatchingTrades(const uint256 txid, unsigned int propertyId, Array *tradeArray, uint64_t *totalSold, uint64_t *totalBought);
+    bool getMatchingTrades(const uint256 txid, unsigned int propertyId, json_spirit::Array *tradeArray, uint64_t *totalSold, uint64_t *totalBought);
     int getMPTradeCountTotal();
 };
 
@@ -429,7 +444,6 @@ public:
       syncoptions.sync = true;
 
       leveldb::Status status = leveldb::DB::Open(options, path.string(), &pdb);
-
       printf("%s(): %s, line %d, file: %s\n", __FUNCTION__, status.ToString().c_str(), __LINE__, __FILE__);
     }
 
@@ -440,19 +454,19 @@ public:
     }
 
     void recordTX(const uint256 &txid, bool fValid, int nBlock, unsigned int type, uint64_t nValue);
-    void recordPaymentTX(const uint256 &txid, bool fValid, int nBlock, unsigned int vout, unsigned int propertyId, uint64_t nValue, string buyer, string seller);
+    void recordPaymentTX(const uint256 &txid, bool fValid, int nBlock, unsigned int vout, unsigned int propertyId, uint64_t nValue, std::string buyer, std::string seller);
     void recordMetaDExCancelTX(const uint256 &txidMaster, const uint256 &txidSub, bool fValid, int nBlock, unsigned int propertyId, uint64_t nValue);
 
-    string getKeyValue(string key);
+    std::string getKeyValue(std::string key);
     uint256 findMetaDExCancel(const uint256 txid);
     int getNumberOfPurchases(const uint256 txid);
     int getNumberOfMetaDExCancels(const uint256 txid);
-    bool getPurchaseDetails(const uint256 txid, int purchaseNumber, string *buyer, string *seller, uint64_t *vout, uint64_t *propertyId, uint64_t *nValue);
+    bool getPurchaseDetails(const uint256 txid, int purchaseNumber, std::string *buyer, std::string *seller, uint64_t *vout, uint64_t *propertyId, uint64_t *nValue);
     int getMPTransactionCountTotal();
     int getMPTransactionCountBlock(int block);
 
     bool exists(const uint256 &txid);
-    bool getTX(const uint256 &txid, string &value);
+    bool getTX(const uint256 &txid, std::string &value);
 
     int setLastAlert(int blockHeight);
 
@@ -465,7 +479,7 @@ public:
 class CMPPending
 {
 public:
-  string src; // the FromAddress
+  std::string src; // the FromAddress
   unsigned int prop;
   int64_t amount;
 
@@ -486,11 +500,11 @@ extern uint64_t global_balance_reserved_testeco[100000];
 
 int mastercore_init(void);
 
-int64_t getMPbalance(const string &Address, unsigned int property, TallyType ttype);
-int64_t getUserAvailableMPbalance(const string &Address, unsigned int property);
+int64_t getMPbalance(const std::string &Address, unsigned int property, TallyType ttype);
+int64_t getUserAvailableMPbalance(const std::string &Address, unsigned int property);
 bool IsMyAddress(const std::string &address);
 
-string getLabel(const string &address);
+std::string getLabel(const std::string &address);
 
 int mastercore_handler_disc_begin(int nBlockNow, CBlockIndex const * pBlockIndex);
 int mastercore_handler_disc_end(int nBlockNow, CBlockIndex const * pBlockIndex);
@@ -501,33 +515,33 @@ int mastercore_save_state( CBlockIndex const *pBlockIndex );
 
 namespace mastercore
 {
-extern std::map<string, CMPTally> mp_tally_map;
+extern std::map<std::string, CMPTally> mp_tally_map;
 extern CMPTxList *p_txlistdb;
 extern CMPTradeList *t_tradelistdb;
 extern CMPSTOList *s_stolistdb;
 
 typedef std::map<uint256, CMPPending> PendingMap;
 
-string strMPProperty(unsigned int i);
+std::string strMPProperty(unsigned int i);
 
 int GetHeight(void);
 uint32_t GetLatestBlockTime(void);
 bool isPropertyDivisible(unsigned int propertyId);
-string getPropertyName(unsigned int propertyId);
+std::string getPropertyName(unsigned int propertyId);
 bool isCrowdsaleActive(unsigned int propertyId);
-bool isCrowdsalePurchase(uint256 txid, string address, int64_t *propertyId = NULL, int64_t *userTokens = NULL, int64_t *issuerTokens = NULL);
+bool isCrowdsalePurchase(uint256 txid, std::string address, int64_t *propertyId = NULL, int64_t *userTokens = NULL, int64_t *issuerTokens = NULL);
 bool isMPinBlockRange(int starting_block, int ending_block, bool bDeleteFound);
 std::string FormatIndivisibleMP(int64_t n);
 
-int ClassB_send(const string &senderAddress, const string &receiverAddress, const string &redemptionAddress, const vector<unsigned char> &data, uint256 & txid, int64_t additional = 0);
+int ClassB_send(const std::string &senderAddress, const std::string &receiverAddress, const std::string &redemptionAddress, const std::vector<unsigned char> &data, uint256 & txid, int64_t additional = 0);
 
-uint256 send_INTERNAL_1packet(const string &FromAddress, const string &ToAddress, const string &RedeemAddress, unsigned int PropertyID, uint64_t Amount,
+uint256 send_INTERNAL_1packet(const std::string &FromAddress, const std::string &ToAddress, const std::string &RedeemAddress, unsigned int PropertyID, uint64_t Amount,
  unsigned int PropertyID_2, uint64_t Amount_2, unsigned int TransactionType, int64_t additional, int *error_code = NULL);
 
 bool isTestEcosystemProperty(unsigned int property);
 bool isMainEcosystemProperty(unsigned int property);
 
-CMPTally *getTally(const string & address);
+CMPTally *getTally(const std::string & address);
 
 bool isMetaDExOfferActive(const uint256 txid, unsigned int propertyId);
 int64_t getTotalTokens(unsigned int propertyId, int64_t *n_owners_total = NULL);
@@ -540,9 +554,9 @@ bool isTransactionTypeAllowed(int txBlock, unsigned int txProperty, unsigned int
 
 bool getValidMPTX(const uint256 &txid, int *block = NULL, unsigned int *type = NULL, uint64_t *nAmended = NULL);
 
-bool update_tally_map(string who, unsigned int which_currency, int64_t amount, TallyType ttype);
+bool update_tally_map(std::string who, unsigned int which_currency, int64_t amount, TallyType ttype);
 std::string getMasterCoreAlertString();
 }
 
-#endif
+#endif // MASTERCOIN_MASTERCORE_H
 

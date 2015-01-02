@@ -1,25 +1,4 @@
-<TS language="bg" version="2.1">
-<context>
-    <name>AboutDialog</name>
-    <message>
-        <source>
-This is experimental software.
-
-Distributed under the MIT/X11 software license, see the accompanying file COPYING or http://www.opensource.org/licenses/mit-license.php.
-
-This product includes software developed by the OpenSSL Project for use in the OpenSSL Toolkit (http://www.openssl.org/) and cryptographic software written by Eric Young (eay@cryptsoft.com) and UPnP software written by Thomas Bernard.</source>
-        <translation>
-Това е експериментален софтуер.
-
-Разпространява се под MIT/X11 софтуерен лиценз, виж COPYING или http://www.opensource.org/licenses/mit-license.php.
-
-Използван е софтуер, разработен от OpenSSL Project за употреба в OpenSSL Toolkit (http://www.openssl.org/), криптографски софтуер разработен от Eric Young (eay@cryptsoft.com) и UPnP софтуер разработен от Thomas Bernard.</translation>
-    </message>
-    <message>
-        <source>Copyright</source>
-        <translation>Авторски права</translation>
-    </message>
-    </context>
+<TS language="bg" version="2.0">
 <context>
     <name>AddressBookPage</name>
     <message>
@@ -107,10 +86,6 @@ This product includes software developed by the OpenSSL Project for use in the O
     <message>
         <source>Repeat new passphrase</source>
         <translation>Още веднъж</translation>
-    </message>
-    <message>
-        <source>Enter the new passphrase to the wallet.&lt;br/&gt;Please use a passphrase of &lt;b&gt;10 or more random characters&lt;/b&gt;, or &lt;b&gt;eight or more words&lt;/b&gt;.</source>
-        <translation>Въведете нова парола за портфейла.&lt;br/&gt;Моля използвайте &lt;b&gt;поне 10 случайни символа&lt;/b&gt; или &lt;b&gt;8 или повече думи&lt;/b&gt;.</translation>
     </message>
     <message>
         <source>Encrypt wallet</source>
@@ -232,10 +207,6 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation>Изход от приложението</translation>
     </message>
     <message>
-        <source>Show information about Bitcoin</source>
-        <translation>Информация за Биткоин</translation>
-    </message>
-    <message>
         <source>About &amp;Qt</source>
         <translation>За &amp;Qt</translation>
     </message>
@@ -307,10 +278,6 @@ This product includes software developed by the OpenSSL Project for use in the O
         <source>Tabs toolbar</source>
         <translation>Раздели</translation>
     </message>
-    <message>
-        <source>[testnet]</source>
-        <translation>[testnet]</translation>
-    </message>
     <message numerus="yes">
         <source>%n active connection(s) to Bitcoin network</source>
         <translation><numerusform>%n връзка към Биткоин мрежата</numerusform><numerusform>%n връзки към Биткоин мрежата</numerusform></translation>
@@ -371,10 +338,6 @@ This product includes software developed by the OpenSSL Project for use in the O
         <source>Wallet is &lt;b&gt;encrypted&lt;/b&gt; and currently &lt;b&gt;locked&lt;/b&gt;</source>
         <translation>Портфейлът е &lt;b&gt;криптиран&lt;/b&gt; и &lt;b&gt;заключен&lt;/b&gt;</translation>
     </message>
-    <message>
-        <source>A fatal error occurred. Bitcoin can no longer continue safely and will quit.</source>
-        <translation>Възникна фатална грешка. Биткойн не може да продължи безопасно и ще се изключи.</translation>
-    </message>
 </context>
 <context>
     <name>ClientModel</name>
@@ -400,10 +363,6 @@ This product includes software developed by the OpenSSL Project for use in the O
     <message>
         <source>Amount</source>
         <translation>Сума</translation>
-    </message>
-    <message>
-        <source>Address</source>
-        <translation>Адрес</translation>
     </message>
     <message>
         <source>Date</source>
@@ -432,10 +391,6 @@ This product includes software developed by the OpenSSL Project for use in the O
     <message>
         <source>Copy amount</source>
         <translation>Копирай сума</translation>
-    </message>
-    <message>
-        <source>Dust</source>
-        <translation>Прах</translation>
     </message>
     <message>
         <source>yes</source>
@@ -534,10 +489,6 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation>Добре дошли</translation>
     </message>
     <message>
-        <source>Bitcoin</source>
-        <translation>Биткоин</translation>
-    </message>
-    <message>
         <source>Error</source>
         <translation>Грешка</translation>
     </message>
@@ -554,10 +505,6 @@ This product includes software developed by the OpenSSL Project for use in the O
     <message>
         <source>&amp;Main</source>
         <translation>&amp;Основни</translation>
-    </message>
-    <message>
-        <source>Pay transaction &amp;fee</source>
-        <translation>&amp;Такса за изходяща трансакция</translation>
     </message>
     <message>
         <source>&amp;Start Bitcoin on system login</source>
@@ -586,14 +533,6 @@ This product includes software developed by the OpenSSL Project for use in the O
     <message>
         <source>Port of the proxy (e.g. 9050)</source>
         <translation>Порт на прокси сървъра (пр. 9050)</translation>
-    </message>
-    <message>
-        <source>SOCKS &amp;Version:</source>
-        <translation>SOCKS &amp;Версия:</translation>
-    </message>
-    <message>
-        <source>SOCKS version of the proxy (e.g. 5)</source>
-        <translation>SOCKS версия на прокси сървъра (пр. 5)</translation>
     </message>
     <message>
         <source>&amp;Window</source>
@@ -636,14 +575,6 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation>Изберете единиците, показвани по подразбиране в интерфейса.</translation>
     </message>
     <message>
-        <source>Whether to show Bitcoin addresses in the transaction list or not.</source>
-        <translation>Ще се показват адресите в списъка с трансакции независимо от наличието на кратко име.</translation>
-    </message>
-    <message>
-        <source>&amp;Display addresses in transaction list</source>
-        <translation>&amp;Адреси в списъка с трансакции</translation>
-    </message>
-    <message>
         <source>&amp;OK</source>
         <translation>ОК</translation>
     </message>
@@ -667,10 +598,6 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation>Форма</translation>
     </message>
     <message>
-        <source>Wallet</source>
-        <translation>Портфейл</translation>
-    </message>
-    <message>
         <source>Available:</source>
         <translation>Налично:</translation>
     </message>
@@ -687,10 +614,6 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation>Текущият ви общ баланс</translation>
     </message>
     <message>
-        <source>&lt;b&gt;Recent transactions&lt;/b&gt;</source>
-        <translation>&lt;b&gt;Последни трансакции&lt;/b&gt;</translation>
-    </message>
-    <message>
         <source>out of sync</source>
         <translation>несинхронизиран</translation>
     </message>
@@ -703,16 +626,19 @@ This product includes software developed by the OpenSSL Project for use in the O
     </message>
     </context>
 <context>
+    <name>PeerTableModel</name>
+    </context>
+<context>
     <name>QObject</name>
     <message>
-        <source>Bitcoin</source>
-        <translation>Биткоин</translation>
+        <source>Amount</source>
+        <translation>Сума</translation>
     </message>
     <message>
-        <source>Enter a Bitcoin address (e.g. 1NS17iag9jJgTHD1VXjvLCEnZuQ3rJDE9L)</source>
-        <translation>Въведете Биткоин адрес (например 1NS17iag9jJgTHD1VXjvLCEnZuQ3rJDE9L)</translation>
+        <source>N/A</source>
+        <translation>N/A</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>QRImageWidget</name>
     </context>
@@ -753,10 +679,6 @@ This product includes software developed by the OpenSSL Project for use in the O
     <message>
         <source>Current number of blocks</source>
         <translation>Текущ брой блокове</translation>
-    </message>
-    <message>
-        <source>Estimated total blocks</source>
-        <translation>Предвидени общо блокове</translation>
     </message>
     <message>
         <source>Last block time</source>
@@ -946,7 +868,7 @@ This product includes software developed by the OpenSSL Project for use in the O
         <source>added as transaction fee</source>
         <translation>добавено като такса за трансакция</translation>
     </message>
-    </context>
+</context>
 <context>
     <name>SendCoinsEntry</name>
     <message>
@@ -1012,10 +934,6 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation>Можете да подпишете съобщение като доказателство, че притежавате определен адрес. Бъдете внимателни и не подписвайте съобщения, които биха разкрили лична информация без вашето съгласие.</translation>
     </message>
     <message>
-        <source>The address to sign the message with (e.g. 1NS17iag9jJgTHD1VXjvLCEnZuQ3rJDE9L)</source>
-        <translation>Адресът, с който ще подпишете съобщението (например 1NS17iag9jJgTHD1VXjvLCEnZuQ3rJDE9L)</translation>
-    </message>
-    <message>
         <source>Alt+A</source>
         <translation>Alt+A</translation>
     </message>
@@ -1056,16 +974,8 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation>&amp;Провери</translation>
     </message>
     <message>
-        <source>The address the message was signed with (e.g. 1NS17iag9jJgTHD1VXjvLCEnZuQ3rJDE9L)</source>
-        <translation>Адресът, с който е подписано съобщението (например 1NS17iag9jJgTHD1VXjvLCEnZuQ3rJDE9L)</translation>
-    </message>
-    <message>
         <source>Verify the message to ensure it was signed with the specified Bitcoin address</source>
         <translation>Проверете съобщение, за да сте сигурни че е подписано с определен Биткоин адрес</translation>
-    </message>
-    <message>
-        <source>Enter a Bitcoin address (e.g. 1NS17iag9jJgTHD1VXjvLCEnZuQ3rJDE9L)</source>
-        <translation>Въведете Биткоин адрес (например 1NS17iag9jJgTHD1VXjvLCEnZuQ3rJDE9L)</translation>
     </message>
     <message>
         <source>Click "Sign Message" to generate signature</source>
@@ -1263,10 +1173,6 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation>Адрес</translation>
     </message>
     <message>
-        <source>Amount</source>
-        <translation>Сума</translation>
-    </message>
-    <message>
         <source>Open until %1</source>
         <translation>Подлежи на промяна до %1</translation>
     </message>
@@ -1454,10 +1360,6 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation>Адрес</translation>
     </message>
     <message>
-        <source>Amount</source>
-        <translation>Сума</translation>
-    </message>
-    <message>
         <source>ID</source>
         <translation>ИД</translation>
     </message>
@@ -1470,6 +1372,9 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation>до</translation>
     </message>
 </context>
+<context>
+    <name>UnitDisplayStatusBarControl</name>
+    </context>
 <context>
     <name>WalletFrame</name>
     <message>
@@ -1498,36 +1403,12 @@ This product includes software developed by the OpenSSL Project for use in the O
 <context>
     <name>bitcoin-core</name>
     <message>
-        <source>Usage:</source>
-        <translation>Използване:</translation>
-    </message>
-    <message>
-        <source>List commands</source>
-        <translation>Вписване на команди</translation>
-    </message>
-    <message>
-        <source>Get help for a command</source>
-        <translation>Получете помощ за команда</translation>
-    </message>
-    <message>
         <source>Options:</source>
         <translation>Опции:</translation>
     </message>
     <message>
-        <source>Specify configuration file (default: bitcoin.conf)</source>
-        <translation>Задаване на файл с настройки (по подразбиране bitcoin.conf)</translation>
-    </message>
-    <message>
         <source>Specify data directory</source>
         <translation>Определете директория за данните</translation>
-    </message>
-    <message>
-        <source>Threshold for disconnecting misbehaving peers (default: 100)</source>
-        <translation>Праг на прекъсване на връзката при непорядъчно държащи се пиъри (по подразбиране:100)</translation>
-    </message>
-    <message>
-        <source>Number of seconds to keep misbehaving peers from reconnecting (default: 86400)</source>
-        <translation>Брой секунди до възтановяване на връзката за зле държащите се пиъри (по подразбиране:86400)</translation>
     </message>
     <message>
         <source>Use the test network</source>
@@ -1538,16 +1419,8 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation>Внимание: -paytxfee има голяма стойност! Това е таксата за транзакциите, която ще платите ако направите транзакция.</translation>
     </message>
     <message>
-        <source>Warning: Please check that your computer's date and time are correct! If your clock is wrong Bitcoin will not work properly.</source>
-        <translation>Внимание: Моля проверете дали датата и часът на вашият компютър са верни! Ако часовникът ви не е сверен, Биткойн няма да работи правилно.</translation>
-    </message>
-    <message>
         <source>(default: 1)</source>
         <translation>(по подразбиране 1)</translation>
-    </message>
-    <message>
-        <source>(default: wallet.dat)</source>
-        <translation>(по подразбиране wallet.dat)</translation>
     </message>
     <message>
         <source>Connection options:</source>
@@ -1558,28 +1431,8 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation>Грешка: мястото на диска е малко!</translation>
     </message>
     <message>
-        <source>Error: system error: </source>
-        <translation>Грешка: системна грешка:</translation>
-    </message>
-    <message>
         <source>Failed to listen on any port. Use -listen=0 if you want this.</source>
         <translation>Провалено "слушане" на всеки порт. Използвайте -listen=0 ако искате това.</translation>
-    </message>
-    <message>
-        <source>Failed to read block info</source>
-        <translation>Грешка при четене данни на блок</translation>
-    </message>
-    <message>
-        <source>Failed to read block</source>
-        <translation>Грешка при четене на блок</translation>
-    </message>
-    <message>
-        <source>Failed to write block info</source>
-        <translation>Грешка при запис данни на блок</translation>
-    </message>
-    <message>
-        <source>Failed to write block</source>
-        <translation>Грешка при запис на блок</translation>
     </message>
     <message>
         <source>Importing...</source>
@@ -1606,18 +1459,6 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation>Изпрати локализиращата или дебъг информацията към конзолата, вместо файлът debug.log</translation>
     </message>
     <message>
-        <source>Set minimum block size in bytes (default: 0)</source>
-        <translation>Задайте минимален размер на блок-а в байтове (подразбиране: 0)</translation>
-    </message>
-    <message>
-        <source>Specify connection timeout in milliseconds (default: 5000)</source>
-        <translation>Определете таймаут за свързване в милисекунди (подразбиране: 5000)</translation>
-    </message>
-    <message>
-        <source>System error: </source>
-        <translation>Системна грешка:</translation>
-    </message>
-    <message>
         <source>Transaction amount too small</source>
         <translation>Сумата на трансакцията е твърде малка</translation>
     </message>
@@ -1642,20 +1483,8 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation>Внимание: Използвате остаряла версия, необходимо е обновление!</translation>
     </message>
     <message>
-        <source>version</source>
-        <translation>версия</translation>
-    </message>
-    <message>
         <source>Password for JSON-RPC connections</source>
         <translation>Парола за  JSON-RPC връзките</translation>
-    </message>
-    <message>
-        <source>Allow JSON-RPC connections from specified IP address</source>
-        <translation>Разреши  JSON-RPC връзките от отучнен IP адрес</translation>
-    </message>
-    <message>
-        <source>Send commands to node running on &lt;ip&gt; (default: 127.0.0.1)</source>
-        <translation>Изпрати команди до възел функциониращ на &lt;ip&gt; (По подразбиране: 127.0.0.1)</translation>
     </message>
     <message>
         <source>Upgrade wallet to latest format</source>
@@ -1670,14 +1499,6 @@ This product includes software developed by the OpenSSL Project for use in the O
         <translation>Използвайте OpenSSL (https) за JSON-RPC връзките</translation>
     </message>
     <message>
-        <source>Server certificate file (default: server.cert)</source>
-        <translation>Сертификатен файл на сървъра (По подразбиране:server.cert)</translation>
-    </message>
-    <message>
-        <source>Server private key (default: server.pem)</source>
-        <translation>Поверителен ключ за сървъра (default: server.pem)</translation>
-    </message>
-    <message>
         <source>This help message</source>
         <translation>Това помощно съобщение</translation>
     </message>
@@ -1688,10 +1509,6 @@ This product includes software developed by the OpenSSL Project for use in the O
     <message>
         <source>Error loading wallet.dat: Wallet corrupted</source>
         <translation>Грешка при зареждане на wallet.dat: портфейлът е повреден</translation>
-    </message>
-    <message>
-        <source>Error loading wallet.dat: Wallet requires newer version of Bitcoin</source>
-        <translation>Грешка при зареждане на  wallet.dat: портфейлът изисква по-нова версия на Bitcoin</translation>
     </message>
     <message>
         <source>Error loading wallet.dat</source>
@@ -1725,5 +1542,5 @@ This product includes software developed by the OpenSSL Project for use in the O
         <source>Error</source>
         <translation>Грешка</translation>
     </message>
-    </context>
+</context>
 </TS>

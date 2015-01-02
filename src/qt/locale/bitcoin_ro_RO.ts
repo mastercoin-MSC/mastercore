@@ -1,37 +1,4 @@
-<TS language="ro_RO" version="2.1">
-<context>
-    <name>AboutDialog</name>
-    <message>
-        <source>About Bitcoin Core</source>
-        <translation>Despre Nucleul Bitcoin</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Bitcoin Core&lt;/b&gt; version</source>
-        <translation>&lt;b&gt;Nucleul Bitcoin &lt;/b&gt; versiune</translation>
-    </message>
-    <message>
-        <source>
-This is experimental software.
-
-Distributed under the MIT/X11 software license, see the accompanying file COPYING or http://www.opensource.org/licenses/mit-license.php.
-
-This product includes software developed by the OpenSSL Project for use in the OpenSSL Toolkit (http://www.openssl.org/) and cryptographic software written by Eric Young (eay@cryptsoft.com) and UPnP software written by Thomas Bernard.</source>
-        <translation>
-Acesta este un program experimental.
-
-Distribuit sub licența de programe MIT/X11, vezi fișierul însoțitor COPYING sau http://www.opensource.org/licenses/mit-license.php.
-
-Acest produs include programe dezvoltate de către OpenSSL Project pentru a fi folosite în OpenSSL Toolkit (http://www.openssl.org/) și programe criptografice scrise de către Eric Young (eay@cryptsoft.com) și programe UPnP scrise de către Thomas Bernard.</translation>
-    </message>
-    <message>
-        <source>Copyright</source>
-        <translation>Drepturi de autor</translation>
-    </message>
-    <message>
-        <source>The Bitcoin Core developers</source>
-        <translation>Dezvoltatorii Bitcoin Core</translation>
-    </message>
-    </context>
+<TS language="ro_RO" version="2.0">
 <context>
     <name>AddressBookPage</name>
     <message>
@@ -126,11 +93,7 @@ Acest produs include programe dezvoltate de către OpenSSL Project pentru a fi f
         <source>Exporting Failed</source>
         <translation>Exportare esuata</translation>
     </message>
-    <message>
-        <source>There was an error trying to save the address list to %1.</source>
-        <translation>A apărut o eroare încercând să se salveze lista de adrese la %1.</translation>
-    </message>
-</context>
+    </context>
 <context>
     <name>AddressTableModel</name>
     <message>
@@ -163,10 +126,6 @@ Acest produs include programe dezvoltate de către OpenSSL Project pentru a fi f
     <message>
         <source>Repeat new passphrase</source>
         <translation>Repetă noua frază de acces</translation>
-    </message>
-    <message>
-        <source>Enter the new passphrase to the wallet.&lt;br/&gt;Please use a passphrase of &lt;b&gt;10 or more random characters&lt;/b&gt;, or &lt;b&gt;eight or more words&lt;/b&gt;.</source>
-        <translation>Introdu noua parolă a portofelului electronic.&lt;br/&gt;Te rog folosește &lt;b&gt;minim 10 caractere aleatoare&lt;/b&gt;, sau &lt;b&gt;minim 8 cuvinte&lt;/b&gt;.</translation>
     </message>
     <message>
         <source>Encrypt wallet</source>
@@ -292,10 +251,6 @@ Acest produs include programe dezvoltate de către OpenSSL Project pentru a fi f
         <translation>Închide aplicația</translation>
     </message>
     <message>
-        <source>Show information about Bitcoin</source>
-        <translation>Arată informații despre Bitcoin</translation>
-    </message>
-    <message>
         <source>About &amp;Qt</source>
         <translation>Despre &amp;Qt</translation>
     </message>
@@ -318,6 +273,14 @@ Acest produs include programe dezvoltate de către OpenSSL Project pentru a fi f
     <message>
         <source>&amp;Change Passphrase...</source>
         <translation>S&amp;chimbă parola...</translation>
+    </message>
+    <message>
+        <source>&amp;Sending addresses...</source>
+        <translation>&amp;Trimitere adrese...</translation>
+    </message>
+    <message>
+        <source>&amp;Receiving addresses...</source>
+        <translation>&amp;Primire adrese...</translation>
     </message>
     <message>
         <source>Open &amp;URI...</source>
@@ -412,10 +375,6 @@ Acest produs include programe dezvoltate de către OpenSSL Project pentru a fi f
         <translation>Bara de file</translation>
     </message>
     <message>
-        <source>[testnet]</source>
-        <translation>[testnet]</translation>
-    </message>
-    <message>
         <source>Bitcoin Core</source>
         <translation>Bitcoin Core</translation>
     </message>
@@ -444,8 +403,8 @@ Acest produs include programe dezvoltate de către OpenSSL Project pentru a fi f
         <translation>Command-line setări</translation>
     </message>
     <message>
-        <source>Bitcoin client</source>
-        <translation>Client Bitcoin</translation>
+        <source>Show the Bitcoin Core help message to get a list with possible Bitcoin command-line options</source>
+        <translation>Arată mesajul de ajutor Bitcoin Core pentru a obține o listă cu opțiunile posibile de linii de comandă Bitcoin</translation>
     </message>
     <message numerus="yes">
         <source>%n active connection(s) to Bitcoin network</source>
@@ -454,14 +413,6 @@ Acest produs include programe dezvoltate de către OpenSSL Project pentru a fi f
     <message>
         <source>No block source available...</source>
         <translation>Nici o sursă de bloc disponibil ...</translation>
-    </message>
-    <message>
-        <source>Processed %1 of %2 (estimated) blocks of transaction history.</source>
-        <translation>S-a procesat %1 din %2 block-uri (estimate) din istoria tranzactiei.</translation>
-    </message>
-    <message>
-        <source>Processed %1 blocks of transaction history.</source>
-        <translation>S-au procesat %1 blocuri din istoricul tranzacțiilor.</translation>
     </message>
     <message numerus="yes">
         <source>%n hour(s)</source>
@@ -539,10 +490,6 @@ Adresa: %4
         <source>Wallet is &lt;b&gt;encrypted&lt;/b&gt; and currently &lt;b&gt;locked&lt;/b&gt;</source>
         <translation>Portofelul este &lt;b&gt;criptat&lt;/b&gt; iar în momentul de față este &lt;b&gt;blocat&lt;/b&gt;</translation>
     </message>
-    <message>
-        <source>A fatal error occurred. Bitcoin can no longer continue safely and will quit.</source>
-        <translation>A survenit o eroare fatala. Bitcoin nu mai poate continua in siguranta si se va opri.</translation>
-    </message>
 </context>
 <context>
     <name>ClientModel</name>
@@ -553,10 +500,6 @@ Adresa: %4
 </context>
 <context>
     <name>CoinControlDialog</name>
-    <message>
-        <source>Coin Control Address Selection</source>
-        <translation>Selectare Adresă de Comandă Monedă</translation>
-    </message>
     <message>
         <source>Quantity:</source>
         <translation>Cantitate:</translation>
@@ -576,10 +519,6 @@ Adresa: %4
     <message>
         <source>Fee:</source>
         <translation>Taxa:</translation>
-    </message>
-    <message>
-        <source>Low Output:</source>
-        <translation>Ieşire minimă: </translation>
     </message>
     <message>
         <source>After Fee:</source>
@@ -604,10 +543,6 @@ Adresa: %4
     <message>
         <source>Amount</source>
         <translation>Sumă</translation>
-    </message>
-    <message>
-        <source>Address</source>
-        <translation>Adresă</translation>
     </message>
     <message>
         <source>Date</source>
@@ -670,10 +605,6 @@ Adresa: %4
         <translation>Copiaţi prioritatea</translation>
     </message>
     <message>
-        <source>Copy low output</source>
-        <translation>Copiaţi ieşire minimă:</translation>
-    </message>
-    <message>
         <source>Copy change</source>
         <translation>Copiaţi schimb</translation>
     </message>
@@ -718,10 +649,6 @@ Adresa: %4
         <translation>nimic</translation>
     </message>
     <message>
-        <source>Dust</source>
-        <translation>Praf</translation>
-    </message>
-    <message>
         <source>yes</source>
         <translation>da</translation>
     </message>
@@ -744,10 +671,6 @@ Adresa: %4
     <message>
         <source>This label turns red, if the priority is smaller than "medium".</source>
         <translation>Aceasta eticheta se face rosie daca prioritatea e mai mica decat media</translation>
-    </message>
-    <message>
-        <source>Amounts below 0.546 times the minimum relay fee are shown as dust.</source>
-        <translation>Sume sub 0,546 ori taxa minima sunt indicate ca ignorate. </translation>
     </message>
     <message>
         <source>(no label)</source>
@@ -843,16 +766,24 @@ Adresa: %4
 <context>
     <name>HelpMessageDialog</name>
     <message>
-        <source>Bitcoin Core - Command-line options</source>
-        <translation>Bitcoin Core - Opţiuni Linie de comandă</translation>
-    </message>
-    <message>
         <source>Bitcoin Core</source>
         <translation>Bitcoin Core</translation>
     </message>
     <message>
         <source>version</source>
         <translation>versiunea</translation>
+    </message>
+    <message>
+        <source>(%1-bit)</source>
+        <translation>(%1-bit)</translation>
+    </message>
+    <message>
+        <source>About Bitcoin Core</source>
+        <translation>Despre Nucleul Bitcoin</translation>
+    </message>
+    <message>
+        <source>Command-line options</source>
+        <translation>Command-line setări</translation>
     </message>
     <message>
         <source>Usage:</source>
@@ -906,26 +837,14 @@ Adresa: %4
         <translation>Folosește un dosar de date personalizat:</translation>
     </message>
     <message>
-        <source>Bitcoin</source>
-        <translation>Bitcoin</translation>
-    </message>
-    <message>
-        <source>Error: Specified data directory "%1" can not be created.</source>
-        <translation>Eroare: Directorul datelor specificate "%1" nu poate fi creat.</translation>
+        <source>Bitcoin Core</source>
+        <translation>Bitcoin Core</translation>
     </message>
     <message>
         <source>Error</source>
         <translation>Eroare</translation>
     </message>
-    <message>
-        <source>GB of free space available</source>
-        <translation>GB de spațiu liber disponibil</translation>
-    </message>
-    <message>
-        <source>(of %1GB needed)</source>
-        <translation>(din %1GB necesari)</translation>
-    </message>
-</context>
+    </context>
 <context>
     <name>OpenURIDialog</name>
     <message>
@@ -960,14 +879,6 @@ Adresa: %4
         <translation>&amp;Principal</translation>
     </message>
     <message>
-        <source>Optional transaction fee per kB that helps make sure your transactions are processed quickly. Most transactions are 1 kB.</source>
-        <translation>Taxa optionala de tranzactie per kB care ajuta ca tranzactiile dumneavoastra sa fie procesate rapid. Majoritatea tranzactiilor sunt 1 kB.</translation>
-    </message>
-    <message>
-        <source>Pay transaction &amp;fee</source>
-        <translation>Plăteşte comision pentru tranzacţie &amp;f</translation>
-    </message>
-    <message>
         <source>Automatically start Bitcoin after logging in to the system.</source>
         <translation>Porneşte automat programul Bitcoin la pornirea computerului.</translation>
     </message>
@@ -978,10 +889,6 @@ Adresa: %4
     <message>
         <source>MB</source>
         <translation>MB</translation>
-    </message>
-    <message>
-        <source>Connect to the Bitcoin network through a SOCKS proxy.</source>
-        <translation>Conecteaza-te la reteaua Bitcoin printr-un proxy SOCKS</translation>
     </message>
     <message>
         <source>Reset all client options to default.</source>
@@ -1018,14 +925,6 @@ Adresa: %4
     <message>
         <source>Port of the proxy (e.g. 9050)</source>
         <translation>Portul pe care se concetează proxy serverul (de exemplu: 9050)</translation>
-    </message>
-    <message>
-        <source>SOCKS &amp;Version:</source>
-        <translation>SOCKS &amp;Versiune:</translation>
-    </message>
-    <message>
-        <source>SOCKS version of the proxy (e.g. 5)</source>
-        <translation>Versiunea SOCKS a proxiului (ex. 5)</translation>
     </message>
     <message>
         <source>&amp;Window</source>
@@ -1066,14 +965,6 @@ Adresa: %4
     <message>
         <source>Choose the default subdivision unit to show in the interface and when sending coins.</source>
         <translation>Alege subdiviziunea folosită la afişarea interfeţei şi la trimiterea de bitcoin.</translation>
-    </message>
-    <message>
-        <source>Whether to show Bitcoin addresses in the transaction list or not.</source>
-        <translation>Vezi dacă adresele Bitcoin sunt în lista de tranzacție sau nu</translation>
-    </message>
-    <message>
-        <source>&amp;Display addresses in transaction list</source>
-        <translation>&amp;Afişează adresele în lista de tranzacţii</translation>
     </message>
     <message>
         <source>Whether to show coin control features or not.</source>
@@ -1127,10 +1018,6 @@ Adresa: %4
         <translation>Informațiile afișate pot neactualizate. Portofelul tău se sincronizează automat cu rețeaua Bitcoin după ce o conexiune este stabilită, dar acest proces nu a fost finalizat încă.</translation>
     </message>
     <message>
-        <source>Wallet</source>
-        <translation>Portofel</translation>
-    </message>
-    <message>
         <source>Available:</source>
         <translation>Disponibil:</translation>
     </message>
@@ -1163,10 +1050,6 @@ Adresa: %4
         <translation>Balanța totală curentă</translation>
     </message>
     <message>
-        <source>&lt;b&gt;Recent transactions&lt;/b&gt;</source>
-        <translation>&lt;b&gt;Tranzacții recente&lt;/b&gt;</translation>
-    </message>
-    <message>
         <source>out of sync</source>
         <translation>Nu este sincronizat</translation>
     </message>
@@ -1178,8 +1061,8 @@ Adresa: %4
         <translation>Gestionare URI</translation>
     </message>
     <message>
-        <source>URI can not be parsed! This can be caused by an invalid Bitcoin address or malformed URI parameters.</source>
-        <translation>URI nu poate fi analizat! Acest lucru poate fi cauzat de o adresa Bitcoin invalida sau parametri deformati URI.</translation>
+        <source>Invalid payment address %1</source>
+        <translation>Adresă pentru plată nevalidă %1</translation>
     </message>
     <message>
         <source>Requested payment amount of %1 is too small (considered dust).</source>
@@ -1219,24 +1102,27 @@ Adresa: %4
     </message>
 </context>
 <context>
+    <name>PeerTableModel</name>
+    </context>
+<context>
     <name>QObject</name>
     <message>
-        <source>Bitcoin</source>
-        <translation>Bitcoin</translation>
+        <source>Amount</source>
+        <translation>Sumă</translation>
     </message>
     <message>
-        <source>Error: Specified data directory "%1" does not exist.</source>
-        <translation>Eroare: Directorul datelor specificate "%1" nu exista.</translation>
+        <source>%1 h</source>
+        <translation>%1 h</translation>
     </message>
     <message>
-        <source>Error: Invalid combination of -regtest and -testnet.</source>
-        <translation>Eroare: combinație nevalidă de -regtest și -testnet.</translation>
+        <source>%1 m</source>
+        <translation>%1 m</translation>
     </message>
     <message>
-        <source>Enter a Bitcoin address (e.g. 1NS17iag9jJgTHD1VXjvLCEnZuQ3rJDE9L)</source>
-        <translation>Introdu o adresă Bitcoin (de exemplu: 1NS17iag9jJgTHD1VXjvLCEnZuQ3rJDE9L)</translation>
+        <source>N/A</source>
+        <translation>N/A</translation>
     </message>
-</context>
+    </context>
 <context>
     <name>QRImageWidget</name>
     <message>
@@ -1309,10 +1195,6 @@ Adresa: %4
     <message>
         <source>Current number of blocks</source>
         <translation>Numărul curent de blocuri</translation>
-    </message>
-    <message>
-        <source>Estimated total blocks</source>
-        <translation>Blocurile totale estimate</translation>
     </message>
     <message>
         <source>Last block time</source>
@@ -1390,19 +1272,7 @@ Adresa: %4
         <source>%1 GB</source>
         <translation>%1 GB</translation>
     </message>
-    <message>
-        <source>%1 m</source>
-        <translation>%1 m</translation>
-    </message>
-    <message>
-        <source>%1 h</source>
-        <translation>%1 h</translation>
-    </message>
-    <message>
-        <source>%1 h %2 m</source>
-        <translation>%1 ora %2 minute</translation>
-    </message>
-</context>
+    </context>
 <context>
     <name>ReceiveCoinsDialog</name>
     <message>
@@ -1595,10 +1465,6 @@ Adresa: %4
         <translation>Taxa:</translation>
     </message>
     <message>
-        <source>Low Output:</source>
-        <translation>Ieşire minimă: </translation>
-    </message>
-    <message>
         <source>After Fee:</source>
         <translation>După taxe:</translation>
     </message>
@@ -1667,10 +1533,6 @@ Adresa: %4
         <translation>Copiaţi prioritatea</translation>
     </message>
     <message>
-        <source>Copy low output</source>
-        <translation>Copiaţi ieşire minimă:</translation>
-    </message>
-    <message>
         <source>Copy change</source>
         <translation>Copiaţi schimb</translation>
     </message>
@@ -1730,14 +1592,6 @@ Adresa: %4
         <source>added as transaction fee</source>
         <translation>adăugat ca taxă de tranzacție</translation>
     </message>
-    <message>
-        <source>Payment request expired</source>
-        <translation>Cererea de plată a expirat</translation>
-    </message>
-    <message>
-        <source>Invalid payment address %1</source>
-        <translation>Adresă pentru plată nevalidă %1</translation>
-    </message>
 </context>
 <context>
     <name>SendCoinsEntry</name>
@@ -1748,10 +1602,6 @@ Adresa: %4
     <message>
         <source>Pay &amp;To:</source>
         <translation>Plătește că&amp;tre:</translation>
-    </message>
-    <message>
-        <source>The address to send the payment to (e.g. 1NS17iag9jJgTHD1VXjvLCEnZuQ3rJDE9L)</source>
-        <translation>Adresa către care se va face plata  (de exemplu: 1NS17iag9jJgTHD1VXjvLCEnZuQ3rJDE9L)</translation>
     </message>
     <message>
         <source>Enter a label for this address to add it to your address book</source>
@@ -1836,10 +1686,6 @@ Adresa: %4
         <translation>Puteti semna mesaje cu adresa dumneavoastra pentru a demostra ca sunteti proprietarul lor. Aveti grija sa nu semnati nimic vag, deoarece atacurile de tip phishing va pot pacali sa le transferati identitatea. Semnati numai declaratiile detaliate cu care sunteti deacord.</translation>
     </message>
     <message>
-        <source>The address to sign the message with (e.g. 1NS17iag9jJgTHD1VXjvLCEnZuQ3rJDE9L)</source>
-        <translation>Introduceţi o adresă Bitcoin (de exemplu: 1NS17iag9jJgTHD1VXjvLCEnZuQ3rJDE9L)</translation>
-    </message>
-    <message>
         <source>Choose previously used address</source>
         <translation>Alegeti adrese folosite in prealabil</translation>
     </message>
@@ -1892,10 +1738,6 @@ Adresa: %4
         <translation>Introduceti adresa de semnatura, mesajul (asigurati-va ca ati copiat spatiile, taburile etc. exact) si semnatura dedesubt pentru a verifica mesajul. Aveti grija sa nu cititi mai mult in semnatura decat mesajul in sine, pentru a evita sa fiti pacaliti de un atac de tip man-in-the-middle.</translation>
     </message>
     <message>
-        <source>The address the message was signed with (e.g. 1NS17iag9jJgTHD1VXjvLCEnZuQ3rJDE9L)</source>
-        <translation>Introduceţi o adresă Bitcoin (de exemplu: 1NS17iag9jJgTHD1VXjvLCEnZuQ3rJDE9L)</translation>
-    </message>
-    <message>
         <source>Verify the message to ensure it was signed with the specified Bitcoin address</source>
         <translation>Verifica mesajul pentru a fi sigur ca a fost semnat cu adresa Bitcoin specifica</translation>
     </message>
@@ -1906,10 +1748,6 @@ Adresa: %4
     <message>
         <source>Reset all verify message fields</source>
         <translation>Reseteaza toate spatiile mesajelor semnate.</translation>
-    </message>
-    <message>
-        <source>Enter a Bitcoin address (e.g. 1NS17iag9jJgTHD1VXjvLCEnZuQ3rJDE9L)</source>
-        <translation>Introduceţi o adresă Bitcoin (de exemplu: 1NS17iag9jJgTHD1VXjvLCEnZuQ3rJDE9L)</translation>
     </message>
     <message>
         <source>Click "Sign Message" to generate signature</source>
@@ -2143,10 +1981,6 @@ Adresa: %4
         <translation>Adresa</translation>
     </message>
     <message>
-        <source>Amount</source>
-        <translation>Cantitate</translation>
-    </message>
-    <message>
         <source>Open until %1</source>
         <translation>Deschis până la %1</translation>
     </message>
@@ -2346,10 +2180,6 @@ Adresa: %4
         <translation>Adresă</translation>
     </message>
     <message>
-        <source>Amount</source>
-        <translation>Sumă</translation>
-    </message>
-    <message>
         <source>ID</source>
         <translation>ID</translation>
     </message>
@@ -2362,6 +2192,9 @@ Adresa: %4
         <translation>către</translation>
     </message>
 </context>
+<context>
+    <name>UnitDisplayStatusBarControl</name>
+    </context>
 <context>
     <name>WalletFrame</name>
     <message>
@@ -2414,40 +2247,12 @@ Adresa: %4
 <context>
     <name>bitcoin-core</name>
     <message>
-        <source>Usage:</source>
-        <translation>Uz:</translation>
-    </message>
-    <message>
-        <source>List commands</source>
-        <translation>Listă de comenzi</translation>
-    </message>
-    <message>
-        <source>Get help for a command</source>
-        <translation>Ajutor pentru o comandă</translation>
-    </message>
-    <message>
         <source>Options:</source>
         <translation>Setări:</translation>
     </message>
     <message>
-        <source>Specify configuration file (default: bitcoin.conf)</source>
-        <translation>Specifică fișierul de configurare (implicit: bitcoin.conf)</translation>
-    </message>
-    <message>
-        <source>Specify pid file (default: bitcoind.pid)</source>
-        <translation>Specifică fișierul pid (implicit bitcoind.pid)</translation>
-    </message>
-    <message>
         <source>Specify data directory</source>
         <translation>Specifică dosarul de date</translation>
-    </message>
-    <message>
-        <source>Listen for connections on &lt;port&gt; (default: 8333 or testnet: 18333)</source>
-        <translation>Ascultă pentru conectări pe &lt;port&gt; (implicit:  8333 sau testnet: 18333)</translation>
-    </message>
-    <message>
-        <source>Maintain at most &lt;n&gt; connections to peers (default: 125)</source>
-        <translation>Menține cel mult &lt;n&gt; conexiuni cu partenerii (implicit: 125)</translation>
     </message>
     <message>
         <source>Connect to a node to retrieve peer addresses, and disconnect</source>
@@ -2456,22 +2261,6 @@ Adresa: %4
     <message>
         <source>Specify your own public address</source>
         <translation>Specifică adresa ta publică</translation>
-    </message>
-    <message>
-        <source>Threshold for disconnecting misbehaving peers (default: 100)</source>
-        <translation>Prag pentru deconectarea partenerilor care nu funcționează corect (implicit: 100)</translation>
-    </message>
-    <message>
-        <source>Number of seconds to keep misbehaving peers from reconnecting (default: 86400)</source>
-        <translation>Numărul de secunde pentru a preveni reconectarea partenerilor care nu funcționează corect (implicit: 86400)</translation>
-    </message>
-    <message>
-        <source>An error occurred while setting up the RPC port %u for listening on IPv4: %s</source>
-        <translation>A intervenit o eroare in timp ce se seta portul RPC %u pentru ascultare pe IPv4: %s</translation>
-    </message>
-    <message>
-        <source>Listen for JSON-RPC connections on &lt;port&gt; (default: 8332 or testnet: 18332)</source>
-        <translation>Ascultă pentru conexiuni JSON-RPC pe &lt;port&gt; (implicit:8332 sau testnet: 18332)</translation>
     </message>
     <message>
         <source>Accept command line and JSON-RPC commands</source>
@@ -2515,20 +2304,8 @@ spre exemplu: alertnotify=echo %%s | mail -s "Alerta Bitcoin" admin@foo.com
 </translation>
     </message>
     <message>
-        <source>Acceptable ciphers (default: TLSv1.2+HIGH:TLSv1+HIGH:!SSLv2:!aNULL:!eNULL:!3DES:@STRENGTH)</source>
-        <translation>Cifruri acceptabile (implicit: TLSv1.2+HIGH:TLSv1+HIGH:!SSLv2:!aNULL:!eNULL:!3DES:@STRENGTH)</translation>
-    </message>
-    <message>
-        <source>An error occurred while setting up the RPC port %u for listening on IPv6, falling back to IPv4: %s</source>
-        <translation>A intervenit o eroare in timp ce se seta portul RPC %u pentru ascultare pe IPv6, reintoarcere la IPv4: %s</translation>
-    </message>
-    <message>
         <source>Bind to given address and always listen on it. Use [host]:port notation for IPv6</source>
         <translation>Atasati adresei date si ascultati totdeauna pe ea. Folositi [host]:port notatia pentru IPv6</translation>
-    </message>
-    <message>
-        <source>Enter regression test mode, which uses a special chain in which blocks can be solved instantly. This is intended for regression testing tools and app development.</source>
-        <translation>Initiati modul de test al regresie, care foloseste un lant special in care block-urile pot fi rezolvate instantaneu. Acest lucru este facut pentru utilitare si aplicatii de dezvoltare pentru testarea regresiei.</translation>
     </message>
     <message>
         <source>Error: The transaction was rejected! This might happen if some of the coins in your wallet were already spent, such as if you used a copy of wallet.dat and coins were spent in the copy but not marked as spent here.</source>
@@ -2543,24 +2320,12 @@ spre exemplu: alertnotify=echo %%s | mail -s "Alerta Bitcoin" admin@foo.com
         <translation>Executati comanda cand o tranzactie a portofelului se schimba (%s in cmd este inlocuit de TxID)</translation>
     </message>
     <message>
-        <source>Fees smaller than this are considered zero fee (for transaction creation) (default:</source>
-        <translation>Taxe mai mici decat aceasta suma sunt considerate taxe nule (pentru crearea tranzactiilor) (pentru nespecificare:</translation>
-    </message>
-    <message>
         <source>This is a pre-release test build - use at your own risk - do not use for mining or merchant applications</source>
         <translation>Aceasta este o versiune de test preliminara - va asumati riscul folosind-o - nu folositi pentru minerit sau aplicatiile comerciantilor.</translation>
     </message>
     <message>
-        <source>Use separate SOCKS5 proxy to reach peers via Tor hidden services (default: -proxy)</source>
-        <translation>Utilizare proxy SOCKS5 separat pentru a ajunge la servicii ascunse TOR (implicit: -proxy)</translation>
-    </message>
-    <message>
         <source>Warning: -paytxfee is set very high! This is the transaction fee you will pay if you send a transaction.</source>
         <translation>Atentie: setarea -paytxfee este foarte ridicata! Aceasta este taxa tranzactiei pe care o vei plati daca trimiti o tranzactie.</translation>
-    </message>
-    <message>
-        <source>Warning: Please check that your computer's date and time are correct! If your clock is wrong Bitcoin will not work properly.</source>
-        <translation>Atentie: Va rugam verificati daca data/timpul computerului dumneavoastra sunt corecte! Daca ceasul computerului este decalat, Bitcoin nu va functiona corect.</translation>
     </message>
     <message>
         <source>Warning: The network does not appear to fully agree! Some miners appear to be experiencing issues.</source>
@@ -2587,24 +2352,12 @@ spre exemplu: alertnotify=echo %%s | mail -s "Alerta Bitcoin" admin@foo.com
         <translation>Încearcă recuperarea cheilor private dintr-un wallet.dat corupt</translation>
     </message>
     <message>
-        <source>Bitcoin Core Daemon</source>
-        <translation>Daemon-ul Bitcoin Core</translation>
-    </message>
-    <message>
         <source>Block creation options:</source>
         <translation>Optiuni creare block</translation>
     </message>
     <message>
         <source>Connect only to the specified node(s)</source>
         <translation>Conecteaza-te doar la nod(urile) specifice</translation>
-    </message>
-    <message>
-        <source>Connect through SOCKS proxy</source>
-        <translation>Conectare prin proxy SOCKS</translation>
-    </message>
-    <message>
-        <source>Connect to JSON-RPC on &lt;port&gt; (default: 8332 or testnet: 18332)</source>
-        <translation>Conectat la JSON-RPC pe &lt;portul&gt; (implicit: 8332 sau testnet: 18332)</translation>
     </message>
     <message>
         <source>Corrupted block database detected</source>
@@ -2643,68 +2396,8 @@ spre exemplu: alertnotify=echo %%s | mail -s "Alerta Bitcoin" admin@foo.com
         <translation>Eroare: Portofel blocat, nu se poate crea o tranzacție!</translation>
     </message>
     <message>
-        <source>Error: system error: </source>
-        <translation>Eroare: eroare de sistem:</translation>
-    </message>
-    <message>
         <source>Failed to listen on any port. Use -listen=0 if you want this.</source>
         <translation>Am esuat ascultarea pe orice port. Folositi -listen=0 daca vreti asta.</translation>
-    </message>
-    <message>
-        <source>Failed to read block info</source>
-        <translation>Citirea informațiilor despre bloc a eșuat</translation>
-    </message>
-    <message>
-        <source>Failed to read block</source>
-        <translation>Citirea blocului a eșuat</translation>
-    </message>
-    <message>
-        <source>Failed to sync block index</source>
-        <translation>A eșuat sincronizarea indexului de blocuri</translation>
-    </message>
-    <message>
-        <source>Failed to write block index</source>
-        <translation>A eșuat scrierea indexului de blocuri</translation>
-    </message>
-    <message>
-        <source>Failed to write block info</source>
-        <translation>Scrierea informațiilor despre bloc a eșuat</translation>
-    </message>
-    <message>
-        <source>Failed to write block</source>
-        <translation>Scrierea blocului a eșuat</translation>
-    </message>
-    <message>
-        <source>Failed to write file info</source>
-        <translation>Nu a reușit scrierea informației în fișier</translation>
-    </message>
-    <message>
-        <source>Failed to write to coin database</source>
-        <translation>Eșuarea scrierii în baza de date de monede</translation>
-    </message>
-    <message>
-        <source>Failed to write transaction index</source>
-        <translation>Nu a reușit scrierea indexului de tranzacție</translation>
-    </message>
-    <message>
-        <source>Failed to write undo data</source>
-        <translation>Esuare in scrierea datelor anulate</translation>
-    </message>
-    <message>
-        <source>Find peers using DNS lookup (default: 1 unless -connect)</source>
-        <translation>Găsește parteneri folosind căutarea DNS (implicit: 1 doar dacă nu s-a folosit -connect)</translation>
-    </message>
-    <message>
-        <source>Force safe mode (default: 0)</source>
-        <translation>Pornire fortata a modului safe mode (prestabilit: 0)</translation>
-    </message>
-    <message>
-        <source>Generate coins (default: 0)</source>
-        <translation>Generează monede (implicit: 0)</translation>
-    </message>
-    <message>
-        <source>How many blocks to check at startup (default: 288, 0 = all)</source>
-        <translation>Cate block-uri se verifica la initializare (implicit: 288, 0=toate)</translation>
     </message>
     <message>
         <source>Incorrect or no genesis block found. Wrong datadir for network?</source>
@@ -2719,24 +2412,12 @@ spre exemplu: alertnotify=echo %%s | mail -s "Alerta Bitcoin" admin@foo.com
         <translation>Nu sunt destule descriptoare disponibile.</translation>
     </message>
     <message>
-        <source>RPC client options:</source>
-        <translation>Opţiuni client RPC:</translation>
-    </message>
-    <message>
         <source>Rebuild block chain index from current blk000??.dat files</source>
         <translation>Reconstruirea indexului lantului de block-uri din fisierele actuale blk000???.dat</translation>
     </message>
     <message>
-        <source>Select SOCKS version for -proxy (4 or 5, default: 5)</source>
-        <translation>Selectaţi versiunea SOCKS pentru -proxy (4 din 5; iniţial: 5)</translation>
-    </message>
-    <message>
         <source>Set maximum block size in bytes (default: %d)</source>
         <translation>Setaţi dimensiunea maximă a unui block în bytes (implicit: %d)</translation>
-    </message>
-    <message>
-        <source>Set the number of threads to service RPC calls (default: 4)</source>
-        <translation>Stabileste numarul de thread-uri care servesc apeluri RPC (implicit: 4)</translation>
     </message>
     <message>
         <source>Specify wallet file (within data directory)</source>
@@ -2747,20 +2428,12 @@ spre exemplu: alertnotify=echo %%s | mail -s "Alerta Bitcoin" admin@foo.com
         <translation>Este folosita pentru programe de testare a regresiei in algoritmi si  dezvoltare de alte aplicatii. </translation>
     </message>
     <message>
-        <source>Usage (deprecated, use bitcoin-cli):</source>
-        <translation>Utilizare (învechită, folositi bitcoin-cli):</translation>
-    </message>
-    <message>
         <source>Verifying blocks...</source>
         <translation>Se verifică blocurile...</translation>
     </message>
     <message>
         <source>Verifying wallet...</source>
         <translation>Se verifică portofelul...</translation>
-    </message>
-    <message>
-        <source>Wait for RPC server to start</source>
-        <translation>Aşteptaţi serverul RPC să pornească</translation>
     </message>
     <message>
         <source>Wallet %s resides outside data directory %s</source>
@@ -2795,48 +2468,12 @@ spre exemplu: alertnotify=echo %%s | mail -s "Alerta Bitcoin" admin@foo.com
         <translation>Suma invalida pentru -mintxfee=&lt;suma&gt;: '%s'</translation>
     </message>
     <message>
-        <source>Maintain a full transaction index (default: 0)</source>
-        <translation>Păstrează un index complet al tranzacțiilor (implicit: 0)</translation>
-    </message>
-    <message>
-        <source>Maximum per-connection receive buffer, &lt;n&gt;*1000 bytes (default: 5000)</source>
-        <translation>Tampon maxim pentru recepție per conexiune, &lt;n&gt;*1000 baiți (implicit: 5000)</translation>
-    </message>
-    <message>
-        <source>Maximum per-connection send buffer, &lt;n&gt;*1000 bytes (default: 1000)</source>
-        <translation>Tampon maxim pentru transmitere per conexiune, &lt;n&gt;*1000 baiți (implicit: 1000)</translation>
-    </message>
-    <message>
-        <source>Only accept block chain matching built-in checkpoints (default: 1)</source>
-        <translation>Se accepta decat lantul de block care se potriveste punctului de control implementat (implicit: 1)</translation>
-    </message>
-    <message>
-        <source>Only connect to nodes in network &lt;net&gt; (IPv4, IPv6 or Tor)</source>
-        <translation>Efectuează conexiuni doar către nodurile din rețeaua &lt;net&gt; (IPv4, IPv6 sau Tor)</translation>
-    </message>
-    <message>
         <source>Print block on startup, if found in block index</source>
         <translation>Publica bloc la pornire daca exista in index-ul de blocuri. </translation>
     </message>
     <message>
-        <source>Print block tree on startup (default: 0)</source>
-        <translation>Publicare arbore blocuri la pornire (prestabilit: 0)</translation>
-    </message>
-    <message>
-        <source>SSL options: (see the Bitcoin Wiki for SSL setup instructions)</source>
-        <translation>Optiuni SSl (vezi Bitcoin wiki pentru intructiunile de instalare)</translation>
-    </message>
-    <message>
-        <source>Send command to Bitcoin Core</source>
-        <translation>Trimitere comenzi catre Bitcoin Core</translation>
-    </message>
-    <message>
         <source>Send trace/debug info to console instead of debug.log file</source>
         <translation>Trimite informațiile trace/debug la consolă în locul fișierului debug.log</translation>
-    </message>
-    <message>
-        <source>Set minimum block size in bytes (default: 0)</source>
-        <translation>Setează mărimea minimă a blocului în baiți (implicit: 0)</translation>
     </message>
     <message>
         <source>Shrink debug.log file on client startup (default: 1 when no -debug)</source>
@@ -2845,14 +2482,6 @@ spre exemplu: alertnotify=echo %%s | mail -s "Alerta Bitcoin" admin@foo.com
     <message>
         <source>Signing transaction failed</source>
         <translation>Semnarea tranzacției a eșuat</translation>
-    </message>
-    <message>
-        <source>Specify connection timeout in milliseconds (default: 5000)</source>
-        <translation>Specifică intervalul maxim de conectare în milisecunde (implicit: 5000)</translation>
-    </message>
-    <message>
-        <source>System error: </source>
-        <translation>Eroare de sistem:</translation>
     </message>
     <message>
         <source>Transaction amount too small</source>
@@ -2865,10 +2494,6 @@ spre exemplu: alertnotify=echo %%s | mail -s "Alerta Bitcoin" admin@foo.com
     <message>
         <source>Transaction too large</source>
         <translation>Tranzacția este prea mare</translation>
-    </message>
-    <message>
-        <source>Use UPnP to map the listening port (default: 0)</source>
-        <translation>Foloseste UPnP pentru a vedea porturile (initial: 0)</translation>
     </message>
     <message>
         <source>Use UPnP to map the listening port (default: 1 when listening)</source>
@@ -2891,24 +2516,12 @@ spre exemplu: alertnotify=echo %%s | mail -s "Alerta Bitcoin" admin@foo.com
         <translation>in timpul pornirii</translation>
     </message>
     <message>
-        <source>version</source>
-        <translation>versiunea</translation>
-    </message>
-    <message>
         <source>wallet.dat corrupt, salvage failed</source>
         <translation>wallet.dat corupt, recuperare eșuată</translation>
     </message>
     <message>
         <source>Password for JSON-RPC connections</source>
         <translation>Parola pentru conexiunile JSON-RPC</translation>
-    </message>
-    <message>
-        <source>Allow JSON-RPC connections from specified IP address</source>
-        <translation>Permite conexiuni JSON-RPC de la adresa IP specificată</translation>
-    </message>
-    <message>
-        <source>Send commands to node running on &lt;ip&gt; (default: 127.0.0.1)</source>
-        <translation>Trimite comenzi la nodul care rulează la &lt;ip&gt; (implicit: 127.0.0.1)</translation>
     </message>
     <message>
         <source>Execute command when the best block changes (%s in cmd is replaced by block hash)</source>
@@ -2919,10 +2532,6 @@ spre exemplu: alertnotify=echo %%s | mail -s "Alerta Bitcoin" admin@foo.com
         <translation>Actualizează portofelul la ultimul format</translation>
     </message>
     <message>
-        <source>Set key pool size to &lt;n&gt; (default: 100)</source>
-        <translation>Setează mărimea bazinului de chei la &lt;n&gt; (implicit: 100)</translation>
-    </message>
-    <message>
         <source>Rescan the block chain for missing wallet transactions</source>
         <translation>Rescanează lanțul de bloc pentru tranzacțiile portofel lipsă</translation>
     </message>
@@ -2931,20 +2540,8 @@ spre exemplu: alertnotify=echo %%s | mail -s "Alerta Bitcoin" admin@foo.com
         <translation>Folosește OpenSSL (https) pentru conexiunile JSON-RPC</translation>
     </message>
     <message>
-        <source>Server certificate file (default: server.cert)</source>
-        <translation>Certificatul serverului (implicit: server.cert)</translation>
-    </message>
-    <message>
-        <source>Server private key (default: server.pem)</source>
-        <translation>Cheia privată a serverului (implicit: server.pem)</translation>
-    </message>
-    <message>
         <source>This help message</source>
         <translation>Acest mesaj de ajutor</translation>
-    </message>
-    <message>
-        <source>Unable to bind to %s on this computer (bind returned error %d, %s)</source>
-        <translation>Nu se poate folosi %s pe acest calculator (eroarea returnată este %d, %s)</translation>
     </message>
     <message>
         <source>Allow DNS lookups for -addnode, -seednode and -connect</source>
@@ -2959,14 +2556,6 @@ spre exemplu: alertnotify=echo %%s | mail -s "Alerta Bitcoin" admin@foo.com
         <translation>Eroare la încărcarea wallet.dat: Portofel corupt</translation>
     </message>
     <message>
-        <source>Error loading wallet.dat: Wallet requires newer version of Bitcoin</source>
-        <translation>Eroare la încărcarea wallet.dat: Portofelul are nevoie de o versiune Bitcoin mai nouă</translation>
-    </message>
-    <message>
-        <source>Wallet needed to be rewritten: restart Bitcoin to complete</source>
-        <translation>Portofelul trebuie rescris: repornește Bitcoin pentru finalizare</translation>
-    </message>
-    <message>
         <source>Error loading wallet.dat</source>
         <translation>Eroare la încărcarea wallet.dat</translation>
     </message>
@@ -2977,10 +2566,6 @@ spre exemplu: alertnotify=echo %%s | mail -s "Alerta Bitcoin" admin@foo.com
     <message>
         <source>Unknown network specified in -onlynet: '%s'</source>
         <translation>Rețeaua specificată în -onlynet este necunoscută: '%s'</translation>
-    </message>
-    <message>
-        <source>Unknown -socks proxy version requested: %i</source>
-        <translation>S-a cerut o versiune necunoscută de proxy -socks: %i</translation>
     </message>
     <message>
         <source>Cannot resolve -bind address: '%s'</source>
@@ -3037,14 +2622,6 @@ spre exemplu: alertnotify=echo %%s | mail -s "Alerta Bitcoin" admin@foo.com
     <message>
         <source>Error</source>
         <translation>Eroare</translation>
-    </message>
-    <message>
-        <source>You must set rpcpassword=&lt;password&gt; in the configuration file:
-%s
-If the file does not exist, create it with owner-readable-only file permissions.</source>
-        <translation>Trebuie sa setezi rpcpassword=&lt;password&gt; în fișierul de configurare:⏎
-%s⏎
-Dacă fișierul nu există, creează-l cu permisiuni de citire doar de către proprietar.</translation>
     </message>
 </context>
 </TS>

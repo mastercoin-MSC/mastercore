@@ -1,21 +1,4 @@
-<TS language="fr_CA" version="2.1">
-<context>
-    <name>AboutDialog</name>
-    <message>
-        <source>
-This is experimental software.
-
-Distributed under the MIT/X11 software license, see the accompanying file COPYING or http://www.opensource.org/licenses/mit-license.php.
-
-This product includes software developed by the OpenSSL Project for use in the OpenSSL Toolkit (http://www.openssl.org/) and cryptographic software written by Eric Young (eay@cryptsoft.com) and UPnP software written by Thomas Bernard.</source>
-        <translation>
-Ce logiciel est en phase expérimentale.
-
-Distribué sous licence MIT/X11, voir le fichier COPYING ou http://www.opensource.org/licenses/mit-license.php.
-
-Ce produit comprend des logiciels développés par le projet OpenSSL pour être utilisés dans la boîte à outils OpenSSL (http://www.openssl.org/), un logiciel cryptographique écrit par Eric Young (eay@cryptsoft.com) et un logiciel UPnP écrit par Thomas Bernard.</translation>
-    </message>
-    </context>
+<TS language="fr_CA" version="2.0">
 <context>
     <name>AddressBookPage</name>
     <message>
@@ -69,10 +52,6 @@ Ce produit comprend des logiciels développés par le projet OpenSSL pour être 
         <translation>Répéter Mot de Passe</translation>
     </message>
     <message>
-        <source>Enter the new passphrase to the wallet.&lt;br/&gt;Please use a passphrase of &lt;b&gt;10 or more random characters&lt;/b&gt;, or &lt;b&gt;eight or more words&lt;/b&gt;.</source>
-        <translation>Entrer le nouveau mot de passe pour le porte-feuille. Veuillez utiliser un mot de passe de 10 caractères au hasard ou plus, ou, 8 mots ou plus. </translation>
-    </message>
-    <message>
         <source>Encrypt wallet</source>
         <translation>Encrypter Porte-Feuille</translation>
     </message>
@@ -97,10 +76,6 @@ Ce produit comprend des logiciels développés par le projet OpenSSL pour être 
     </context>
 <context>
     <name>CoinControlDialog</name>
-    <message>
-        <source>Address</source>
-        <translation>Addresse</translation>
-    </message>
     <message>
         <source>(no label)</source>
         <translation>(pas de record)</translation>
@@ -129,6 +104,9 @@ Ce produit comprend des logiciels développés par le projet OpenSSL pour être 
     </context>
 <context>
     <name>PaymentServer</name>
+    </context>
+<context>
+    <name>PeerTableModel</name>
     </context>
 <context>
     <name>QObject</name>
@@ -213,6 +191,9 @@ Ce produit comprend des logiciels développés par le projet OpenSSL pour être 
         <source>Address</source>
         <translation>Addresse</translation>
     </message>
+    </context>
+<context>
+    <name>UnitDisplayStatusBarControl</name>
     </context>
 <context>
     <name>WalletFrame</name>

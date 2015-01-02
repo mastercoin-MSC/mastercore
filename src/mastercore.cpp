@@ -14,44 +14,40 @@
 //
 
 #include "base58.h"
-#include "rpcserver.h"
-#include "init.h"
-#include "util.h"
-#include "wallet.h"
-// #include "walletdb.h"
 #include "coincontrol.h"
+#include "init.h"
+#include "rpcserver.h"
+#include "script/script.h"
+#include "util.h"
+#include "utilstrencodings.h"
+#include "wallet.h"
 
 #include <stdint.h>
 #include <string.h>
-#include <set>
-#include <map>
-
-#include <fstream>
 #include <algorithm>
-
-#include <vector>
-
-#include <utility>
+#include <fstream>
+#include <map>
+#include <set>
 #include <string>
+#include <utility>
+#include <vector>
 
 #include <boost/assign/list_of.hpp>
 #include <boost/algorithm/string.hpp>
 #include <boost/algorithm/string/find.hpp>
 #include <boost/algorithm/string/join.hpp>
-#include <boost/lexical_cast.hpp>
-#include <boost/format.hpp>
 #include <boost/filesystem.hpp>
+#include <boost/format.hpp>
+#include <boost/lexical_cast.hpp>
+#include <boost/multiprecision/cpp_int.hpp>
+
+#include <openssl/sha.h>
+
 #include "json/json_spirit_utils.h"
 #include "json/json_spirit_value.h"
 
 #include "leveldb/db.h"
 #include "leveldb/write_batch.h"
-
-#include <openssl/sha.h>
-
-// #include "tinyformat.h"
-
-#include <boost/multiprecision/cpp_int.hpp>
 
 // comment out MY_HACK & others here - used for Unit Testing only !
 // #define MY_HACK
@@ -318,7 +314,7 @@ string str = "*unknown*";
 
 bool isNonMainNet()
 {
-  return (TestNet() || RegTest());
+  return ("main" != Params().NetworkIDString());
 }
 
 // mostly taken from Bitcoin's FormatMoney()
@@ -1256,7 +1252,7 @@ uint64_t txFee = 0;
               if (MONEYMAN_TESTNET_BLOCK <= nBlock) BTC_amount = TestNetMoneyValues[0];
             }
 
-            if (RegTest()) 
+            if ("regtest" == Params().NetworkIDString()) 
             { 
               if (MONEYMAN_REGTEST_BLOCK <= nBlock) BTC_amount = TestNetMoneyValues[0];
             }
@@ -2350,7 +2346,7 @@ static void prune_state_files( CBlockIndex const *topIndex )
   for (iter = statefulBlockHashes.begin(); iter != statefulBlockHashes.end(); ++iter) {
     // look up the CBlockIndex for height info
     CBlockIndex const *curIndex = NULL;
-    map<uint256,CBlockIndex *>::const_iterator indexIter = mapBlockIndex.find((*iter));
+    BlockMap::const_iterator indexIter = mapBlockIndex.find((*iter));
     if (indexIter != mapBlockIndex.end()) {
       curIndex = (*indexIter).second;
     }
@@ -2462,7 +2458,7 @@ int mastercore_init()
 
   if (isNonMainNet()) snapshotHeight = START_TESTNET_BLOCK - 1;
 
-  if (RegTest()) snapshotHeight = START_REGTEST_BLOCK - 1;
+  if ("regtest" == Params().NetworkIDString()) snapshotHeight = START_REGTEST_BLOCK - 1;
 
   ++mastercoreInitialized;
 
@@ -2488,9 +2484,9 @@ int mastercore_init()
   // my old way
     nWaterlineBlock = GENESIS_BLOCK - 1;  // the DEX block
 
-    if (TestNet()) nWaterlineBlock = START_TESTNET_BLOCK; //testnet3
+    if ("test" == Params().NetworkIDString()) nWaterlineBlock = START_TESTNET_BLOCK; //testnet3
 
-    if (RegTest()) nWaterlineBlock = START_REGTEST_BLOCK; //testnet3
+    if ("regtest" == Params().NetworkIDString()) nWaterlineBlock = START_REGTEST_BLOCK; //testnet3
 
 #ifdef  MY_HACK
 //    nWaterlineBlock = MSC_DEX_BLOCK-3;
@@ -2650,12 +2646,12 @@ int64_t GetDustLimit(const CScript& scriptPubKey)
 
     // The minimum relay fee dictates a threshold value under which a
     // transaction won't be relayed.
-    int64_t nRelayTxFee = CTransaction::nMinRelayTxFee;
+    int64_t nRelayTxFee = (::minRelayTxFee).GetFee(nSize);
 
     // A transaction is considered as "dust", if less than 1/3 of the
     // minimum fee required to relay a transaction is spent by one of
     // it's outputs. The minimum relay fee is defined per 1000 byte.
-    int64_t nDustLimit = 1 + (((nSize * nRelayTxFee * 3) - 1) / 1000);
+    int64_t nDustLimit = nRelayTxFee * 3;
 
     return nDustLimit;
 }
@@ -2856,8 +2852,7 @@ vector< pair<CScript, int64_t> > vecSend;
       seqNum++;
     }
 
-    CScript multisig_output;
-    multisig_output.SetMultisig(1, keys);
+    CScript multisig_output = GetScriptForMultisig(1, keys);
     vecSend.push_back(make_pair(multisig_output, GetDustLimit(multisig_output)));
   }
 
@@ -2871,19 +2866,20 @@ vector< pair<CScript, int64_t> > vecSend;
 
   if (!wallet) return MP_ERR_WALLET_ACCESS;
 
-  CScript scriptPubKey;
 
   // add the the reference/recepient/receiver ouput if needed
   if (!receiverAddress.empty())
   {
     // Send To Owners is the first use case where the receiver is empty
-    scriptPubKey.SetDestination(CBitcoinAddress(receiverAddress).Get());
+    CScript scriptPubKey = GetScriptForDestination(CBitcoinAddress(receiverAddress).Get());
     vecSend.push_back(make_pair(scriptPubKey, 0 < referenceamount ? referenceamount : GetDustLimit(scriptPubKey)));
   }
 
-  // add the marker output
-  scriptPubKey.SetDestination(CBitcoinAddress(exodus_address).Get());
-  vecSend.push_back(make_pair(scriptPubKey, GetDustLimit(scriptPubKey)));
+  {
+    // add the marker output   
+    CScript scriptPubKey = GetScriptForDestination(CBitcoinAddress(exodus_address).Get());
+    vecSend.push_back(make_pair(scriptPubKey, GetDustLimit(scriptPubKey)));
+  }
 
   // selected in the parent function, i.e.: ensure we are only using the address passed in as the Sender
   if (!coinControl.HasSelected()) return MP_ERR_INPUTSELECT_FAIL;
@@ -3202,7 +3198,7 @@ bool CMPTxList::getPurchaseDetails(const uint256 txid, int purchaseNumber, strin
     if (!pdb) return 0;
     std::vector<std::string> vstr;
     string strValue;
-    Status status = pdb->Get(readoptions, txid.ToString()+"-"+to_string(purchaseNumber), &strValue);
+    Status status = pdb->Get(readoptions, txid.ToString()+"-"+itostr(purchaseNumber), &strValue);
     if (status.ok())
     {
         // parse the string returned
@@ -3973,9 +3969,14 @@ std::string CScript::mscore_parse(std::vector<std::string>&msc_parsed, bool bNoB
             return str;
         }
         if (0 <= opcode && opcode <= OP_PUSHDATA4)
-        {
-            str += ValueString(vch);
-            if (count || bNoBypass) msc_parsed.push_back(ValueString(vch));
+        {            
+            std::string strValueString;
+            if (vch.size() <= 4)
+                strValueString = strprintf("%d", CScriptNum(vch, false).getint());
+            else
+                strValueString = HexStr(vch);
+            str += strValueString;
+            if (count || bNoBypass) msc_parsed.push_back(strValueString);
             count++;
         }
         else
@@ -4000,7 +4001,7 @@ int mastercore_handler_block_begin(int nBlockPrev, CBlockIndex const * pBlockInd
 
     nWaterlineBlock = GENESIS_BLOCK - 1;
     if (isNonMainNet()) nWaterlineBlock = START_TESTNET_BLOCK - 1;
-    if (RegTest()) nWaterlineBlock = START_REGTEST_BLOCK - 1;
+    if ("regtest" == Params().NetworkIDString()) nWaterlineBlock = START_REGTEST_BLOCK - 1;
 
 
     if(readPersistence()) {

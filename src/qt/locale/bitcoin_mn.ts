@@ -1,7 +1,4 @@
-<TS language="mn" version="2.1">
-<context>
-    <name>AboutDialog</name>
-    </context>
+<TS language="mn" version="2.0">
 <context>
     <name>AddressBookPage</name>
     <message>
@@ -65,10 +62,6 @@
     <message>
         <source>Repeat new passphrase</source>
         <translation>Шинэ нууц үгийг давтана уу</translation>
-    </message>
-    <message>
-        <source>Enter the new passphrase to the wallet.&lt;br/&gt;Please use a passphrase of &lt;b&gt;10 or more random characters&lt;/b&gt;, or &lt;b&gt;eight or more words&lt;/b&gt;.</source>
-        <translation>Түрүйвчийн шинэ нууц үгийг оруул. &lt;br/&gt;&lt;b&gt;Дор хаяж 10 дурын үсэг/тоо бүхий&lt;/b&gt; эсвэл &lt;b&gt;дор хаяж 8 дурын үгнээс бүрдсэн&lt;/b&gt; нууц үгийг ашиглана уу. </translation>
     </message>
     <message>
         <source>Encrypt wallet</source>
@@ -170,10 +163,6 @@
         <translation>Програмаас Гарах</translation>
     </message>
     <message>
-        <source>Show information about Bitcoin</source>
-        <translation>Биткойны мэдээллийг харуулах</translation>
-    </message>
-    <message>
         <source>About &amp;Qt</source>
         <translation>&amp;Клиентийн тухай</translation>
     </message>
@@ -229,10 +218,6 @@
         <source>&amp;Help</source>
         <translation>&amp;Тусламж</translation>
     </message>
-    <message>
-        <source>Bitcoin client</source>
-        <translation>Биткойн клиент</translation>
-    </message>
     <message numerus="yes">
         <source>%n active connection(s) to Bitcoin network</source>
         <translation><numerusform>Биткойны сүлжээрүү %n идэвхитэй холболт байна </numerusform><numerusform>Биткойны сүлжээрүү %n идэвхитэй холболтууд байна </numerusform></translation>
@@ -284,7 +269,7 @@ Address: %4
         <source>Wallet is &lt;b&gt;encrypted&lt;/b&gt; and currently &lt;b&gt;locked&lt;/b&gt;</source>
         <translation>Түрүйвч &lt;b&gt;цоожтой&lt;/b&gt; ба одоогоор цоож &lt;b&gt;хаалттай&lt;/b&gt; байна</translation>
     </message>
-    </context>
+</context>
 <context>
     <name>ClientModel</name>
     </context>
@@ -301,10 +286,6 @@ Address: %4
     <message>
         <source>Amount</source>
         <translation>Хэмжээ</translation>
-    </message>
-    <message>
-        <source>Address</source>
-        <translation>Хаяг</translation>
     </message>
     <message>
         <source>Date</source>
@@ -399,10 +380,6 @@ Address: %4
 <context>
     <name>Intro</name>
     <message>
-        <source>Bitcoin</source>
-        <translation>Биткойн</translation>
-    </message>
-    <message>
         <source>Error</source>
         <translation>Алдаа</translation>
     </message>
@@ -419,10 +396,6 @@ Address: %4
     <message>
         <source>MB</source>
         <translation>МБ</translation>
-    </message>
-    <message>
-        <source>Connect to the Bitcoin network through a SOCKS proxy.</source>
-        <translation>Биткойны сүлжээрүү SOCKS проксигоор холбогдох.</translation>
     </message>
     <message>
         <source>IP address of the proxy (e.g. IPv4: 127.0.0.1 / IPv6: ::1)</source>
@@ -444,26 +417,25 @@ Address: %4
 <context>
     <name>OverviewPage</name>
     <message>
-        <source>Wallet</source>
-        <translation>Түрүйвч</translation>
-    </message>
-    <message>
         <source>Available:</source>
         <translation>Хэрэглэж болох хэмжээ:</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Recent transactions&lt;/b&gt;</source>
-        <translation>&lt;b&gt;Сүүлд хийгдсэн гүйлгээнүүд&lt;/b&gt;</translation>
     </message>
     </context>
 <context>
     <name>PaymentServer</name>
     </context>
 <context>
+    <name>PeerTableModel</name>
+    </context>
+<context>
     <name>QObject</name>
     <message>
-        <source>Bitcoin</source>
-        <translation>Биткойн</translation>
+        <source>Amount</source>
+        <translation>Хэмжээ</translation>
+    </message>
+    <message>
+        <source>N/A</source>
+        <translation>Алга Байна</translation>
     </message>
     </context>
 <context>
@@ -514,10 +486,6 @@ Address: %4
     <message>
         <source>Current number of blocks</source>
         <translation>Одоогийн блокийн тоо</translation>
-    </message>
-    <message>
-        <source>Estimated total blocks</source>
-        <translation>Нийт блокийн барагцаа</translation>
     </message>
     <message>
         <source>Last block time</source>
@@ -840,10 +808,6 @@ Address: %4
         <translation>Хаяг</translation>
     </message>
     <message>
-        <source>Amount</source>
-        <translation>Хэмжээ</translation>
-    </message>
-    <message>
         <source>Open until %1</source>
         <translation>%1 хүртэл нээлттэй</translation>
     </message>
@@ -1015,10 +979,6 @@ Address: %4
         <translation>Хаяг</translation>
     </message>
     <message>
-        <source>Amount</source>
-        <translation>Хэмжээ</translation>
-    </message>
-    <message>
         <source>ID</source>
         <translation>Тодорхойлолт</translation>
     </message>
@@ -1027,6 +987,9 @@ Address: %4
         <translation>-рүү/руу</translation>
     </message>
 </context>
+<context>
+    <name>UnitDisplayStatusBarControl</name>
+    </context>
 <context>
     <name>WalletFrame</name>
     <message>
@@ -1047,40 +1010,12 @@ Address: %4
 <context>
     <name>bitcoin-core</name>
     <message>
-        <source>Usage:</source>
-        <translation>Хэрэглээ:</translation>
-    </message>
-    <message>
-        <source>List commands</source>
-        <translation>Үйлдлүүдийг жагсаах</translation>
-    </message>
-    <message>
-        <source>Get help for a command</source>
-        <translation>Үйлдэлд туслалцаа авах</translation>
-    </message>
-    <message>
         <source>Options:</source>
         <translation>Сонголтууд:</translation>
     </message>
     <message>
-        <source>Listen for connections on &lt;port&gt; (default: 8333 or testnet: 18333)</source>
-        <translation>&lt;port&gt; дээрх холболтуудыг чагна (ѳгѳгдмѳл: 8333 эсвэл testnet: 18333)</translation>
-    </message>
-    <message>
-        <source>Connect through SOCKS proxy</source>
-        <translation>SOCKS проксигоор холбогдох</translation>
-    </message>
-    <message>
-        <source>Wait for RPC server to start</source>
-        <translation>RPC серверийг эхэлтэл хүлээ</translation>
-    </message>
-    <message>
         <source>Wallet options:</source>
         <translation>Түрүйвчийн сонголтууд:</translation>
-    </message>
-    <message>
-        <source>version</source>
-        <translation>хувилбар</translation>
     </message>
     <message>
         <source>Upgrade wallet to latest format</source>
@@ -1093,10 +1028,6 @@ Address: %4
     <message>
         <source>Error loading wallet.dat: Wallet corrupted</source>
         <translation>wallet.dat-ыг ачааллахад алдаа гарлаа: Түрүйвч эвдэрсэн байна</translation>
-    </message>
-    <message>
-        <source>Error loading wallet.dat: Wallet requires newer version of Bitcoin</source>
-        <translation>wallet.dat-ыг ачааллахад алдаа гарлаа: Түрүйвч Биткойны шинэ хувилбарыг шаардаж байна</translation>
     </message>
     <message>
         <source>Error loading wallet.dat</source>
@@ -1142,5 +1073,5 @@ Address: %4
         <source>Error</source>
         <translation>Алдаа</translation>
     </message>
-    </context>
+</context>
 </TS>
