@@ -4542,6 +4542,9 @@ int rc = PKT_ERROR_STO -1000;
           // do not count the sender
           if (address == sender) continue;
 
+          // do not count Exodus
+          if (address == ExodusAddress()) continue;
+
           int64_t tokens = 0;
 
           tokens += getMPbalance(address, property, BALANCE);
