@@ -1376,8 +1376,9 @@ void CheckForkWarningConditions()
         if (!fLargeWorkForkFound)
         {
             std::string warning = std::string("'Warning: Large-work fork detected, forking after block ") +
-                   pindexBestForkBase->phashBlock->ToString() + std::string("'");
-            CAlert::Notify(warning, true);        }
+                pindexBestForkBase->phashBlock->ToString() + std::string("'");
+            CAlert::Notify(warning, true);
+        }
         if (pindexBestForkTip)
         {
             LogPrintf("CheckForkWarningConditions: Warning: Large valid fork found\n  forking the chain at height %d (%s)\n  lasting to height %d (%s).\nChain state database corruption likely.\n",
