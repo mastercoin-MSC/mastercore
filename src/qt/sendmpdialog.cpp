@@ -77,10 +77,11 @@ SendMPDialog::SendMPDialog(QWidget *parent) :
     ui->clearButton->setIcon(QIcon());
     ui->sendButton->setIcon(QIcon());
 #endif
-
+#if QT_VERSION >= 0x040700
     // populate placeholder text
     ui->sendToLineEdit->setPlaceholderText("Enter a Master Protocol address (e.g. 1MaSTeRPRotocolADDreSShef77z6A5S4P)");
     ui->amountLineEdit->setPlaceholderText("Enter Amount");
+#endif
 
     // populate property selector
     for (unsigned int propertyId = 1; propertyId<100000; propertyId++)
@@ -188,15 +189,14 @@ void SendMPDialog::updateProperty()
     int fromIdx = ui->sendFromComboBox->findText(currentSetFromAddress);
     if (fromIdx != -1) { ui->sendFromComboBox->setCurrentIndex(fromIdx); } // -1 means the currently set from address doesn't have a balance in the newly selected property
 
+#if QT_VERSION >= 0x040700
     // update placeholder text
-    if (isPropertyDivisible(propertyId))
-    {
+    if (isPropertyDivisible(propertyId)) {
         ui->amountLineEdit->setPlaceholderText("Enter Divisible Amount");
-    }
-    else
-    {
+    } else {
         ui->amountLineEdit->setPlaceholderText("Enter Indivisible Amount");
     }
+#endif
     updateBalances();
 }
 
