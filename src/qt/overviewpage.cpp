@@ -61,10 +61,10 @@ using namespace leveldb;
 
 //extern uint64_t global_MSC_total;
 //extern uint64_t global_MSC_RESERVED_total;
-extern uint64_t global_balance_money_maineco[100000];
-extern uint64_t global_balance_reserved_maineco[100000];
-extern uint64_t global_balance_money_testeco[100000];
-extern uint64_t global_balance_reserved_testeco[100000];
+extern std::map<uint32_t, uint64_t> global_balance_money_maineco;
+extern std::map<uint32_t, uint64_t> global_balance_reserved_maineco;
+extern std::map<uint32_t, uint64_t> global_balance_money_testeco;
+extern std::map<uint32_t, uint64_t> global_balance_reserved_testeco;
 
 class TxViewDelegate : public QAbstractItemDelegate
 {
