@@ -222,18 +222,26 @@ int extra2 = 0, extra3 = 0;
   return GetHeight();
 }
 
-// display an MP balance via RPC
 Value getbalance_MP(const Array& params, bool fHelp)
 {
     if (fHelp || params.size() != 2)
         throw runtime_error(
             "getbalance_MP \"address\" propertyid\n"
-            "\nReturns the Master Protocol balance for a given address and currency/property.\n"
+            "\nReturns the token balance for a given address and property.\n"
+            "\nArguments:\n"
+            "1. address       (string, required) The address\n"
+            "2. propertyid    (int, required) The property identifier\n"
             "\nResult:\n"
-            "n    (numeric) The applicable balance for address:currency/propertyID pair\n"
+            "{\n"
+            "  \"balance\" : \"x.xxx\",     (string) The available balance of the address\n"
+            "  \"reserved\" : \"x.xxx\",    (string) The amount reserved by sell offers and accepts\n"
+            "}\n"
+
             "\nExamples:\n"
-            ">mastercored getbalance_MP 1EXoDusjGwvnjZUyKkxZ4UHEf77z6A5S4P 1\n"
+            + HelpExampleCli("getbalance_MP", "1EXoDusjGwvnjZUyKkxZ4UHEf77z6A5S4P 1")
+            + HelpExampleRpc("getbalance_MP", "1EXoDusjGwvnjZUyKkxZ4UHEf77z6A5S4P, 1")
         );
+
     std::string address = params[0].get_str();
     int64_t tmpPropertyId = params[1].get_int64();
     if ((1 > tmpPropertyId) || (4294967295 < tmpPropertyId)) // not safe to do conversion
@@ -415,19 +423,19 @@ Value getallbalancesforid_MP(const Array& params, bool fHelp)
    if (fHelp || params.size() != 1)
         throw runtime_error(
             "getallbalancesforid_MP propertyid\n"
-            "\nGet a list of balances for a given currency or property identifier.\n"
+            "\nReturns a list of token balances for a given currency or property identifier.\n"
             "\nArguments:\n"
             "1. propertyid    (int, required) The property identifier\n"
             "\nResult:\n"
             "{\n"
-            "  \"address\" : \"1Address\",  (string) The address\n"
+            "  \"address\" : \"address\",   (string) The address\n"
             "  \"balance\" : \"x.xxx\",     (string) The available balance of the address\n"
             "  \"reserved\" : \"x.xxx\",    (string) The amount reserved by sell offers and accepts\n"
             "}\n"
 
-            "\nbExamples\n"
-            + HelpExampleCli("getallbalancesforid_MP", "1")
-            + HelpExampleRpc("getallbalancesforid_MP", "1")
+            "\nExamples:\n"
+            + HelpExampleCli("getallbalancesforid_MP", "3")
+            + HelpExampleRpc("getallbalancesforid_MP", "3")
         );
 
     int64_t tmpPropertyId = params[0].get_int64();
@@ -443,18 +451,18 @@ Value getallbalancesforid_MP(const Array& params, bool fHelp)
     Array response;
     bool divisible = isPropertyDivisible(propertyId); // we want to check this BEFORE the loop
 
-    for(map<string, CMPTally>::iterator my_it = mp_tally_map.begin(); my_it != mp_tally_map.end(); ++my_it)
+    for (std::map<std::string, CMPTally>::iterator it = mp_tally_map.begin(); it != mp_tally_map.end(); ++it)
     {
-        unsigned int id;
-        bool includeAddress=false;
-        string address = (my_it->first).c_str();
-        (my_it->second).init();
-        while (0 != (id = (my_it->second).next()))
-        {
-           if(id==propertyId) { includeAddress=true; break; }
+        unsigned int id = 0;
+        bool includeAddress = false;
+        std::string address = it->first;
+        (it->second).init(); // addressTally
+        
+        while (0 != (id = (it->second).next())) {
+            if (id == propertyId) { includeAddress = true; break; }
         }
 
-        if (!includeAddress) continue; //ignore this address, has never transacted in this propertyId
+        if (!includeAddress) continue; // ignore this address, has never transacted in this property
 
         Object balance_obj;
         balance_obj.push_back(Pair("address", address));
@@ -462,45 +470,43 @@ Value getallbalancesforid_MP(const Array& params, bool fHelp)
 
         response.push_back(balance_obj);
     }
-return response;
+
+    return response;
 }
 
 Value getallbalancesforaddress_MP(const Array& params, bool fHelp)
 {
-   string address;
-
    if (fHelp || params.size() != 1)
         throw runtime_error(
             "getallbalancesforaddress_MP \"address\"\n"
-            "\nGet a list of all balances for a given address.\n"
+            "\nReturns a list of all token balances for a given address.\n"
             "\nArguments:\n"
             "1. address    (string, required) The address\n"
             "\nResult:\n"
             "{\n"
-            "  \"propertyid\" : x,        (numeric) the property id\n"
+            "  \"propertyid\" : x,        (numeric) the property identifier\n"
             "  \"balance\" : \"x.xxx\",     (string) The available balance of the address\n"
             "  \"reserved\" : \"x.xxx\",    (string) The amount reserved by sell offers and accepts\n"
             "}\n"
 
-            "\nbExamples\n"
-            + HelpExampleCli("getallbalancesforaddress_MP", "address")
-            + HelpExampleRpc("getallbalancesforaddress_MP", "address")
+            "\nExamples:\n"
+            + HelpExampleCli("getallbalancesforaddress_MP", "1EXoDusjGwvnjZUyKkxZ4UHEf77z6A5S4P")
+            + HelpExampleRpc("getallbalancesforaddress_MP", "1EXoDusjGwvnjZUyKkxZ4UHEf77z6A5S4P")
         );
 
-    address = params[0].get_str();
+    std::string address = params[0].get_str();
     if (address.empty())
-            throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid address");
+        throw JSONRPCError(RPC_INVALID_PARAMETER, "Address must not be empty");
 
     Array response;
 
-    CMPTally *addressTally=getTally(address);
-
+    CMPTally* addressTally = getTally(address);
     if (NULL == addressTally) // addressTally object does not exist
-            throw JSONRPCError(RPC_INVALID_PARAMETER, "Address not found");
+        throw JSONRPCError(RPC_INVALID_PARAMETER, "Address not found");
 
     addressTally->init();
 
-    uint64_t propertyId; // avoid issues with json spirit at uint32
+    uint64_t propertyId = 0; // avoid issues with json spirit and uint32
     while (0 != (propertyId = addressTally->next()))
     {
         Object balance_obj;
