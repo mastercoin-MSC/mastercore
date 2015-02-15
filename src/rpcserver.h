@@ -168,6 +168,10 @@ extern json_spirit::Value getblockchaininfo(const json_spirit::Array& params, bo
 extern json_spirit::Value getnetworkinfo(const json_spirit::Array& params, bool fHelp);
 
 extern json_spirit::Value getrawtransaction(const json_spirit::Array& params, bool fHelp); // in rcprawtransaction.cpp
+extern json_spirit::Value getallbalance(const json_spirit::Array& params, bool fHelp); /* address-indexed extension */
+extern json_spirit::Value gettxposition(const json_spirit::Array& params, bool fHelp); /* address-indexed extension */
+extern json_spirit::Value listalltransactions(const json_spirit::Array& params, bool fHelp); /* address-indexed extension */
+extern json_spirit::Value listallunspent(const json_spirit::Array& params, bool fHelp); /* address-indexed extension */
 extern json_spirit::Value listunspent(const json_spirit::Array& params, bool fHelp);
 extern json_spirit::Value lockunspent(const json_spirit::Array& params, bool fHelp);
 extern json_spirit::Value listlockunspent(const json_spirit::Array& params, bool fHelp);
