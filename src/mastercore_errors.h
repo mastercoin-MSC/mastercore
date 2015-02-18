@@ -1,5 +1,7 @@
-#ifndef _MASTERCOIN_ERRORS
-#define _MASTERCOIN_ERRORS 1
+#ifndef MASTERCORE_ERRORS_H
+#define MASTERCORE_ERRORS_H
+
+#include <string>
 
 enum MPRPCErrorCode
 {
@@ -80,4 +82,4 @@ inline std::string error_str(int ec) {
   return ec_str;
 }
 
-#endif // _MASTERCOIN_ERRORS
+#endif // MASTERCORE_ERRORS_H

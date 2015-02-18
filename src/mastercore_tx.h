@@ -1,7 +1,25 @@
-#ifndef _MASTERCOIN_TX
-#define _MASTERCOIN_TX 1
+#ifndef MASTERCORE_TX_H
+#define MASTERCORE_TX_H
+
+class CMPOffer;
+class CMPMetaDEx;
 
 #include "mastercore.h"
+
+#include "uint256.h"
+#include "util.h"
+
+#include <stdint.h>
+#include <stdio.h>
+#include <string.h>
+
+#include <string>
+#include <utility>
+
+using std::pair;
+using std::string;
+
+using mastercore::c_strMasterProtocolTXType;
 
 // The class responsible for tx interpreting/parsing.
 //
@@ -194,5 +212,4 @@ public:
 
 int parseTransaction(bool bRPConly, const CTransaction &wtx, int nBlock, unsigned int idx, CMPTransaction *mp_tx, unsigned int nTime=0);
 
-#endif // #ifndef _MASTERCOIN_TX
-
+#endif // MASTERCORE_TX_H

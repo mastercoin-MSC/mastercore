@@ -3,13 +3,34 @@
 //
 // for now (?) class declarations go here -- work in progress; probably will get pulled out into a separate file, note: some declarations are still in the .cpp file
 
-#ifndef _MASTERCOIN
-#define _MASTERCOIN 1
+#ifndef MASTERCORE_H
+#define MASTERCORE_H
 
-#include "netbase.h"
-#include "protocol.h"
+class CBlockIndex;
+class CTransaction;
 
-#include "tinyformat.h"
+#include "sync.h"
+#include "uint256.h"
+#include "util.h"
+
+#include <boost/filesystem/path.hpp>
+
+#include "leveldb/db.h"
+
+#include "json/json_spirit_value.h"
+
+#include <stdint.h>
+#include <stdio.h>
+
+#include <map>
+#include <string>
+#include <vector>
+
+using json_spirit::Array;
+
+using std::string;
+using std::vector;
+
 
 #define DISABLE_METADEX
 
@@ -556,5 +577,4 @@ std::string getMasterCoreAlertTextOnly();
 bool parseAlertMessage(std::string rawAlertStr, int32_t *alertType, uint64_t *expiryValue, uint32_t *typeCheck, uint32_t *verCheck, std::string *alertMessage);
 }
 
-#endif
-
+#endif // MASTERCORE_H

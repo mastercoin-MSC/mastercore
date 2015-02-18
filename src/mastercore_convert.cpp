@@ -1,7 +1,7 @@
 #include "mastercore_convert.h"
 
-#include <cmath>
 #include <stdint.h>
+#include <cmath>
 
 namespace mastercore
 {

@@ -1,5 +1,5 @@
-#ifndef _MASTERCORE_CONVERT
-#define _MASTERCORE_CONVERT
+#ifndef MASTERCORE_CONVERT_H
+#define MASTERCORE_CONVERT_H
 
 #include <stdint.h>
 
@@ -37,4 +37,4 @@ void swapByteOrder64(uint64_t&);
     reinterpret_cast<unsigned char *>((ptr)) + (size));
 }
 
-#endif // _MASTERCORE_CONVERT
+#endif // MASTERCORE_CONVERT_H

@@ -1,8 +1,12 @@
-#ifndef _MASTERCORE_RPC
-#define _MASTERCORE_RPC
+#ifndef MASTERCORE_RPC_H
+#define MASTERCORE_RPC_H
 
-  #include "mastercore.h"
-  int populateRPCTransactionObject(uint256 txid, Object *txobj, string filterAddress);
+#include "json/json_spirit_value.h"
 
-#endif // #ifndef _MASTERCORE_RPC
+#include <string>
 
+class uint256;
+
+int populateRPCTransactionObject(const uint256& txid, json_spirit::Object *txobj, const std::string& filterAddress);
+
+#endif // MASTERCORE_RPC_H

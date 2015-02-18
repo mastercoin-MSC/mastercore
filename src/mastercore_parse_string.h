@@ -1,5 +1,5 @@
-#ifndef _MASTERCOIN_PARSE_STRING
-#define _MASTERCOIN_PARSE_STRING
+#ifndef MASTERCORE_PARSE_STRING_H
+#define MASTERCORE_PARSE_STRING_H
 
 #include <stdint.h>
 #include <string>
@@ -17,4 +17,4 @@ namespace mastercore
 int64_t StrToInt64(const std::string& str, bool divisible);
 }
 
-#endif // _MASTERCOIN_PARSE_STRRING
+#endif // MASTERCORE_PARSE_STRING_H
