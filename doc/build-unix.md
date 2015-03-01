@@ -51,7 +51,7 @@ Dependency Build Instructions: Ubuntu & Debian
 ----------------------------------------------
 Build requirements:
 
-	sudo apt-get install build-essential
+	sudo apt-get install build-essential software-properties-common bsdmainutils
 	sudo apt-get install libtool autotools-dev autoconf
 	sudo apt-get install libssl-dev
 
