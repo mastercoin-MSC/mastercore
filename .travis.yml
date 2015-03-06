@@ -1,0 +1,42 @@
+os: linux
+language: cpp
+env:
+  global:
+    - MASTERCORED=$TRAVIS_BUILD_DIR/src/mastercored
+    - MASTERCORECLI=$TRAVIS_BUILD_DIR/src/mastercore-cli
+    - RPC_TESTS_GIT_URL=https://github.com/dexX7/mastercore-rpc-tests.git
+    - JAVA_COMPARISON_TOOL_URL=https://github.com/TheBlueMatt/test-scripts/blob/38b490a2599d422b12d5ce8f165792f63fd8f54f/pull-tests-0f7b5d8.jar?raw=true
+    - JAVA_COMPARISON_TOOL_HASH=ecd43b988a8b673b483e4f69f931596360a5e90fc415c75c4c259faa690df198
+cache:
+  apt: true
+matrix:
+  fast_finish: true
+before_install:
+  - curl -k -L -o ./share/BitcoindComparisonTool.jar $JAVA_COMPARISON_TOOL_URL
+  - if [[ "$(sha256sum ./share/BitcoindComparisonTool.jar)" != "$JAVA_COMPARISON_TOOL_HASH  ./share/BitcoindComparisonTool.jar" ]]; then echo "Hashes don't match."; exit 1; fi
+  - sudo add-apt-repository ppa:boost-latest/ppa -y
+  - sudo add-apt-repository ppa:bitcoin/bitcoin -y
+  - sudo apt-get update -qq
+  - sudo apt-get install -y build-essential
+  - sudo apt-get install -y libtool
+  - sudo apt-get install -y autotools-dev
+  - sudo apt-get install -y autoconf
+  - sudo apt-get install -y libssl-dev
+  - sudo apt-get install -y libboost1.55-all-dev
+  - sudo apt-get install -y libdb4.8-dev
+  - sudo apt-get install -y libdb4.8++-dev
+  - sudo apt-get install -y libqt4-dev
+  - sudo apt-get install -y libprotobuf-dev
+  - sudo apt-get install -y protobuf-compiler
+  - sudo apt-get install -y libqrencode-dev
+install:
+  - ./autogen.sh
+  - ./configure --disable-dependency-tracking --with-comparison-tool=./share/BitcoindComparisonTool.jar
+  - make -j 3
+before_script:
+  - git clone $RPC_TESTS_GIT_URL ./qa/mastercore-rpc-tests
+  - cp ./src/mastercored ./src/bitcoind
+  - cp ./src/mastercore-cli ./src/bitcoin-cli
+script:
+  - make check
+  - ./qa/mastercore-rpc-tests/run_tests.py
