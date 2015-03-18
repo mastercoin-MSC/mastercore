@@ -38,15 +38,15 @@ BITCOIN_CORE_H = \
   coins.h \
   compat.h \
   core.h \
-  mastercore.h \
-  mastercore_convert.h \
-  mastercore_parse_string.h \
-  mastercore_tx.h \
-  mastercore_dex.h \
-  mastercore_rpc.h \
-  mastercore_sp.h \
-  mastercore_errors.h \
-  mastercore_version.h \
+  msc/mastercore.h \
+  msc/mastercore_convert.h \
+  msc/mastercore_parse_string.h \
+  msc/mastercore_tx.h \
+  msc/mastercore_dex.h \
+  msc/mastercore_rpc.h \
+  msc/mastercore_sp.h \
+  msc/mastercore_errors.h \
+  msc/mastercore_version.h \
   crypter.h \
   db.h \
   hash.h \
@@ -135,14 +135,14 @@ libbitcoin_common_a_SOURCES = \
   allocators.cpp \
   chainparams.cpp \
   core.cpp \
-  mastercore.cpp \
-  mastercore_convert.cpp \
-  mastercore_parse_string.cpp \
-  mastercore_tx.cpp \
-  mastercore_rpc.cpp \
-  mastercore_dex.cpp \
-  mastercore_sp.cpp \
-  mastercore_version.cpp \
+  msc/mastercore.cpp \
+  msc/mastercore_convert.cpp \
+  msc/mastercore_parse_string.cpp \
+  msc/mastercore_tx.cpp \
+  msc/mastercore_rpc.cpp \
+  msc/mastercore_dex.cpp \
+  msc/mastercore_sp.cpp \
+  msc/mastercore_version.cpp \
   hash.cpp \
   key.cpp \
   netbase.cpp \
