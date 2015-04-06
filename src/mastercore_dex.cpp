@@ -58,8 +58,6 @@ using namespace mastercore;
 #include "mastercore_dex.h"
 #include "mastercore_tx.h"
 
-extern int msc_debug_metadex1, msc_debug_metadex2, msc_debug_metadex3;
-
 md_PropertiesMap mastercore::metadex;
 
 md_PricesMap* mastercore::get_Prices(unsigned int prop)

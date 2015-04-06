@@ -2,6 +2,7 @@
 #define _MASTERCOIN_TX 1
 
 #include "mastercore.h"
+#include "mastercore_log.h"
 
 // The class responsible for tx interpreting/parsing.
 //

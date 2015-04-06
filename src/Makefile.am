@@ -46,6 +46,7 @@ BITCOIN_CORE_H = \
   mastercore_rpc.h \
   mastercore_sp.h \
   mastercore_errors.h \
+  mastercore_log.h \
   mastercore_version.h \
   crypter.h \
   db.h \
@@ -141,6 +142,7 @@ libbitcoin_common_a_SOURCES = \
   mastercore_tx.cpp \
   mastercore_rpc.cpp \
   mastercore_dex.cpp \
+  mastercore_log.cpp \
   mastercore_sp.cpp \
   mastercore_version.cpp \
   hash.cpp \
