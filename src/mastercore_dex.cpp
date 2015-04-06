@@ -954,9 +954,9 @@ const CMPMetaDEx *p_mdex = NULL;
 }
 
 // scan the orderbook and remove everything for an address
-int mastercore::MetaDEx_CANCEL_EVERYTHING(const uint256 txid, unsigned int block, const string &sender_addr)
+int mastercore::MetaDEx_CANCEL_EVERYTHING(const uint256 txid, unsigned int block, const std::string &sender_addr, unsigned char ecosystem)
 {
-int rc = METADEX_ERROR -40;
+  int rc = METADEX_ERROR -40;
 
   file_log("%s()\n", __FUNCTION__);
 
@@ -967,6 +967,10 @@ int rc = METADEX_ERROR -40;
   for (md_PropertiesMap::iterator my_it = metadex.begin(); my_it != metadex.end(); ++my_it)
   {
     unsigned int prop = my_it->first;
+
+    // skip property, if it is not in the expected ecosystem
+    if (isMainEcosystemProperty(ecosystem) && !isMainEcosystemProperty(prop)) continue;
+    if (isTestEcosystemProperty(ecosystem) && !isTestEcosystemProperty(prop)) continue;    
 
     file_log(" ## property: %u\n", prop);
     md_PricesMap & prices = my_it->second;
@@ -982,7 +986,7 @@ int rc = METADEX_ERROR -40;
       {
         file_log("%s= %s\n", price.str(DISPLAY_PRECISION_LEN, std::ios_base::fixed) , it->ToString());
 
-        if ((it->getAddr() != sender_addr))
+        if (it->getAddr() != sender_addr)
         {
           ++it;
           continue;
