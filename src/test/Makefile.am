@@ -50,6 +50,7 @@ test_bitcoin_SOURCES = \
   mastercore_rounduint64_tests.cpp \
   mastercore_strtoint64_tests.cpp \
   mastercore_swapbyteorder_tests.cpp \
+  mastercore_value_tests.cpp \
   miner_tests.cpp \
   mruset_tests.cpp \
   multisig_tests.cpp \

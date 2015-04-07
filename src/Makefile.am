@@ -46,6 +46,7 @@ BITCOIN_CORE_H = \
   mastercore_rpc.h \
   mastercore_sp.h \
   mastercore_errors.h \
+  mastercore_values.h \
   mastercore_version.h \
   crypter.h \
   db.h \
