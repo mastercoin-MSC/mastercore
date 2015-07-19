@@ -52,7 +52,7 @@ src/qt/test/moc*.cpp
 *.qm
 Makefile
 mastercore-qt
-Bitcoin-Qt.app
+MasterCore-Qt.app
 
 # Unit-tests
 Makefile.test
